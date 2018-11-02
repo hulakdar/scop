@@ -9,7 +9,7 @@ uniform vec4 u_Color = vec4(1, 0, 1, 1);
 const vec3 light_dir = normalize(vec3(1, 1, -1));
 const float Ambient = 0.14f;
 
-uniform sampler2D u_Texture = 0;
+uniform sampler2D u_Texture;
 void main()
 {
 	float Diffuse = max(0, dot(v_normal, light_dir));

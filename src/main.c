@@ -222,7 +222,9 @@ int main(int argc, const char *argv[])
 	int y_u_location = glGetUniformLocation(shader_program, "y");
 	int z_u_location = glGetUniformLocation(shader_program, "z");
 
-	SDL_Surface *local_buffer = IMG_Load("res/sample.png");
+
+
+	SDL_Surface *local_buffer = IMG_Load("res\\sample.png");
 	if (!local_buffer)
 		exit(scop_error(IMG_GetError()));
 
@@ -230,6 +232,16 @@ int main(int argc, const char *argv[])
 	glGenTextures(1, &texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
+
+	int tex_sampler_location = glGetUniformLocation(shader_program, "u_Texture");
+	glUniform1i(tex_sampler_location, texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, local_buffer->w, local_buffer->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, local_buffer->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 #if !CUBE
 	for (int i = 0; i < model.vertecies.back; ++i)
