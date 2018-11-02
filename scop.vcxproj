@@ -1,0 +1,877 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{B17A4CB2-E72B-4256-80E4-6C2806564D94}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)-$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)$(Platform)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\glew\lib\Release\x64;$(SolutionDir)..\SDL2\lib\x64;$(SolutionDir)..\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="libft\ft_atof.c" />
+    <ClCompile Include="libft\ft_atoi.c" />
+    <ClCompile Include="libft\ft_atoi_base.c" />
+    <ClCompile Include="libft\ft_bzero.c" />
+    <ClCompile Include="libft\ft_isalnum.c" />
+    <ClCompile Include="libft\ft_isalpha.c" />
+    <ClCompile Include="libft\ft_isascii.c" />
+    <ClCompile Include="libft\ft_isdigit.c" />
+    <ClCompile Include="libft\ft_islower.c" />
+    <ClCompile Include="libft\ft_isprint.c" />
+    <ClCompile Include="libft\ft_isupper.c" />
+    <ClCompile Include="libft\ft_itoa.c" />
+    <ClCompile Include="libft\ft_lstadd.c" />
+    <ClCompile Include="libft\ft_lstdel.c" />
+    <ClCompile Include="libft\ft_lstdelone.c" />
+    <ClCompile Include="libft\ft_lstiter.c" />
+    <ClCompile Include="libft\ft_lstmap.c" />
+    <ClCompile Include="libft\ft_lstnew.c" />
+    <ClCompile Include="libft\ft_lstprint.c" />
+    <ClCompile Include="libft\ft_memalloc.c" />
+    <ClCompile Include="libft\ft_memccpy.c" />
+    <ClCompile Include="libft\ft_memchr.c" />
+    <ClCompile Include="libft\ft_memcmp.c" />
+    <ClCompile Include="libft\ft_memcpy.c" />
+    <ClCompile Include="libft\ft_memdel.c" />
+    <ClCompile Include="libft\ft_memmove.c" />
+    <ClCompile Include="libft\ft_memset.c" />
+    <ClCompile Include="libft\ft_putchar.c" />
+    <ClCompile Include="libft\ft_putchar_fd.c" />
+    <ClCompile Include="libft\ft_putendl.c" />
+    <ClCompile Include="libft\ft_putendl_fd.c" />
+    <ClCompile Include="libft\ft_putnbr.c" />
+    <ClCompile Include="libft\ft_putnbr_fd.c" />
+    <ClCompile Include="libft\ft_putstr.c" />
+    <ClCompile Include="libft\ft_putstr_fd.c" />
+    <ClCompile Include="libft\ft_puttab.c" />
+    <ClCompile Include="libft\ft_put_size_t.c" />
+    <ClCompile Include="libft\ft_quickmove.c" />
+    <ClCompile Include="libft\ft_sort.c" />
+    <ClCompile Include="libft\ft_strcat.c" />
+    <ClCompile Include="libft\ft_strchr.c" />
+    <ClCompile Include="libft\ft_strclr.c" />
+    <ClCompile Include="libft\ft_strcmp.c" />
+    <ClCompile Include="libft\ft_strcpy.c" />
+    <ClCompile Include="libft\ft_strdel.c" />
+    <ClCompile Include="libft\ft_strdup.c" />
+    <ClCompile Include="libft\ft_strequ.c" />
+    <ClCompile Include="libft\ft_striter.c" />
+    <ClCompile Include="libft\ft_striteri.c" />
+    <ClCompile Include="libft\ft_strjoin.c" />
+    <ClCompile Include="libft\ft_strlcat.c" />
+    <ClCompile Include="libft\ft_strlen.c" />
+    <ClCompile Include="libft\ft_strmap.c" />
+    <ClCompile Include="libft\ft_strmapi.c" />
+    <ClCompile Include="libft\ft_strncat.c" />
+    <ClCompile Include="libft\ft_strncmp.c" />
+    <ClCompile Include="libft\ft_strncpy.c" />
+    <ClCompile Include="libft\ft_strnequ.c" />
+    <ClCompile Include="libft\ft_strnew.c" />
+    <ClCompile Include="libft\ft_strnstr.c" />
+    <ClCompile Include="libft\ft_strrchr.c" />
+    <ClCompile Include="libft\ft_strsplit.c" />
+    <ClCompile Include="libft\ft_strstr.c" />
+    <ClCompile Include="libft\ft_strsub.c" />
+    <ClCompile Include="libft\ft_strtrim.c" />
+    <ClCompile Include="libft\ft_tabcount.c" />
+    <ClCompile Include="libft\ft_tabdel.c" />
+    <ClCompile Include="libft\ft_tolower.c" />
+    <ClCompile Include="libft\ft_toupper.c" />
+    <ClCompile Include="libft\ft_vec_del.c" />
+    <ClCompile Include="libft\ft_vec_destruct.c" />
+    <ClCompile Include="libft\ft_vec_for_each.c" />
+    <ClCompile Include="libft\ft_vec_get.c" />
+    <ClCompile Include="libft\ft_vec_init.c" />
+    <ClCompile Include="libft\ft_vec_new.c" />
+    <ClCompile Include="libft\ft_vec_popback.c" />
+    <ClCompile Include="libft\ft_vec_popfront.c" />
+    <ClCompile Include="libft\ft_vec_pushback.c" />
+    <ClCompile Include="libft\ft_vec_set.c" />
+    <ClCompile Include="libft\get_next_line.c" />
+    <ClCompile Include="libft\ft_atoll.c" />
+    <ClCompile Include="libft\ft_atoull.c" />
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\objparser.c" />
+    <ClCompile Include="src\parser_impl.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="frameworks\sdl2.framework\headers\begin_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\close_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_assert.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_atomic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_audio.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_bits.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_blendmode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_clipboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_config.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_config_macosx.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_copying.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_cpuinfo.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_endian.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_error.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_events.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_filesystem.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_gamecontroller.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_gesture.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_haptic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_hints.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_joystick.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_keyboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_keycode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_loadso.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_log.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_main.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_messagebox.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_mouse.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_mutex.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_name.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengl.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles2_gl2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles2_gl2ext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles2_gl2platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengles2_khrplatform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_opengl_glext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_pixels.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_power.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_quit.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_rect.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_render.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_revision.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_rwops.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_scancode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_shape.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_stdinc.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_surface.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_system.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_syswm.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_thread.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_timer.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_touch.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_types.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_version.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_video.h" />
+    <ClInclude Include="frameworks\sdl2.framework\headers\SDL_vulkan.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\begin_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\close_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_assert.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_atomic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_audio.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_bits.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_blendmode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_clipboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_config.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_config_macosx.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_copying.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_cpuinfo.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_endian.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_error.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_events.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_filesystem.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_gamecontroller.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_gesture.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_haptic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_hints.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_joystick.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_keyboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_keycode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_loadso.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_log.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_main.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_messagebox.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_mouse.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_mutex.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_name.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengl.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles2_gl2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles2_gl2ext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles2_gl2platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengles2_khrplatform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_opengl_glext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_pixels.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_power.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_quit.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_rect.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_render.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_revision.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_rwops.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_scancode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_shape.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_stdinc.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_surface.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_system.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_syswm.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_thread.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_timer.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_touch.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_types.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_version.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_video.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\a\headers\SDL_vulkan.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\begin_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\close_code.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_assert.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_atomic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_audio.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_bits.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_blendmode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_clipboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_config.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_config_macosx.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_copying.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_cpuinfo.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_endian.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_error.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_events.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_filesystem.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_gamecontroller.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_gesture.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_haptic.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_hints.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_joystick.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_keyboard.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_keycode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_loadso.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_log.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_main.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_messagebox.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_mouse.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_mutex.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_name.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengl.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles2_gl2.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles2_gl2ext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles2_gl2platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengles2_khrplatform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_opengl_glext.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_pixels.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_platform.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_power.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_quit.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_rect.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_render.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_revision.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_rwops.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_scancode.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_shape.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_stdinc.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_surface.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_system.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_syswm.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_thread.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_timer.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_touch.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_types.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_version.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_video.h" />
+    <ClInclude Include="frameworks\sdl2.framework\versions\current\headers\SDL_vulkan.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\a\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\a\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\a\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\current\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\current\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\frameworks\webp.framework\versions\current\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\headers\SDL_image.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\a\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\a\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\a\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\current\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\current\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\frameworks\webp.framework\versions\current\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\a\headers\SDL_image.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\a\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\a\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\a\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\current\headers\webp\decode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\current\headers\webp\encode.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\frameworks\webp.framework\versions\current\headers\webp\types.h" />
+    <ClInclude Include="frameworks\sdl2_image.framework\versions\current\headers\SDL_image.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\a\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\frameworks\freetype.framework\versions\current\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\headers\SDL_ttf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\a\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\frameworks\freetype.framework\versions\current\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\a\headers\SDL_ttf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\a\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\config\ftconfig.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\config\ftheader.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\config\ftmodule.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\config\ftoption.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\config\ftstdlib.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\freetype.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftadvanc.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftautoh.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftbbox.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftbdf.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftbitmap.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftbzip2.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftcache.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftcffdrv.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftchapters.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftcid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\fterrdef.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\fterrors.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftgasp.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftglyph.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftgxval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftgzip.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftimage.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftincrem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftlcdfil.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftlist.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftlzw.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftmac.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftmm.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftmodapi.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftmoderr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftotval.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftoutln.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftpfr.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftrender.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftsizes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftsnames.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftstroke.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftsynth.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftsystem.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\fttrigon.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\fttypes.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftwinfnt.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ftxf86.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\t1tables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ttnameid.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\tttables.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\tttags.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ttunpat.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\ft2build.h" />
+    <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\headers\SDL_ttf.h" />
+    <ClInclude Include="include\obj.h" />
+    <ClInclude Include="include\scop.h" />
+    <ClInclude Include="libft\include\libft.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\fragment.shader" />
+    <None Include="res\shaders\vertex.shader" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
