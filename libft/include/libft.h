@@ -130,4 +130,6 @@ void				ft_sort(unsigned char *begin, unsigned char *end, size_t size,
 float				ft_atof(const char *str);
 long long			ft_atoll(const char *str);
 size_t				ft_atoull(const char *str);
+size_t				ft_wordlen(const char *s);
+size_t				ft_intpow(unsigned base, unsigned power);
 #endif

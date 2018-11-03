@@ -195,9 +195,13 @@
     <ClCompile Include="libft\get_next_line.c" />
     <ClCompile Include="libft\ft_atoll.c" />
     <ClCompile Include="libft\ft_atoull.c" />
+    <ClCompile Include="libft\ft_wordlen.c" />
+    <ClCompile Include="libft\ft_intpow.c" />
+    <ClCompile Include="src\events.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\objparser.c" />
     <ClCompile Include="src\parser_impl.c" />
+    <ClCompile Include="src\shaders.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="frameworks\sdl2.framework\headers\begin_code.h" />
@@ -863,8 +867,10 @@
     <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\freetype\ttunpat.h" />
     <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\ft2build.h" />
     <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\headers\SDL_ttf.h" />
+    <ClInclude Include="include\events.h" />
     <ClInclude Include="include\obj.h" />
     <ClInclude Include="include\scop.h" />
+    <ClInclude Include="include\shaders.h" />
     <ClInclude Include="libft\include\libft.h" />
   </ItemGroup>
   <ItemGroup>

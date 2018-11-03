@@ -11,9 +11,9 @@ void parse_vec3(const char *line, t_vector *buffer)
 	result.x = ft_atof(line);
 	if ((line = ft_strchr(line, ' ')))
 	{
-		result.y = ft_atof(line);
-		if ((line = ft_strchr(line, ' ')))
-			result.z = ft_atof(line);
+		result.y = ft_atof(line + 1);
+		if ((line = ft_strchr(line + 1, ' ')))
+			result.z = ft_atof(line + 1);
 	}
 	ft_vec_pushback(buffer, &result);
 }
@@ -25,9 +25,9 @@ void parse_vec2(const char *line, t_vector *buffer)
 	result = (t_vec2) { 0, 0 };
 	while (*line == ' ')
 		line++;
-	result.x = ft_atof(line);
-	if ((line = ft_strchr(line, ' ')))
-		result.y = ft_atof(line);
+	result.x = ft_atof(line + 1);
+	if ((line = ft_strchr(line + 1, ' ')))
+		result.y = ft_atof(line + 1);
 	ft_vec_pushback(buffer, &result);
 }
 
@@ -48,11 +48,11 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 		const int tmp_size = ft_tabcount(tmp);
 		for (int j = 0; j < tmp_size; ++j)
 			if (j == 0)
-				face.pos_indx[i] = ft_atoi(tmp[j]);
+				face.pos_indx[i] = ft_atoi(tmp[j]) - 1;
 			else if (j == 1)
-				face.uvs_indx[i] = ft_atoi(tmp[j]);
+				face.uvs_indx[i] = ft_atoi(tmp[j]) - 1;
 			else if (j == 2)
-				face.norm_indx[i] = ft_atoi(tmp[j]);
+				face.norm_indx[i] = ft_atoi(tmp[j]) - 1;
 			else
 				exit(scop_error("Strange number of idx in a vert. Something is wrong. \n"));
 		seeker = tab[i];
@@ -62,35 +62,33 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 	{
 		t_vertex new_vert = { 0 };
 		new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
-#if WITH_SHIT
-		if (face.has_uv)
+		//if (face.has_uv)
 			new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
-		else
+		//else
 			; // panic
-		if (face.has_norm)
+		//if (face.has_norm)
 			new_vert.normale = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
-		else
+		//else
 			; // calculate the fucking normal. don't be a pussy
-#endif
 		ft_vec_pushback(&model->vertecies, &new_vert);
 	}
+	i = -1;
 	if (count == 4)
 	{
-		i = 0;
-		while (++i < count)
+		while (++i < 4)
 		{
+			if (i == 1)
+				i++;
 			t_vertex new_vert = { 0 };
 			new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
-#if WITH_SHIT
-			if (face.has_uv)
+			//if (face.has_uv)
 				new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
-			else
+			//else
 				; // panic
-			if (face.has_norm)
+			//if (face.has_norm)
 				new_vert.normale = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
-			else
+			//else
 				; // calculate the fucking normal. don't be a pussy
-#endif
 			ft_vec_pushback(&model->vertecies, &new_vert);
 		}
 	}

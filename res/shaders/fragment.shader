@@ -7,7 +7,7 @@ out vec4 o_color;
 
 uniform vec4 u_Color = vec4(1, 0, 1, 1);
 const vec3 light_dir = normalize(vec3(1, 1, -1));
-const float Ambient = 0.14f;
+const float Ambient = 0.94f;
 
 uniform sampler2D u_Texture;
 void main()

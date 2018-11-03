@@ -44,6 +44,10 @@ typedef struct	s_model
 {
 	t_vector	vertecies;
 	t_vector	materials;
+	int			vertex_buffer;
+	int			vertex_array;
+	unsigned	texture;
+	int			shader_program;
 }				t_model;
 
 void	parse_vec3(const char *line, t_vector *buffer);

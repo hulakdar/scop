@@ -30,6 +30,11 @@ void main()
 		sin(z),		cos(z),		0.f, 0.f,
 		0.f,		0.f,		1.f, 0.f,
 		0.f,		0.f,		0.f, 1.f
+	) * mat4(
+		.1f,	0.f,	0.f, 0.f,
+		0.f,	.1f,	0.f, 0.f,
+		0.f,	0.f,	.1f, 0.f,
+		0.f,	0.f,	0.f, 1.f
 	);
 
 	vec4 NewPosition = u_MVP * Position;
