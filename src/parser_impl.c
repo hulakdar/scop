@@ -33,10 +33,10 @@ void parse_vec2(const char *line, t_vector *buffer)
 
 void parse_faces(const char *line, t_obj *buffers, t_model *model)
 {
-	const char	**tab = ft_strsplit(line, ' ');
+	char	**tab = ft_strsplit(line, ' ');
 	const int	count = ft_tabcount(tab);
 	int			i;
-	t_face		face = { 0 };
+	t_face		face = { {0}, {0}, {0}, 0, 0 };
 	const char	*seeker;
 
 	if (count > 4 || count < 3)
@@ -60,7 +60,7 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 	i = -1;
 	while (++i < 3)
 	{
-		t_vertex new_vert = { 0 };
+		t_vertex new_vert = { {0, 0, 0}, {0, 0},  {0, 0, 0}  };
 		new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
 		//if (face.has_uv)
 			new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
@@ -79,7 +79,7 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 		{
 			if (i == 1)
 				i++;
-			t_vertex new_vert = { 0 };
+			t_vertex new_vert = {{0, 0, 0}, {0, 0}, {0, 0, 0}};
 			new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
 			//if (face.has_uv)
 				new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
@@ -97,5 +97,6 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 
 void parse_mtl(const char *line, t_vector *materials)
 {
+	(void)materials;
 	printf("Found material. not implemented yet: %s\n", line);
 }

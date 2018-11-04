@@ -1,5 +1,6 @@
 #include "scop.h"
 #include "obj.h"
+#include "shaders.h"
 #include <stdio.h>
 #undef main
 
@@ -27,7 +28,7 @@ SDL_Window *scop_initialize()
 	SDL_GL_CreateContext(window);
 	Result = glewInit();
 	if (Result != GLEW_OK)
-		exit(scop_error(glewGetErrorString(Result)));
+		exit(scop_error((const char *)glewGetErrorString(Result)));
 	GLCall(glEnable(GL_DEPTH_TEST));
 	return window;
 }
@@ -45,13 +46,13 @@ t_model prepare_model(const char *filepath)
 	GLCall(glBindVertexArray(model.vertex_array));
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		offsetof(t_vertex, position)));
+		(const void *)offsetof(t_vertex, position)));
 	GLCall(glEnableVertexAttribArray(1));
 	GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		offsetof(t_vertex, uv)));
+		(const void *)offsetof(t_vertex, uv)));
 	GLCall(glEnableVertexAttribArray(2));
 	GLCall(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		offsetof(t_vertex, normale)));
+		(const void *)offsetof(t_vertex, normale)));
 	glGenTextures(1, &model.texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model.texture);
@@ -60,65 +61,6 @@ t_model prepare_model(const char *filepath)
 	return model;
 }
 
-int event_loop(SDL_Window *window, t_model model)
-{
-	int x_u_location = glGetUniformLocation(model.shader_program, "x");
-	int y_u_location = glGetUniformLocation(model.shader_program, "y");
-	float x_angle = 0;
-	float y_angle = 0;
-	float x_dir = 0;
-	float y_dir = 0;
-
-	SDL_Event	e;
-	while (1)
-	{
-		glClearColor(0.8, 0.5, 0.7, 0);
-		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		while (SDL_PollEvent(&e))
-		{
-			if (WindowShouldClose(&e))
-				return 0;
-			if (e.type == SDL_KEYDOWN)
-			{
-				if (e.key.keysym.sym == 'h')
-					y_dir = -1.f;
-				else if (e.key.keysym.sym == 'l')
-					y_dir = 1.f;
-				else if (e.key.keysym.sym == 'k')
-					x_dir = 1.f;
-				else if (e.key.keysym.sym == 'j')
-					x_dir = -1.f;
-				else if (e.key.keysym.sym == '1')
-					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				else if (e.key.keysym.sym == '2')
-					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			}
-			else if (e.type == SDL_KEYUP)
-			{
-				if (e.key.keysym.sym == 'h')
-					y_dir = 0;
-				else if (e.key.keysym.sym == 'l')
-					y_dir = 0;
-				else if (e.key.keysym.sym == 'k')
-					x_dir = 0;
-				else if (e.key.keysym.sym == 'j')
-					x_dir = 0;
-			}
-		}
-		if (x_dir)
-		{
-			x_angle += x_dir * SDL_GetTicks() / 900000.f;
-			glUniform1f(x_u_location, x_angle);
-		}
-		if (y_dir)
-		{
-			y_angle += y_dir * SDL_GetTicks() / 900000.f;
-			glUniform1f(y_u_location, y_angle);
-		}
-		GLCall(glDrawArrays(GL_TRIANGLES, 0, model.vertecies.back));
-		SDL_GL_SwapWindow(window);
-	}
-}
 
 int main(int argc, const char *argv[])
 {
@@ -127,7 +69,7 @@ int main(int argc, const char *argv[])
 	SDL_Surface *local_buffer;
 
 	if (argc > 2 || argc == 1)
-		exit(-1);
+		exit(scop_error("wrong number of arguments"));
 	window = scop_initialize();
 	model = prepare_model(argv[1]);
 	local_buffer = IMG_Load("res/sample.png");

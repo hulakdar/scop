@@ -44,7 +44,7 @@ t_model parse_obj(const char *filepath)
 	
 	init_model(&result, &obj);
 	if (fd > 2)
-		while (get_next_line(fd, &line))
+		while (get_next_line(fd, &line) > 0)
 		{
 			if (*line != '#' && *line != ' ')
 				parse_single_line(line, &obj, &result);

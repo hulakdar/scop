@@ -7,22 +7,24 @@ OBJS_DIR    = ./obj
 HEADERS_DIR = ./include
 LIBFT_DIR   = ./libft
 
-HEADERS     = rt.h panels.h tinyfiledialogs.h cl_wrap.h parser.h kernel.h
+HEADERS     = events.h obj.h scop.h shaders.h
 HEADERS    := $(addprefix $(HEADERS_DIR)/, $(HEADERS))
 
-SRCS        = main.c 
+SRCS        = main.c events.c objparser.c parser_impl.c shaders.c
 
 OBJS        = $(SRCS:.c=.o)
 
 INCLUDES    = -I include/
-INCLUDES   += -I libft/
+INCLUDES   += -I libft/include
+INCLUDES   += -I ~/.brew/include
 
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 LIBRARIES   = -lm -lpthread
 LIBRARIES  += -F frameworks/
 LIBRARIES  += -L libft/ -lft
-LIBRARIES  += -framework SDL2 -framework SDL2_image -framework SDL2_ttf
+LIBRARIES  += -L ~/.brew/Cellar/glew/2.1.0/lib -lGLEW
+LIBRARIES  += -framework SDL2 -framework SDL2_image -framework SDL2_ttf -framework OpenGL
 
 TO_LINKING  = $(addprefix $(OBJS_DIR)/, $(OBJS)) $(LIBRARIES) -rpath frameworks/
 

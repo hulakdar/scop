@@ -71,7 +71,7 @@ static int	hard_work(t_array *tmp, int fd, char **line)
 
 int			get_next_line(const int fd, char **line)
 {
-	static	t_array	buff[45] = { 0 };
+	static	t_array	buff[45] = {{ {0}, 0} };
 
 	if (fd < 0 || !line || fd > 44)
 		return (-1);

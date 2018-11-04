@@ -10,7 +10,7 @@ t_shader_source_array get_shader_source(const char *filepath)
 
 	ft_vec_init(&arrays.lines, sizeof(char *), 32);
 	ft_vec_init(&arrays.lengths, sizeof(GLint), 32);
-	while (get_next_line(fd, &line))
+	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
 		ft_vec_pushback(&arrays.lines, &line);
@@ -28,7 +28,8 @@ GLint compile_single_shader(unsigned int type, const char *path)
 	t_shader_source_array	source = get_shader_source(path);
 
 	GLCall(glShaderSource(shader, source.lines.back,
-		source.lines.data, source.lengths.data));
+		(const GLchar * const *)source.lines.data,
+		(const GLint *)source.lengths.data));
 	GLCall(glCompileShader(shader));
 	GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)

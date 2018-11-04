@@ -44,8 +44,8 @@ typedef struct	s_model
 {
 	t_vector	vertecies;
 	t_vector	materials;
-	int			vertex_buffer;
-	int			vertex_array;
+	unsigned	vertex_buffer;
+	unsigned	vertex_array;
 	unsigned	texture;
 	int			shader_program;
 }				t_model;

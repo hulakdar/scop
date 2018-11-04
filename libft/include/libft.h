@@ -25,7 +25,7 @@
 # else
 # include <unistd.h>
 #  define WRITE write
-#  define READ write
+#  define READ read
 # endif
 
 typedef struct		s_array
@@ -124,7 +124,7 @@ void				ft_vec_for_each(t_vector *vector, void (*function)(void *));
 void				*ft_quickmove(void *dst, void *src, size_t size);
 int					ft_atoi_base(const char *str, int base);
 void				ft_tabdel(char ***hint);
-size_t				ft_tabcount(const char **tab);
+size_t				ft_tabcount(char **tab);
 void				ft_sort(unsigned char *begin, unsigned char *end, size_t size,
 										int (*f)(void *, void *));
 float				ft_atof(const char *str);

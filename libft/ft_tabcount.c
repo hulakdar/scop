@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-size_t	ft_tabcount(const char **tab)
+size_t	ft_tabcount(char **tab)
 {
 	int cunt;
 
