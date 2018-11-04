@@ -57,6 +57,7 @@ t_model prepare_model(const char *filepath)
 	glBindTexture(GL_TEXTURE_2D, model.texture);
 	model.shader_program = compile_shaders("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 	GLCall(glUseProgram(model.shader_program));
+	return model;
 }
 
 int event_loop(SDL_Window *window, t_model model)
@@ -65,20 +66,18 @@ int event_loop(SDL_Window *window, t_model model)
 	int y_u_location = glGetUniformLocation(model.shader_program, "y");
 	float x_angle = 0;
 	float y_angle = 0;
-
 	float x_dir = 0;
 	float y_dir = 0;
 
 	SDL_Event	e;
-	char ShouldClose = 0;
-	while (!ShouldClose)
+	while (1)
 	{
 		glClearColor(0.8, 0.5, 0.7, 0);
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
 		while (SDL_PollEvent(&e))
 		{
-			ShouldClose = WindowShouldClose(&e);
+			if (WindowShouldClose(&e))
+				return 0;
 			if (e.type == SDL_KEYDOWN)
 			{
 				if (e.key.keysym.sym == 'h')
@@ -89,6 +88,10 @@ int event_loop(SDL_Window *window, t_model model)
 					x_dir = 1.f;
 				else if (e.key.keysym.sym == 'j')
 					x_dir = -1.f;
+				else if (e.key.keysym.sym == '1')
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				else if (e.key.keysym.sym == '2')
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			}
 			else if (e.type == SDL_KEYUP)
 			{
@@ -102,7 +105,6 @@ int event_loop(SDL_Window *window, t_model model)
 					x_dir = 0;
 			}
 		}
-		
 		if (x_dir)
 		{
 			x_angle += x_dir * SDL_GetTicks() / 900000.f;
@@ -131,7 +133,6 @@ int main(int argc, const char *argv[])
 	local_buffer = IMG_Load("res/sample.png");
 	if (!local_buffer)
 		exit(scop_error(IMG_GetError()));
-
 	int tex_sampler_location = glGetUniformLocation(model.shader_program, "u_Texture");
 	glUniform1i(tex_sampler_location, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, local_buffer->w, local_buffer->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, local_buffer->pixels);
