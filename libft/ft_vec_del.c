@@ -14,9 +14,6 @@
 
 void	ft_vec_del(t_vector *vector)
 {
-	if (vector && vector->data)
-	{
-		free(vector->data);
-		vector->data = NULL;
-	}
+	free(vector->data);
+	vector->data = NULL;
 }

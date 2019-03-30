@@ -2,16 +2,17 @@
 
 char WindowShouldClose(const SDL_Event* e)
 {
-	return ( e->type == SDL_QUIT
+	return (e->type == SDL_QUIT
 		|| (e->type == SDL_WINDOWEVENT && e->window.event == SDL_WINDOWEVENT_CLOSE)
-		|| (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_ESCAPE) );
+		|| (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_ESCAPE));
 }
 
 char scop_error(const char *error)
 {
 	ft_putstr_fd(error, 2);
-#if  _WIN32 || _WIN64
-	__debugbreak();
+#if _MSC_VER
+	if (IsDebuggerPresent())
+		__debugbreak();
 #else
 	asm("int $3");
 #endif 
@@ -42,16 +43,26 @@ char GLCheckError(const char *Function, const char *File, int Line)
 
 int event_loop(SDL_Window *window, t_model model)
 {
-	int x_u_location = glGetUniformLocation(model.shader_program, "x");
-	int y_u_location = glGetUniformLocation(model.shader_program, "y");
-	float x_angle = 0;
-	float y_angle = 0;
-	float x_dir = 0;
-	float y_dir = 0;
+	Uint64	last_time = 0;
+	Uint64	current_time = 0;
+	float	delta_time = 0;
+
+	int		angles_u_location = glGetUniformLocation(model.shader_program, "angles");
+	int		scale_u_location = glGetUniformLocation(model.shader_program, "scale");
+	int		position_u_location = glGetUniformLocation(model.shader_program, "position");
+	float	scale = 0.01;
+	float	scale_dir = 0;
+	t_vec2	angles = VEC2(0,0);
+	t_vec2	angles_offset = angles;
+	t_vec3	position = {0};
+	t_vec3	position_offset = {0};
 
 	SDL_Event	e;
 	while (1)
 	{
+		last_time = current_time;
+		current_time = SDL_GetTicks();
+		delta_time = (current_time - last_time) / 1000.f;
 		glClearColor(0.8, 0.5, 0.7, 0);
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		while (SDL_PollEvent(&e))
@@ -61,13 +72,29 @@ int event_loop(SDL_Window *window, t_model model)
 			if (e.type == SDL_KEYDOWN)
 			{
 				if (e.key.keysym.sym == 'h')
-					y_dir = -1.f;
+					angles_offset.y = -1.f;
 				else if (e.key.keysym.sym == 'l')
-					y_dir = 1.f;
+					angles_offset.y = 1.f;
 				else if (e.key.keysym.sym == 'k')
-					x_dir = 1.f;
+					angles_offset.x = 1.f;
 				else if (e.key.keysym.sym == 'j')
-					x_dir = -1.f;
+					angles_offset.x = -1.f;
+				else if (e.key.keysym.sym == '=')
+					scale_dir = 1;
+				else if (e.key.keysym.sym == '-')
+					scale_dir = -1;
+				else if (e.key.keysym.sym == SDLK_PAGEUP)
+					position_offset.z = 1;
+				else if (e.key.keysym.sym == SDLK_PAGEDOWN)
+					position_offset.z = -1;
+				else if (e.key.keysym.sym == SDLK_UP)
+					position_offset.y = 1;
+				else if (e.key.keysym.sym == SDLK_DOWN)
+					position_offset.y = -1;
+				else if (e.key.keysym.sym == SDLK_RIGHT)
+					position_offset.x = 1;
+				else if (e.key.keysym.sym == SDLK_LEFT)
+					position_offset.x = -1;
 				else if (e.key.keysym.sym == '1')
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				else if (e.key.keysym.sym == '2')
@@ -76,25 +103,49 @@ int event_loop(SDL_Window *window, t_model model)
 			else if (e.type == SDL_KEYUP)
 			{
 				if (e.key.keysym.sym == 'h')
-					y_dir = 0;
+					angles_offset.y = 0;
 				else if (e.key.keysym.sym == 'l')
-					y_dir = 0;
+					angles_offset.y = 0;
 				else if (e.key.keysym.sym == 'k')
-					x_dir = 0;
+					angles_offset.x = 0;
 				else if (e.key.keysym.sym == 'j')
-					x_dir = 0;
+					angles_offset.x = 0;
+				else if (e.key.keysym.sym == '=')
+					scale_dir = 0;
+				else if (e.key.keysym.sym == '-')
+					scale_dir = 0;
+				else if (e.key.keysym.sym == SDLK_PAGEUP)
+					position_offset.z = 0;
+				else if (e.key.keysym.sym == SDLK_PAGEDOWN)
+					position_offset.z = 0;
+				else if (e.key.keysym.sym == SDLK_UP)
+					position_offset.y = 0;
+				else if (e.key.keysym.sym == SDLK_DOWN)
+					position_offset.y = 0;
+				else if (e.key.keysym.sym == SDLK_RIGHT)
+					position_offset.x = 0;
+				else if (e.key.keysym.sym == SDLK_LEFT)
+					position_offset.x = 0;
 			}
 		}
-		if (x_dir)
+		if (!VEC2_IS_ZERO(angles_offset))
 		{
-			x_angle += x_dir * SDL_GetTicks() / 900000.f;
-			glUniform1f(x_u_location, x_angle);
+			angles = VEC2_ADD(angles, VEC2_MULS(angles_offset, delta_time));
+			glUniform2fv(angles_u_location, 1, &angles);
 		}
-		if (y_dir)
+		if (!VEC3_IS_ZERO(position_offset))
 		{
-			y_angle += y_dir * SDL_GetTicks() / 900000.f;
-			glUniform1f(y_u_location, y_angle);
+			position = VEC3_ADD(position, VEC3_MULS(position_offset, delta_time));
+			glUniform3fv(position_u_location, 1, &position);
 		}
+		if (scale_dir)
+		{
+			scale += scale_dir * delta_time;
+			scale = max(scale, 0.001);
+			glUniform1f(scale_u_location, scale);
+		}
+		//GLCall(glEnable(GL_BLEND));
+		//GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		GLCall(glDrawArrays(GL_TRIANGLES, 0, model.vertecies.back));
 		SDL_GL_SwapWindow(window);
 	}

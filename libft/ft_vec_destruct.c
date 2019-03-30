@@ -14,17 +14,15 @@
 
 void	ft_vec_destruct(t_vector *ptr)
 {
-	size_t		cunt;
+	size_t		i;
 	void		*content;
 
-	if (!ptr)
-		return ;
-	cunt = 0;
-	while (cunt < ptr->back)
+	i = 0;
+	while (i < ptr->back)
 	{
-		if ((content = *(void **)(ptr->data + cunt * ptr->size_of_type)))
+		if ((content = *(void **)(ptr->data + i * ptr->size_of_type)))
 			free(content);
-		cunt++;
+		i++;
 	}
 	ft_vec_del(ptr);
 }

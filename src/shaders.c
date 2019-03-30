@@ -6,10 +6,10 @@ t_shader_source_array get_shader_source(const char *filepath)
 	const int				fd = open(filepath, O_RDONLY);
 	char					*line;
 	t_shader_source_array	arrays;
-	int						length;
+	GLuint					length;
 
 	ft_vec_init(&arrays.lines, sizeof(char *), 32);
-	ft_vec_init(&arrays.lengths, sizeof(GLint), 32);
+	ft_vec_init(&arrays.lengths, sizeof(GLuint), 32);
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
@@ -29,7 +29,7 @@ GLint compile_single_shader(unsigned int type, const char *path)
 
 	GLCall(glShaderSource(shader, source.lines.back,
 		(const GLchar * const *)source.lines.data,
-		(const GLint *)source.lengths.data));
+		(const GLuint *)source.lengths.data));
 	GLCall(glCompileShader(shader));
 	GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)
@@ -40,7 +40,7 @@ GLint compile_single_shader(unsigned int type, const char *path)
 		exit(scop_error(message));
 		glDeleteShader(shader);
 	}
-	//ft_vec_del(&source.lengths);
+	ft_vec_del(&source.lengths);
 	//ft_vec_destruct(&source.lines);
 	return shader;
 }

@@ -16,7 +16,6 @@ void	ft_vec_init(t_vector *dynarr, size_t size, size_t init)
 {
 	size_t		new_size;
 
-	ft_bzero(dynarr, sizeof(t_vector));
 	new_size = 32;
 	while (init * size > new_size)
 		new_size = new_size << 1;

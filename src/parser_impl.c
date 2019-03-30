@@ -28,6 +28,8 @@ void parse_vec2(const char *line, t_vector *buffer)
 	result.x = ft_atof(line + 1);
 	if ((line = ft_strchr(line + 1, ' ')))
 		result.y = ft_atof(line + 1);
+	else
+		__debugbreak();
 	ft_vec_pushback(buffer, &result);
 }
 
@@ -67,7 +69,7 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 		//else
 			; // panic
 		//if (face.has_norm)
-			new_vert.normale = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
+			new_vert.normal = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
 		//else
 			; // calculate the fucking normal. don't be a pussy
 		ft_vec_pushback(&model->vertecies, &new_vert);
@@ -86,7 +88,7 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 			//else
 				; // panic
 			//if (face.has_norm)
-				new_vert.normale = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
+				new_vert.normal = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
 			//else
 				; // calculate the fucking normal. don't be a pussy
 			ft_vec_pushback(&model->vertecies, &new_vert);

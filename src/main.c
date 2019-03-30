@@ -6,8 +6,8 @@
 
 SDL_Window *scop_initialize()
 {
-	const int win_width = 500;
-	const int win_height = 500;
+	const int win_width = 800;
+	const int win_height = 800;
 	SDL_Window *window;
 	GLenum Result;
 
@@ -15,12 +15,14 @@ SDL_Window *scop_initialize()
 		exit(scop_error("SDL not initialized"));
 	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
 		exit(scop_error("SDL_image initialization ERROR"));
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
 	SDL_GL_SetSwapInterval(1);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, CONTEXT_FLAGS);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, CONTEXT_PROFILE);
 	window = SDL_CreateWindow("scop", SDL_WINDOWPOS_CENTERED,
@@ -46,13 +48,13 @@ t_model prepare_model(const char *filepath)
 	GLCall(glBindVertexArray(model.vertex_array));
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		(const void *)offsetof(t_vertex, position)));
+		(GLvoid *)offsetof(t_vertex, position)));
 	GLCall(glEnableVertexAttribArray(1));
 	GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		(const void *)offsetof(t_vertex, uv)));
+		(GLvoid *)offsetof(t_vertex, uv)));
 	GLCall(glEnableVertexAttribArray(2));
 	GLCall(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		(const void *)offsetof(t_vertex, normale)));
+		(GLvoid *)offsetof(t_vertex, normal)));
 	glGenTextures(1, &model.texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model.texture);

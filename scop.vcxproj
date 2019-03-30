@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B17A4CB2-E72B-4256-80E4-6C2806564D94}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -65,13 +65,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\dev\glew\lib\Release\Win32;C:\dev\SDL2\lib\x86;C:\dev\SDL2_image\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\dev\glew\lib\Release\Win32;C:\dev\SDL2\lib\x86;C:\dev\SDL2_image\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)$(Platform)-$(Configuration)\</IntDir>
+    <LibraryPath>C:\dev\glew\lib\Release\x64;C:\dev\SDL2\lib\x64;C:\dev\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>C:\dev\glew\lib\Release\x64;C:\dev\SDL2\lib\x64;C:\dev\SDL2_image\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -80,12 +86,13 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,12 +108,21 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\glew\lib\Release\x64;$(SolutionDir)..\SDL2\lib\x64;$(SolutionDir)..\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -199,6 +215,7 @@
     <ClCompile Include="libft\ft_intpow.c" />
     <ClCompile Include="src\events.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\mtlparser.c" />
     <ClCompile Include="src\objparser.c" />
     <ClCompile Include="src\parser_impl.c" />
     <ClCompile Include="src\shaders.c" />
