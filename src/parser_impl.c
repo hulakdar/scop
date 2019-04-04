@@ -1,11 +1,12 @@
 #include "obj.h"
 #include "scop.h"
+#include <stdio.h>
 
 void parse_vec3(const char *line, t_vector *buffer)
 {
-	t_vec3 result;
+	t_float4 result;
 
-	result = (t_vec3) { 0, 0, 0 };
+	result = (t_float4) (0.f);
 	while (*line == ' ')
 		line++;
 	result.x = ft_atof(line);
@@ -15,14 +16,15 @@ void parse_vec3(const char *line, t_vector *buffer)
 		if ((line = ft_strchr(line + 1, ' ')))
 			result.z = ft_atof(line + 1);
 	}
+
 	ft_vec_pushback(buffer, &result);
 }
 
 void parse_vec2(const char *line, t_vector *buffer)
 {
-	t_vec2 result;
+	t_float2 result;
 
-	result = (t_vec2) { 0, 0 };
+	result = (t_float2) (0.f);
 	while (*line == ' ')
 		line++;
 	result.x = ft_atof(line + 1);
@@ -62,14 +64,14 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 	i = -1;
 	while (++i < 3)
 	{
-		t_vertex new_vert = { {0, 0, 0}, {0, 0},  {0, 0, 0}  };
-		new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
+		t_vertex new_vert = { (0), (0),  (0) };
+		new_vert.position = *(t_float4 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
 		//if (face.has_uv)
-			new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
+			new_vert.uv = *(t_float2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
 		//else
 			; // panic
 		//if (face.has_norm)
-			new_vert.normal = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
+			new_vert.normal = *(t_float4 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
 		//else
 			; // calculate the fucking normal. don't be a pussy
 		ft_vec_pushback(&model->vertecies, &new_vert);
@@ -82,13 +84,13 @@ void parse_faces(const char *line, t_obj *buffers, t_model *model)
 			if (i == 1)
 				i++;
 			t_vertex new_vert = {{0, 0, 0}, {0, 0}, {0, 0, 0}};
-			new_vert.position = *(t_vec3 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
+			new_vert.position = *(t_float4 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
 			//if (face.has_uv)
-				new_vert.uv = *(t_vec2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
+				new_vert.uv = *(t_float2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
 			//else
 				; // panic
 			//if (face.has_norm)
-				new_vert.normal = *(t_vec3 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
+				new_vert.normal = *(t_float4 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
 			//else
 				; // calculate the fucking normal. don't be a pussy
 			ft_vec_pushback(&model->vertecies, &new_vert);

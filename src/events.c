@@ -47,15 +47,15 @@ int event_loop(SDL_Window *window, t_model model)
 	Uint64	current_time = 0;
 	float	delta_time = 0;
 
-	int		angles_u_location = glGetUniformLocation(model.shader_program, "angles");
-	int		scale_u_location = glGetUniformLocation(model.shader_program, "scale");
-	int		position_u_location = glGetUniformLocation(model.shader_program, "position");
+	int		angles_u_location = glGetUniformLocation(model.shader_program, "u_angles");
+	int		position_u_location = glGetUniformLocation(model.shader_program, "u_position");
+	int		scale_u_location = glGetUniformLocation(model.shader_program, "u_scale");
 	float	scale = 0.01;
 	float	scale_dir = 0;
-	t_vec2	angles = VEC2(0,0);
-	t_vec2	angles_offset = angles;
-	t_vec3	position = {0};
-	t_vec3	position_offset = {0};
+	t_float2	angles = (0);
+	t_float2	angles_offset = angles;
+	t_float4	position = (0);
+	t_float4	position_offset = (0);
 
 	SDL_Event	e;
 	while (1)
@@ -63,7 +63,7 @@ int event_loop(SDL_Window *window, t_model model)
 		last_time = current_time;
 		current_time = SDL_GetTicks();
 		delta_time = (current_time - last_time) / 1000.f;
-		glClearColor(0.8, 0.5, 0.7, 0);
+		GLCall(glClearColor(0.0, 0.1, 0.01, 0));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		while (SDL_PollEvent(&e))
 		{
@@ -80,9 +80,9 @@ int event_loop(SDL_Window *window, t_model model)
 				else if (e.key.keysym.sym == 'j')
 					angles_offset.x = -1.f;
 				else if (e.key.keysym.sym == '=')
-					scale_dir = 1;
+					scale_dir = 0.2;
 				else if (e.key.keysym.sym == '-')
-					scale_dir = -1;
+					scale_dir = -0.2;
 				else if (e.key.keysym.sym == SDLK_PAGEUP)
 					position_offset.z = 1;
 				else if (e.key.keysym.sym == SDLK_PAGEDOWN)
@@ -128,14 +128,14 @@ int event_loop(SDL_Window *window, t_model model)
 					position_offset.x = 0;
 			}
 		}
-		if (!VEC2_IS_ZERO(angles_offset))
+		if (angles_offset.x || angles_offset.y)
 		{
-			angles = VEC2_ADD(angles, VEC2_MULS(angles_offset, delta_time));
+			angles += angles_offset * delta_time;
 			glUniform2fv(angles_u_location, 1, &angles);
 		}
-		if (!VEC3_IS_ZERO(position_offset))
+		if (position_offset.x || position_offset.y || position_offset.z)
 		{
-			position = VEC3_ADD(position, VEC3_MULS(position_offset, delta_time));
+			position += position_offset * delta_time;
 			glUniform3fv(position_u_location, 1, &position);
 		}
 		if (scale_dir)

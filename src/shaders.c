@@ -1,5 +1,6 @@
 #include "shaders.h"
 #include "scop.h"
+#include <malloc.h>
 
 t_shader_source_array get_shader_source(const char *filepath)
 {

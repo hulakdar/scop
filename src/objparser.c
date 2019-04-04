@@ -4,10 +4,11 @@
 
 static inline void init_model(t_model *model, t_obj *obj)
 {
+    printf("%d\n", sizeof(t_float2));
 	ft_vec_init(&model->vertecies, sizeof(t_vertex), 256);
-	ft_vec_init(&obj->positions, sizeof(t_vec3), 256);
-	ft_vec_init(&obj->normals, sizeof(t_vec3), 256);
-	ft_vec_init(&obj->uvs, sizeof(t_vec2), 256);
+	ft_vec_init(&obj->positions, sizeof(t_float4), 256);
+	ft_vec_init(&obj->normals, sizeof(t_float4), 256);
+	ft_vec_init(&obj->uvs, sizeof(t_float2), 256);
 }
 
 static inline void deinit_tmp(t_obj *obj)
@@ -44,7 +45,7 @@ t_model parse_obj(const char *filepath)
 	if (fd > 2)
 		while (get_next_line(fd, &line) > 0)
 		{
-			if (*line != '#' && *line != ' ')
+			if (*line != '#' && *line != ' ' && *line)
 				parse_single_line(line, &obj, &result);
 			free(line);
 		}
