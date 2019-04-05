@@ -29,7 +29,7 @@ void	*ft_vec_set(t_vector *vect, size_t index, void *content)
 		newarr = ft_memalloc(new_size * vect->size_of_type);
 		if (vect->data)
 		{
-			ft_quickmove(newarr, vect->data, (vect->last + 1) * vect->size_of_type);
+			ft_memmove(newarr, vect->data, (vect->last + 1) * vect->size_of_type);
 			free(vect->data);
 		}
 		vect->data = newarr;

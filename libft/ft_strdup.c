@@ -17,7 +17,7 @@ char	*ft_strdup(const char *s)
 	char	*result;
 	int		counter;
 
-	result = malloc(ft_strlen(s) + 1);
+	result = ft_memalloc((ft_strlen(s) + 16) * 2);
 	if (!result || !s)
 		return (NULL);
 	counter = -1;

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vec_for_each.c                                  :+:      :+:    :+:   */
+/*   ft_vec_map.c		                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,12 +12,18 @@
 
 #include "libft.h"
 
-void ft_vec_for_each(t_vector *vector,
-	void (*function)(void *data, void *payload), void *payload)
+t_vector	ft_vec_map(t_vector *const vector,
+	void (*function)(void *, void *const, void*), void *payload)
 {
-	size_t i;
+	size_t		i;
+	size_t		offset;
+	t_vector	result;
 
 	i = 0;
+	ft_vec_init(&result, vector->size_of_type, vector->last);
 	while (i < vector->back)
-		function(&vector->data[i++ * vector->size_of_type], payload);
+	{
+		offset = i++ * vector->size_of_type;
+		function(&result.data[offset], &vector->data[offset], payload);
+	}
 }

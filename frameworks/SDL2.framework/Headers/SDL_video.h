@@ -894,8 +894,8 @@ extern DECLSPEC float SDLCALL SDL_GetWindowBrightness(SDL_Window * window);
  *  \brief Set the opacity for a window
  *
  *  \param window The window which will be made transparent or opaque
- *  \param opacity Opacity (0.0f - transparent, 1.0f - opaque) This will be
- *                 clamped internally between 0.0f and 1.0f.
+ *  \param opacity Opacity (0.f - transparent, 1.f - opaque) This will be
+ *                 clamped internally between 0.f and 1.f.
  *
  *  \return 0 on success, or -1 if setting the opacity isn't supported.
  *
@@ -907,10 +907,10 @@ extern DECLSPEC int SDLCALL SDL_SetWindowOpacity(SDL_Window * window, float opac
  *  \brief Get the opacity of a window.
  *
  *  If transparency isn't supported on this platform, opacity will be reported
- *  as 1.0f without error.
+ *  as 1.f without error.
  *
  *  \param window The window in question.
- *  \param out_opacity Opacity (0.0f - transparent, 1.0f - opaque)
+ *  \param out_opacity Opacity (0.f - transparent, 1.f - opaque)
  *
  *  \return 0 on success, or -1 on error (invalid window, etc).
  *

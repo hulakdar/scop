@@ -120,7 +120,10 @@ void				ft_vec_destruct(t_vector *ptr);
 void				ft_vec_pushback(t_vector *vector, void *content);
 void				*ft_vec_popback(t_vector *vector);
 void				*ft_vec_popfront(t_vector *vector);
-void				ft_vec_for_each(t_vector *vector, void (*function)(void *));
+void				ft_vec_for_each(t_vector *vector,
+						void (*function)(void *data, void *payload), void *payload);
+t_vector			ft_vec_map(t_vector *vector,
+						void (*function)(void *dst, void *const src, void*payload), void *payload);
 void				*ft_quickmove(void *dst, void *src, size_t size);
 int					ft_atoi_base(const char *str, int base);
 void				ft_tabdel(char ***hint);

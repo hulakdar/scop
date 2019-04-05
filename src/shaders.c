@@ -2,7 +2,7 @@
 #include "scop.h"
 #include <malloc.h>
 
-t_shader_source_array get_shader_source(const char *filepath)
+t_shader_source_array get_shader_source(const char *filepath, t_vector defines)
 {
 	const int				fd = open(filepath, O_RDONLY);
 	char					*line;
@@ -21,7 +21,7 @@ t_shader_source_array get_shader_source(const char *filepath)
 	return arrays;
 }
 
-GLint compile_single_shader(unsigned int type, const char *path)
+GLint compile_single_shader(unsigned int type, const char *path, t_vector defines)
 {
 	const int				shader = glCreateShader(type);
 	int						result;
@@ -39,20 +39,19 @@ GLint compile_single_shader(unsigned int type, const char *path)
 		message = alloca(result);
 		glGetShaderInfoLog(shader, result, &result, message);
 		exit(scop_error(message));
-		glDeleteShader(shader);
 	}
 	ft_vec_del(&source.lengths);
-	//ft_vec_destruct(&source.lines);
+	ft_vec_destruct(&source.lines);
 	return shader;
 }
 
-GLint compile_shaders(const char *vertex_path, const char *fragment_path)
+GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vector defines)
 {
 	const GLint				program = glCreateProgram();
 	GLint					shaders[2];
 
-	shaders[0] = compile_single_shader(GL_VERTEX_SHADER, vertex_path);
-	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER, fragment_path);
+	shaders[0] = compile_single_shader(GL_VERTEX_SHADER, vertex_path, defines);
+	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER, fragment_path, defines);
 	GLCall(glAttachShader(program, shaders[0]));
 	GLCall(glAttachShader(program, shaders[1]));
 	GLCall(glLinkProgram(program));
