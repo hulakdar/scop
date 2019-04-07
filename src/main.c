@@ -2,6 +2,7 @@
 #include "obj.h"
 #include "shaders.h"
 #include <stdio.h>
+#include <signal.h>
 #undef main
 
 static void setup_gl_attrubutes()
@@ -39,38 +40,41 @@ static SDL_Window *scop_initialize()
 	return window;
 }
 
-static void kick_prepare_model(const char *filepath, t_model *model)
+static void prepare_buffers(t_model *model)
 {
-	parse_obj(filepath);
-	GLCall(glGenBuffers(1, &model->vertex_buffer));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model->vertex_buffer));
-	GLCall(glBufferData(GL_ARRAY_BUFFER, model->vertecies.back *
-		model->vertecies.size_of_type, model->vertecies.data, GL_STATIC_DRAW));
-	GLCall(glGenVertexArrays(1, &model->vertex_array));
-	GLCall(glBindVertexArray(model->vertex_array));
+	GLCall(glGenVertexArrays(1, &model->buffers.vertex_array));
+	GLCall(glGenBuffers(1, &model->buffers.vertex_buffer));
+	bind_buffers(model->buffers);
 	GLCall(glEnableVertexAttribArray(0));
 	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, position)));
 	GLCall(glEnableVertexAttribArray(1));
-	GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		(GLvoid *)offsetof(t_vertex, uv)));
-	GLCall(glEnableVertexAttribArray(2));
-	GLCall(glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+	GLCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, normal)));
-	model->shader_program = compile_shaders("res/shaders/vertex.shader", "res/shaders/fragment.shader");
-	GLCall(glUseProgram(model->shader_program));
+	GLCall(glEnableVertexAttribArray(2));
+	GLCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+		(GLvoid *)offsetof(t_vertex, uv)));
+	model->skybox.shader = get_skybox_shader();
+	model->skybox.buffers = create_skybox_data();
+	model->skybox.texture = create_texture_cube("res/skybox/");
 }
 
 int main(int argc, const char *argv[])
 {
 	SDL_Window *window;
-	t_model model;
+	t_model		model;
+	pthread_t	thread;
 
 	if (argc != 2)
 		exit(scop_error("Wrong number of arguments\nShould be:\nscop filename.obj"));
+	model.filepath = argv[1];
 	window = scop_initialize();
 	ft_vec_init(&model.vertecies, sizeof(t_vertex), 256);
-	ft_vec_init(&model.submeshes, sizeof(t_vertex), 32);
-	kick_prepare_model(argv[1], &model);
-	return event_loop(window, model);
+	ft_vec_init(&model.submeshes, sizeof(t_submesh), 32);
+	pthread_mutex_init(&model.lock, NULL);
+	pthread_create(&thread, NULL, parse_obj, &model);
+	prepare_buffers(&model);
+	event_loop(window, &model);
+	pthread_kill(thread, SIGTERM);
+	pthread_join(thread, NULL);
 }

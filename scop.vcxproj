@@ -167,7 +167,6 @@
     <ClCompile Include="libft\ft_putstr_fd.c" />
     <ClCompile Include="libft\ft_puttab.c" />
     <ClCompile Include="libft\ft_put_size_t.c" />
-    <ClCompile Include="libft\ft_quickmove.c" />
     <ClCompile Include="libft\ft_sort.c" />
     <ClCompile Include="libft\ft_strcat.c" />
     <ClCompile Include="libft\ft_strchr.c" />
@@ -221,6 +220,7 @@
     <ClCompile Include="src\objparser.c" />
     <ClCompile Include="src\parser_impl.c" />
     <ClCompile Include="src\shaders.c" />
+    <ClCompile Include="src\skybox.c" />
     <ClCompile Include="src\texture.c" />
   </ItemGroup>
   <ItemGroup>

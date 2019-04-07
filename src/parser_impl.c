@@ -35,7 +35,7 @@ void parse_vec2(const char *line, t_vector *buffer)
 	ft_vec_pushback(buffer, &result);
 }
 
-void process_face(t_face face, t_obj *buffers, t_model *model, int i)
+static void process_face(t_face face, t_obj *buffers, int i)
 {
 	t_vertex new_vert = { (0), (0),  (0) };
 	new_vert.position = *(t_float4 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
@@ -47,7 +47,8 @@ void process_face(t_face face, t_obj *buffers, t_model *model, int i)
 		new_vert.normal = *(t_float4 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
 	//else
 	; // calculate the fucking normal. don't be a pussy
-	ft_vec_pushback(&model->vertecies, &new_vert);
+	ft_vec_pushback(&buffers->result->vertecies, &new_vert);
+	buffers->current_object->count++;
 }
 
 int parse_face(t_face *face, const char *line)
@@ -72,22 +73,37 @@ int parse_face(t_face *face, const char *line)
 			else
 				exit(scop_error("Strange number of idx in a vert. Something is wrong. \n"));
 	}
+	ft_tabdel(&tab);
 	return count;
 }
 
-void parse_faces(const char *line, t_obj *buffers, t_model *model)
+void create_new_submesh(t_obj * buffers)
+{
+	t_submesh submesh;
+
+	ft_bzero(&submesh, sizeof(t_submesh));
+	submesh.start = buffers->result->vertecies.back;
+	buffers->current_object = (t_submesh *)ft_vec_pushback(&buffers->result->submeshes, &submesh);
+}
+
+void parse_faces(const char *line, t_obj *buffers)
 {
 	int			i;
 	t_face		face;
 	const int	count = parse_face(&face, line);
 
+	if (!buffers->current_object)
+		create_new_submesh(buffers);
 	if (count > 4 || count < 3)
 		exit(scop_error("Strange number of verts in a face. Something is wrong. \n"));
 	i = -1;
+	pthread_mutex_lock(&buffers->result->lock);
 	while (++i < 3)
-		process_face(face, buffers, model, i);
+		process_face(face, buffers, i);
 	i = -1;
 	if (count == 4)
 		while (++i < 4)
-			process_face(face, buffers, model, i == 1 ? ++i : i);
+			process_face(face, buffers, i == 1 ? ++i : i);
+	buffers->result->is_dirty = 1;
+	pthread_mutex_unlock(&buffers->result->lock);
 }

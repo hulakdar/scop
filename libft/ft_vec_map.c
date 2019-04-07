@@ -12,8 +12,8 @@
 
 #include "libft.h"
 
-t_vector	ft_vec_map(t_vector *const vector,
-	void (*function)(void *, void *const, void*), void *payload)
+t_vector	ft_vec_map(t_vector *vector,
+			void (*function)(void *dst, void *const src, void*payload), void *payload)
 {
 	size_t		i;
 	size_t		offset;

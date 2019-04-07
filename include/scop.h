@@ -34,8 +34,8 @@ typedef struct	s_frame_info
 	t_float4	position_offset;
 }				t_frame_info;
 
-unsigned 	scop_error(const char *error);
-float		*get_skybox();
+unsigned 		scop_error(const char *error);
+t_buffer_pair	create_skybox_data();
 
 #define GLCall(x) GLClearError();x;GLCheckError(#x, __FILE__, __LINE__)
 

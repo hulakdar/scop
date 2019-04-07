@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <fcntl.h>
-# define BUFF_SIZE 32
+# define BUFF_SIZE 1023
 
 # if defined(WIN32) || defined(_WIN32) 
 # include <corecrt_io.h>
@@ -42,10 +42,10 @@ typedef struct		s_list
 typedef struct		s_vector
 {
 	unsigned char	*data;
-	unsigned short	size_of_type;
-	unsigned short	last;
-	unsigned short	back;
-	unsigned short	front;
+	size_t			size_of_type;
+	size_t			last;
+	size_t			back;
+	size_t			front;
 }					t_vector;
 
 int					get_next_line(const int fd, char **line);
@@ -115,16 +115,15 @@ void				*ft_vec_get(t_vector *vector, size_t index);
 void				*ft_vec_set(t_vector *vector, size_t index,
 															void *content);
 void				ft_vec_del(t_vector *vector);
-void				ft_vec_init(t_vector *dynarr, size_t size, size_t init);
-void				ft_vec_destruct(t_vector *ptr);
-void				ft_vec_pushback(t_vector *vector, void *content);
+void				ft_vec_init(t_vector *vector, size_t size, size_t init);
+void				ft_vec_destruct(t_vector *vector);
+void				*ft_vec_pushback(t_vector *vector, void *content);
 void				*ft_vec_popback(t_vector *vector);
 void				*ft_vec_popfront(t_vector *vector);
 void				ft_vec_for_each(t_vector *vector,
 						void (*function)(void *data, void *payload), void *payload);
 t_vector			ft_vec_map(t_vector *vector,
 						void (*function)(void *dst, void *const src, void*payload), void *payload);
-void				*ft_quickmove(void *dst, void *src, size_t size);
 int					ft_atoi_base(const char *str, int base);
 void				ft_tabdel(char ***hint);
 size_t				ft_tabcount(char **tab);
