@@ -134,6 +134,7 @@
     <ClCompile Include="libft\ft_atoi.c" />
     <ClCompile Include="libft\ft_atoi_base.c" />
     <ClCompile Include="libft\ft_bzero.c" />
+    <ClCompile Include="libft\ft_chrcnt.c" />
     <ClCompile Include="libft\ft_isalnum.c" />
     <ClCompile Include="libft\ft_isalpha.c" />
     <ClCompile Include="libft\ft_isascii.c" />
@@ -215,6 +216,8 @@
     <ClCompile Include="libft\ft_wordlen.c" />
     <ClCompile Include="libft\ft_intpow.c" />
     <ClCompile Include="src\events.c" />
+    <ClCompile Include="src\gl_math.c" />
+    <ClCompile Include="src\m44.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\mtlparser.c" />
     <ClCompile Include="src\objparser.c" />
@@ -888,6 +891,7 @@
     <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\frameworks\freetype.framework\versions\current\headers\ft2build.h" />
     <ClInclude Include="frameworks\sdl2_ttf.framework\versions\current\headers\SDL_ttf.h" />
     <ClInclude Include="include\events.h" />
+    <ClInclude Include="include\math.h" />
     <ClInclude Include="include\obj.h" />
     <ClInclude Include="include\scop.h" />
     <ClInclude Include="include\shaders.h" />

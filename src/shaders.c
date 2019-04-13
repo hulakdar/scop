@@ -2,7 +2,7 @@
 #include "scop.h"
 #include <malloc.h>
 
-void prepend_defines(const char **define, t_shader_source_array *arrays)
+void prepend_define(const char **define, t_shader_source_array *arrays)
 {
 	GLuint	length;
 	char	*allocated;
@@ -22,7 +22,7 @@ t_shader_source_array get_shader_source(const char *filepath, t_vector defines)
 
 	ft_vec_init(&source.lines, sizeof(char *), 32);
 	ft_vec_init(&source.lengths, sizeof(GLuint), 32);
-	ft_vec_for_each(&defines, prepend_defines, &source);
+	ft_vec_for_each(&defines, prepend_define, &source);
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
@@ -40,11 +40,11 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 	char					*message;
 	t_shader_source_array	source = get_shader_source(path, defines);
 
-	GLCall(glShaderSource(shader, source.lines.back,
+	GLCALL(glShaderSource(shader, source.lines.back,
 		(const GLchar * const *)source.lines.data,
 		(const GLuint *)source.lengths.data));
-	GLCall(glCompileShader(shader));
-	GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
+	GLCALL(glCompileShader(shader));
+	GLCALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)
 	{
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &result);
@@ -59,15 +59,19 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 
 GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vector defines)
 {
-	const GLint				program = glCreateProgram();
-	GLint					shaders[2];
+	const GLint	program = glCreateProgram();
+	GLint		shaders[2];
+	GLuint		block_index;
 
 	shaders[0] = compile_single_shader(GL_VERTEX_SHADER, vertex_path, defines);
 	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER, fragment_path, defines);
-	GLCall(glAttachShader(program, shaders[0]));
-	GLCall(glAttachShader(program, shaders[1]));
-	GLCall(glLinkProgram(program));
-	GLCall(glValidateProgram(program));
+	GLCALL(glAttachShader(program, shaders[0]));
+	GLCALL(glAttachShader(program, shaders[1]));
+	GLCALL(glLinkProgram(program));
+	GLCALL(glValidateProgram(program));
+	GLCALL(block_index = glGetUniformBlockIndex(program, "global"));
+	if (block_index != GL_INVALID_INDEX)
+		GLCALL(glUniformBlockBinding(program, block_index, 0));
 	return program;
 }
 
@@ -77,8 +81,8 @@ GLuint compile_default_shader()
 	char		*line;
 	GLuint		result;
 
-	ft_vec_init(&defines, sizeof(char *), 32);
-	line = "#version 440\n";
+	ft_vec_init(&defines, sizeof(char *), 4);
+	line = "#version 410\n";
 	ft_vec_pushback(&defines, &line);
 	result = compile_shaders("res/shaders/uber_vertex.shader", "res/shaders/uber_fragment.shader", defines);
 	ft_vec_del(&defines);

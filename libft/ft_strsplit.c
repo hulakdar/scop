@@ -12,23 +12,6 @@
 
 #include "libft.h"
 
-static void	ft_panic(char ***hint)
-{
-	char	**output;
-	size_t	cunt;
-
-	cunt = 0;
-	output = *hint;
-	while (output[cunt])
-	{
-		free(output[cunt]);
-		output[cunt] = NULL;
-		cunt++;
-	}
-	free(*hint);
-	*hint = NULL;
-}
-
 static void	ft_counter(char *str, int *word_count, int *has_words, char c)
 {
 	while (*str)
@@ -63,11 +46,6 @@ static void	ft_suballocator(char *str, char ***hint, char c)
 		if (str < seeker)
 		{
 			output[counter] = ft_strsub(str, 0, seeker - str);
-			if (!output[counter])
-			{
-				ft_panic(hint);
-				return;
-			}
 			counter++;
 			str = seeker;
 		}

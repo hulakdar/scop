@@ -2,6 +2,19 @@
 #include "obj.h"
 #include <stdio.h>
 
+static void			prepare_obj(t_obj *obj)
+{
+	const t_float4 tmp = {0,0,0,0};
+
+	ft_bzero(obj, sizeof(t_obj));
+	ft_vec_init(&obj->positions, sizeof(t_float4), 256);
+	ft_vec_init(&obj->normals, sizeof(t_float4), 256);
+	ft_vec_init(&obj->uvs, sizeof(t_float2), 256);
+	ft_vec_pushback(&obj->positions, &tmp);
+	ft_vec_pushback(&obj->normals, &tmp);
+	ft_vec_pushback(&obj->uvs, &tmp);
+}
+
 static inline void parse_single_line(const char *line, t_obj *obj)
 {
 	if (!ft_memcmp(line, "v ", 2))
@@ -26,11 +39,8 @@ void *parse_obj(t_model *model)
 	char		*line;
 	const int	fd = open(model->filepath, O_RDONLY);
 	
-	ft_bzero(&obj, sizeof(t_obj));
+	prepare_obj(&obj);
 	obj.result = model;
-	ft_vec_init(&obj.positions, sizeof(t_float4), 256);
-	ft_vec_init(&obj.normals, sizeof(t_float4), 256);
-	ft_vec_init(&obj.uvs, sizeof(t_float2), 256);
 	if (fd > 2)
 	{
 		int i = 0;
@@ -46,5 +56,4 @@ void *parse_obj(t_model *model)
 	ft_vec_del(&obj.positions);
 	ft_vec_del(&obj.normals);
 	ft_vec_del(&obj.uvs);
-	model->is_done = 1;
 }

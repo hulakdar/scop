@@ -3,13 +3,14 @@
 unsigned 	WindowShouldClose(SDL_Event e)
 {
 	return (e.type == SDL_QUIT
-		|| (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE)
+		|| (e.type == SDL_WINDOWEVENT
+		&& e.window.event == SDL_WINDOWEVENT_CLOSE)
 		|| (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE));
 }
 
 unsigned	scop_error(const char *error)
 {
-	ft_putstr_fd(error, 2);
+	ft_putendl_fd(error, 2);
 #if _MSC_VER
 	if (IsDebuggerPresent())
 		__debugbreak();
@@ -19,18 +20,18 @@ unsigned	scop_error(const char *error)
 	return -1;
 }
 
-void		GLClearError()
+void		gl_clear_error()
 {
 	while (glGetError());
 }
 
-char		GLCheckError(const char *Function, const char *File, int Line)
+char		gl_check_error(const char *function, const char *file, int line)
 {
-	(void)Function;
-	(void)File;
-	(void)Line;
-	GLenum Error;
-	while ((Error = glGetError()))
+	(void)function;
+	(void)file;
+	(void)line;
+	GLenum error;
+	while ((error = glGetError()))
 	{
 #if _WIN32 || _WIN64
 		__debugbreak();
@@ -41,65 +42,57 @@ char		GLCheckError(const char *Function, const char *File, int Line)
 	return 1;
 }
 
-void			handle_rotations_and_scale(SDL_Event e, t_frame_info *frame, unsigned key_down)
+t_bool		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
 {
-	if (e.key.keysym.sym == 'h')
+	if (sym == 'h')
 		frame->angles_offset.y = key_down ? -.5f : 0;
-	else if (e.key.keysym.sym == 'l')
+	else if (sym == 'l')
 		frame->angles_offset.y = key_down ? .5f : 0;
-	else if (e.key.keysym.sym == 'k')
+	else if (sym == 'k')
 		frame->angles_offset.x = key_down ? .5f : 0;
-	else if (e.key.keysym.sym == 'j')
+	else if (sym == 'j')
 		frame->angles_offset.x = key_down ? -.5f : 0;
-	else if (e.key.keysym.sym == '=')
-		frame->scale_dir = key_down ? .05f : 0;
-	else if (e.key.keysym.sym == '-')
-		frame->scale_dir = key_down ? -.05f : 0;
+	else if (sym == '1')
+		frame->polygon_mode = GL_FILL;
+	else if (sym == '2')
+		frame->polygon_mode = GL_LINE;
+	else if (sym == '3')
+		frame->polygon_mode = GL_POINT;
+	else
+		return 0;
+	return 1;
 }
 
-void			handle_translation(SDL_Event e, t_frame_info *frame, unsigned key_down)
+t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 {
-	if (e.key.keysym.sym == SDLK_PAGEUP)
-		frame->position_offset.z = key_down ? .1 : 0;
-	else if (e.key.keysym.sym == SDLK_PAGEDOWN)
-		frame->position_offset.z = key_down ? -.1 : 0;
-	else if (e.key.keysym.sym == SDLK_UP)
-		frame->position_offset.y = key_down ? .1 : 0;
-	else if (e.key.keysym.sym == SDLK_DOWN)
-		frame->position_offset.y = key_down ? -.1 : 0;
-	else if (e.key.keysym.sym == SDLK_RIGHT)
-		frame->position_offset.x = key_down ? .1 : 0;
-	else if (e.key.keysym.sym == SDLK_LEFT)
-		frame->position_offset.x = key_down ? -.1 : 0;
+	if (e.state & SDL_BUTTON_LMASK)
+	{
+		frame->angles.y += e.xrel / 180.f;
+		frame->angles.x += e.yrel / 180.f;
+	}
 }
 
-unsigned		pre_draw(t_frame_info *frame)
+t_bool	pre_draw(t_frame_info *frame)
 {
 	SDL_Event	e;
 
 	frame->last_time = frame->current_time;
 	frame->current_time = SDL_GetTicks();
 	frame->delta_time = (frame->current_time - frame->last_time) / 1000.f;
-	GLCall(glClearColor(0.0, 0.1, 0.01, 0));
-	GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	while (SDL_PollEvent(&e))
 	{
 		if (WindowShouldClose(e))
 			return 0;
 		if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP)
-		{
-			handle_rotations_and_scale(e, frame, e.type == SDL_KEYDOWN);
-			handle_translation(e, frame, e.type == SDL_KEYDOWN);
-			if (e.key.keysym.sym == '1')
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			else if (e.key.keysym.sym == '2')
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		}
+			handle_keyboard(e.key.keysym.sym, frame, e.type == SDL_KEYDOWN);
+		else if (e.type == SDL_MOUSEMOTION)
+			handle_mouse_buttons(e.motion, frame);
 	}
 	return 1;
 }
 
-GLuint get_default_shader()
+GLuint		get_default_shader()
 {
 	static GLuint default_shader;
 
@@ -114,73 +107,71 @@ static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
 
 	program = submesh->shader_program ? submesh->shader_program : get_default_shader();
 	glUseProgram(program);
-		
+	GLCALL(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
+}
+
+void		bind_buffers(t_buffers model_buffers)
+{
+	GLCALL(glBindVertexArray(model_buffers.vertex_array));
+	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, model_buffers.vertex_buffer));
+}
+
+void		draw(t_frame_info *frame, t_model *model)
+{
 	if (frame->angles_offset.x || frame->angles_offset.y)
-	{
 		frame->angles += frame->angles_offset * frame->delta_time;
-		glUniform2fv(glGetUniformLocation(program, "u_angles"), 1, &frame->angles);
-	}
 	if (frame->position_offset.x || frame->position_offset.y || frame->position_offset.z)
-	{
 		frame->position += frame->position_offset * frame->delta_time;
-		glUniform3fv(glGetUniformLocation(program, "u_position"), 1, &frame->position);
-	}
 	if (frame->scale_dir)
 	{
 		frame->scale += frame->scale_dir * frame->delta_time;
 		frame->scale = max(frame->scale, 0.001);
-		glUniform1f(glGetUniformLocation(program, "u_scale"), frame->scale);
 	}
-	GLCall(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
-}
-
-void bind_buffers(t_buffer_pair model_buffers)
-{
-	GLCall(glBindVertexArray(model_buffers.vertex_array));
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, model_buffers.vertex_buffer));
-}
-
-void		draw(t_frame_info *frame, t_model *model, t_skybox_data skybox)
-{
+	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
 	bind_buffers(model->buffers);
 	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
-	
-	bind_buffers(skybox.buffers);
-	GLCall(glUseProgram(skybox.shader));
-	GLCall(glUniform1i(glGetUniformLocation(skybox.shader, "skybox"), 0));
-	GLCall(glUniform2fv(glGetUniformLocation(skybox.shader, "u_angles"), 1, &frame->angles));
-	GLCall(glActiveTexture(GL_TEXTURE0));
-	GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.texture));
-	GLCall(glDepthFunc(GL_LEQUAL));
-	GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
-	GLCall(glDepthFunc(GL_LESS));
+	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+	draw_skybox(frame, model);
 }
 
 int			event_loop(SDL_Window *window, t_model *model)
 {
 	t_frame_info	frame;
-	t_skybox_data	skybox;
-	GLuint			skybox_shader;
 
 	ft_bzero(&frame, sizeof(t_frame_info));
-	skybox.buffers = get_skybox_data();
-	skybox.shader = get_skybox_shader();
-	skybox.texture = create_texture_cube("res/skybox/");
+	frame.polygon_mode = GL_FILL;
+	GLCALL(glGenBuffers(1, &frame.uniform_buffer));
+	GLCALL(glBindBuffer(GL_UNIFORM_BUFFER, frame.uniform_buffer));
+	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_m44), &frame.g_uniforms, GL_DYNAMIC_DRAW));
+	GLCALL(glBindBufferBase(GL_UNIFORM_BUFFER, 0, frame.uniform_buffer));
+	frame.scale = 1;
 	while (pre_draw(&frame))
 	{
-		if (!model->is_done)
-			pthread_mutex_lock(&model->lock);
+		frame.g_uniforms.light_dir = normalize(mult_vec_matrix((t_float4) { 1, 1, 1, 0 }, frame.g_uniforms.mvp));
+		GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms), &frame.g_uniforms, GL_DYNAMIC_DRAW));
+		pthread_mutex_lock(&model->lock);
 		if (model->is_dirty)
 		{
 			bind_buffers(model->buffers);
-			GLCall(glBufferData(GL_ARRAY_BUFFER,
+			GLCALL(glBufferData(GL_ARRAY_BUFFER,
 				model->vertecies.back * model->vertecies.size_of_type,
-				model->vertecies.data, GL_DYNAMIC_DRAW));
+				model->vertecies.data, GL_STATIC_DRAW));
+			model->is_dirty = 0;
 		}
-		draw(&frame, model, skybox);
-		model->is_dirty = 0;
-		if (!model->is_done)
-			pthread_mutex_unlock(&model->lock);
+		t_float4 position = -model->offset_scale;
+		float scale = -position.w;
+		position.w = 1;
+		t_float2 angles = { 1, 1 };
+		frame.g_uniforms.mvp = //m_model(angles, position, scale);
+		mult_matrix(
+			mult_matrix(
+				m_model(frame.angles, position, scale),
+				m_world()
+			),
+			frustum(perspective_top_right(50, 1, .6f), .6f, 3.5f)
+		);
+		draw(&frame, model);
+		pthread_mutex_unlock(&model->lock);
 		SDL_GL_SwapWindow(window);
 	}
 }

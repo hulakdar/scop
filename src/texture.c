@@ -1,11 +1,34 @@
 #include "scop.h"
 
+
 static void	setup_texture_sampler(GLenum texture_type)
 {
-	GLCall(glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCall(glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	GLCall(glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCall(glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+}
+
+GLuint		create_depth_buffer()
+{
+	GLuint buffer_id;
+
+	unsigned int depthMap;
+	GLCALL(glGenTextures(1, &depthMap));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, depthMap));
+	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+	GLCALL(glGenFramebuffers(1, &buffer_id));
+	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, depthMap));
+	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
+	GLCALL(glDrawBuffer(GL_NONE));
+	GLCALL(glReadBuffer(GL_NONE));
+	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	return buffer_id;
 }
 
 GLuint		create_texture_cube(const char *folder)
@@ -18,9 +41,9 @@ GLuint		create_texture_cube(const char *folder)
 	int					i;
 
 	i = -1;
-	GLCall(glGenTextures(1, &texture_id));
-	GLCall(glActiveTexture(GL_TEXTURE0));
-	GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id));
+	GLCALL(glGenTextures(1, &texture_id));
+	GLCALL(glActiveTexture(GL_TEXTURE0));
+	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id));
 	while (++i < 6)
 	{
 		filename = ft_strcat(ft_strdup(folder), faces[i]);
@@ -28,13 +51,13 @@ GLuint		create_texture_cube(const char *folder)
 		free(filename);
 		if (!local_buffer)
 			exit(scop_error(IMG_GetError()));
-		GLCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
+		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
 			local_buffer->w, local_buffer->h, 0, GL_RGB, GL_UNSIGNED_BYTE,
 			local_buffer->pixels));
 		SDL_FreeSurface(local_buffer);
 	}
 	setup_texture_sampler(GL_TEXTURE_CUBE_MAP);
-	GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
 	return texture_id;
 }
 
@@ -46,10 +69,10 @@ GLuint		create_texture_2d(const char *filename)
 	local_buffer = IMG_Load(filename);
 	if (!local_buffer)
 		exit(scop_error(IMG_GetError()));
-	GLCall(glGenTextures(1, &texture_id));
-	GLCall(glActiveTexture(GL_TEXTURE0));
-	GLCall(glBindTexture(GL_TEXTURE_2D, texture_id));
-	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, local_buffer->w, local_buffer->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, local_buffer->pixels));
+	GLCALL(glGenTextures(1, &texture_id));
+	GLCALL(glActiveTexture(GL_TEXTURE0));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, texture_id));
+	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, local_buffer->w, local_buffer->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, local_buffer->pixels));
 	setup_texture_sampler(GL_TEXTURE_2D);
 	SDL_FreeSurface(local_buffer);
 	return texture_id;

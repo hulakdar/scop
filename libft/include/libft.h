@@ -70,6 +70,7 @@ char				*ft_strnstr(const char *big, const char *little,
 															size_t len);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+int					ft_chrcnt(const char *str, char chr);
 int					ft_atoi(char *str);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
