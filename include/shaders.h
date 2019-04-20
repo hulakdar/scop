@@ -9,5 +9,5 @@ typedef struct	s_shader_source_array
 }				t_shader_source_array;
 
 GLint	compile_shaders(const char *vertex_path, const char *fragment_path, t_vector defines);
-GLuint	compile_default_shader();
+GLuint	compile_default_shader(const char *vert, const char *frag);
 GLuint	get_skybox_shader();

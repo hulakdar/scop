@@ -75,7 +75,7 @@ GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vect
 	return program;
 }
 
-GLuint compile_default_shader()
+GLuint compile_default_shader(const char *vert, const char *frag)
 {
 	t_vector	defines;
 	char		*line;
@@ -84,7 +84,7 @@ GLuint compile_default_shader()
 	ft_vec_init(&defines, sizeof(char *), 4);
 	line = "#version 410\n";
 	ft_vec_pushback(&defines, &line);
-	result = compile_shaders("res/shaders/uber_vertex.shader", "res/shaders/uber_fragment.shader", defines);
+	result = compile_shaders(vert, frag, defines);
 	ft_vec_del(&defines);
 	return result;
 }

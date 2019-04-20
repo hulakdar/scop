@@ -5,6 +5,7 @@ layout(location = 2)in vec2  iTexCoord;
 layout(std140) uniform global
 {
     mat4    mvp;
+    mat4    light_view;
     vec3    LightDir;
 }           g;
 
@@ -18,7 +19,7 @@ out VS_OUT
 void main()
 {
     vs_out.FragPos = g.mvp * iPosition;
-	gl_Position = vs_out.FragPos;
 	vs_out.Normal = normalize(mat3(g.mvp) * iNormal);
 	vs_out.TexCoord = iTexCoord;
+	gl_Position = vs_out.FragPos;
 }

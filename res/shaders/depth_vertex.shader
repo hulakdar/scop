@@ -1,7 +1,5 @@
 
-out vec4 FragColor;
-
-in vec3 TexCoords;
+layout(location = 0) in vec4 aPos;
 
 layout(std140) uniform global
 {
@@ -10,9 +8,7 @@ layout(std140) uniform global
     vec3    LightDir;
 }           g;
 
-uniform samplerCube skybox;
-
 void main()
 {
-	FragColor = texture(skybox, TexCoords);
+	gl_Position = g.light_view * aPos;
 }

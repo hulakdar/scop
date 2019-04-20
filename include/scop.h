@@ -23,6 +23,7 @@
 typedef	struct	s_global_uniforms
 {
 	t_m44		mvp;
+	t_m44		light_transform;
 	t_float4	light_dir;
 }				t_global_uniforms;
 
@@ -30,25 +31,26 @@ typedef struct	s_frame_info
 {
 	t_global_uniforms	g_uniforms;
 	t_float4			position;
-	t_float4			position_offset;
 	t_float2			angles;
-	t_float2			angles_offset;
+	t_float2			light_angles;
 	Uint64				last_time;
 	Uint64				current_time;
+	t_depth				depth;
+	t_quad_data			depth_preview;
 	GLuint				uniform_buffer;
 	GLenum				polygon_mode;
 	float				delta_time;
 	float				scale;
-	float				scale_dir;
 	uint_fast8_t		is_dirty : 1;
+	uint_fast8_t		is_depth_pass : 1;
 }				t_frame_info;
 
 typedef	uint_fast8_t t_bool;
 
 unsigned 		scop_error(const char *error);
 t_buffers		create_skybox_data();
-GLuint			create_depth_buffer();
-
+t_depth			create_depth();
+void			draw_quad(t_frame_info *frame, t_quad_data quad_data);
 
 #define GLCALL(x) gl_clear_error();x;gl_check_error(#x, __FILE__, __LINE__)
 

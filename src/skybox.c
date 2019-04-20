@@ -53,12 +53,20 @@ GLuint			get_skybox_shader()
 }
 
 
-void			draw_skybox(t_frame_info *frame, t_model *model)
+void			draw_quad(t_frame_info *frame, t_quad_data quad_data)
 {
-	bind_buffers(model->skybox.buffers);
-	GLCALL(glUseProgram(model->skybox.shader));
+	static t_buffers	quad;
+	static char			is_initialized;
+
+	if (!is_initialized)
+	{
+		quad = create_skybox_data();
+		is_initialized = 1;
+	}
+	bind_buffers(quad);
+	GLCALL(glUseProgram(quad_data.shader));
 	GLCALL(glActiveTexture(GL_TEXTURE0));
-	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox.texture));
+	GLCALL(glBindTexture(quad_data.texture_type, quad_data.texture));
 	GLCALL(glDepthFunc(GL_LEQUAL));
 	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 	GLCALL(glDepthFunc(GL_LESS));

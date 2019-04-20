@@ -21,8 +21,8 @@ static void setup_gl_attrubutes()
 
 static SDL_Window *scop_initialize()
 {
-	const int win_width = 900;
-	const int win_height = 900;
+	const int win_width = 1024;
+	const int win_height = 1024;
 	SDL_Window *window;
 	GLenum Result;
 
@@ -44,7 +44,6 @@ static void prepare_buffers(t_model *model)
 {
 	GLCALL(glGenVertexArrays(1, &model->buffers.vertex_array));
 	GLCALL(glGenBuffers(1, &model->buffers.vertex_buffer));
-	model->buffers.depth_buffer = create_depth_buffer();
 	bind_buffers(model->buffers);
 	GLCALL(glEnableVertexAttribArray(0));
 	GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
@@ -56,13 +55,13 @@ static void prepare_buffers(t_model *model)
 	GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, uv)));
 	model->skybox.shader = get_skybox_shader();
-	model->skybox.buffers = create_skybox_data();
+	model->skybox.texture_type = GL_TEXTURE_CUBE_MAP;
 	model->skybox.texture = create_texture_cube("res/skybox/");
 }
 
 int main(int argc, const char *argv[])
 {
-	SDL_Window *window;
+	SDL_Window	*window;
 	t_model		model;
 	pthread_t	thread;
 
@@ -71,7 +70,7 @@ int main(int argc, const char *argv[])
 	model.filepath = argv[1];
 	window = scop_initialize();
 	ft_vec_init(&model.vertecies, sizeof(t_vertex), 30000);
-	ft_vec_init(&model.submeshes, sizeof(t_submesh), 2);
+	ft_vec_init(&model.submeshes, sizeof(t_submesh), 1);
 	pthread_mutex_init(&model.lock, NULL);
 	pthread_create(&thread, NULL, parse_obj, &model);
 	prepare_buffers(&model);

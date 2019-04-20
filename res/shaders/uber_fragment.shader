@@ -17,6 +17,7 @@
 layout(std140) uniform global
 {
     mat4    mvp;
+    mat4    light_view;
     vec3    LightDir;
 }           g;
 
@@ -29,11 +30,11 @@ in VS_OUT
 
 out vec4 o_color;
 
-uniform vec4 u_Diffuse = vec4(0.4, 0.4, .5, 1);
-uniform vec4 u_Ambient = vec4(0.1, 0.3, 0.4, 1);
+uniform vec4 u_Diffuse = vec4(0.9, 0.9, .9, 1);
+uniform vec4 u_Ambient = vec4(0.4, 0.4, 0.5, 1);
 uniform vec4 u_Specular = vec4(1);
 const float Ambient_strength = .5f;
-const float Specular_strength = .6f;
+const float Specular_strength = .7f;
 
 uniform sampler2D u_TextureD;
 uniform sampler2D u_TextureA;

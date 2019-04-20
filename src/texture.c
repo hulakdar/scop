@@ -9,26 +9,26 @@ static void	setup_texture_sampler(GLenum texture_type)
 	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 }
 
-GLuint		create_depth_buffer()
+t_depth	create_depth()
 {
-	GLuint buffer_id;
+	t_depth	result;
 
-	unsigned int depthMap;
-	GLCALL(glGenTextures(1, &depthMap));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, depthMap));
+	GLCALL(glGenTextures(1, &result.texture));
+	GLCALL(glBindTexture(GL_TEXTURE_2D, result.texture));
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-	GLCALL(glGenFramebuffers(1, &buffer_id));
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, depthMap));
-	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
+	GLCALL(glGenFramebuffers(1, &result.buffer));
+	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, result.buffer));
+	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, result.texture, 0));
 	GLCALL(glDrawBuffer(GL_NONE));
 	GLCALL(glReadBuffer(GL_NONE));
 	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-	return buffer_id;
+	result.shader = compile_default_shader("res/shaders/depth_vertex.shader", "res/shaders/depth_fragment.shader");
+	return result;
 }
 
 GLuint		create_texture_cube(const char *folder)

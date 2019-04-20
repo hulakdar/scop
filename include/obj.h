@@ -48,21 +48,28 @@ typedef struct  s_buffers
 {
 	GLuint		vertex_array;
 	GLuint		vertex_buffer;
-	GLuint		depth_buffer;
 }				t_buffers;
 
-typedef struct  s_skybox_data
+typedef struct	s_quad_data
 {
-	t_buffers	buffers;
 	GLuint		shader;
 	GLuint		texture;
-}				t_skybox_data;
+	GLenum		texture_type;
+}				t_quad_data;
+
+typedef struct	s_depth
+{
+	GLuint		buffer;
+	GLuint		shader;
+	GLuint		texture;
+}				t_depth;
+
 
 typedef struct	s_model
 {
 	t_vector		vertecies;
 	t_vector		submeshes;
-	t_skybox_data	skybox;
+	t_quad_data		skybox;
 	t_buffers		buffers;
 	t_float4		offset_scale;
 	pthread_mutex_t	lock;
