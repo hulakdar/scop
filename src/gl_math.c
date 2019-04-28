@@ -1,15 +1,15 @@
 #include "math.h"
 #include "libft.h"
 
-t_float2 perspective_top_right(float angle_of_view, float imageAspectRatio, float n)
+t_float2 perspective_top_right(float angle_of_view, float imageAspectRatio, float near)
 {
-	float		r;
+	float		right;
 	t_float2	tr;
 
-	const float t = tanf(angle_of_view * 0.5 * M_PI / 180) * n;
-	r = imageAspectRatio * t;
-	tr[0] = t;
-	tr[1] = r;
+	const float top = tanf(angle_of_view * 0.5 * M_PI / 180) * near;
+	right = imageAspectRatio * top;
+	tr[0] = top;
+	tr[1] = right;
 	return tr;
 }
 
@@ -63,7 +63,7 @@ t_m44	m_model(t_float2 angles, t_float4 position, float scale)
 	return (result);
 }
 
-// set the OpenGL perspective projection matrix
+__attribute__((noinline))
 t_m44	frustum(t_float2 tr, float n, float f)
 {
 	const float t = tr[0];

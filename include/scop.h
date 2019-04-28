@@ -48,7 +48,6 @@ typedef struct	s_frame_info
 typedef	uint_fast8_t t_bool;
 
 unsigned 		scop_error(const char *error);
-t_buffers		create_skybox_data();
 t_depth			create_depth();
 void			draw_quad(t_frame_info *frame, t_quad_data quad_data);
 

@@ -56,7 +56,7 @@ t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 	}
 	else if (e.state & SDL_BUTTON_RMASK)
 	{
-		frame->light_angles.y += e.xrel / 180.f;
+		frame->light_angles.y -= e.xrel / 180.f;
 		frame->light_angles.x += e.yrel / 180.f;
 	}
 }
@@ -134,7 +134,8 @@ void prepare_frame_info(t_frame_info* frame)
 {
 	ft_bzero(frame, sizeof(t_frame_info));
 	frame->depth = create_depth();
-	frame->depth_preview.shader = compile_default_shader("res/shaders/quad_vertex.shader", "res/shaders/quad_depth.shader");
+	frame->depth_preview.shader = compile_default_shader(
+		"res/shaders/quad_vertex.shader", "res/shaders/quad_depth.shader");
 	frame->depth_preview.texture = frame->depth.texture;
 	frame->depth_preview.texture_type = GL_TEXTURE_2D;
 	frame->polygon_mode = GL_FILL;
@@ -155,12 +156,14 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 	scale = -position.w;
 	position.w = 1;
 	frame->g_uniforms.mvp = mult_matrix(mult_matrix(
-		m_model(frame->angles, position, scale), m_world()),
-		frustum(perspective_top_right(50, 1, .6f), .6f, 3.5f));
-	frame->g_uniforms.light_transform = 
+		m_model(frame->angles, position, scale), m_identity()),
+		m_identity());// frustum((t_float2) { 0.3, 0.3 }/*perspective_top_right(50, 1, .6f)*/, .6f, 3.5f));
+	frame->g_uniforms.light_transform =
 		m_model(frame->light_angles, position, scale);
-	frame->g_uniforms.light_dir = mult_vec_matrix((t_float4) {0, 0, -1},
-		frame->g_uniforms.light_transform);
+	frame->g_uniforms.light_dir;// =
+		mult_vec_matrix((t_float4) { 0, 0, -1 },
+		mult_matrix(frame->g_uniforms.light_transform,
+			m_model(frame->angles, position, scale)));
 	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),
 		&frame->g_uniforms, GL_DYNAMIC_DRAW));
 }

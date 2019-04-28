@@ -19,7 +19,7 @@ static GLuint	create_skybox_shader()
 	return result;
 }
 
-t_buffers	create_skybox_data()
+t_buffers	create_quad()
 {
 	const float	quad[] = {
 		-1.f, 1.f,
@@ -56,13 +56,9 @@ GLuint			get_skybox_shader()
 void			draw_quad(t_frame_info *frame, t_quad_data quad_data)
 {
 	static t_buffers	quad;
-	static char			is_initialized;
 
-	if (!is_initialized)
-	{
-		quad = create_skybox_data();
-		is_initialized = 1;
-	}
+	if (!quad.vertex_array && !quad.vertex_buffer)
+		quad = create_quad();
 	bind_buffers(quad);
 	GLCALL(glUseProgram(quad_data.shader));
 	GLCALL(glActiveTexture(GL_TEXTURE0));

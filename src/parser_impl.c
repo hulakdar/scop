@@ -34,31 +34,25 @@ void parse_vec2(const char *line, t_vector *buffer)
 	ft_vec_pushback(buffer, &result);
 }
 
+__attribute__((noinline))
 void push_vert(t_face face, t_obj *buffers, int i)
 {
 	t_vertex new_vert = { (0), (0),  (0) };
+	t_float4 mask;
 
-	new_vert.position = *(t_float4 *)ft_vec_get(&buffers->positions, face.pos_indx[i]);
-	if (!(new_vert.position.x || new_vert.position.y || new_vert.position.z || new_vert.position.w))
-		__debugbreak();
+	new_vert.position = *(t_float4 *)ft_vec_get(
+		&buffers->positions, face.pos_indx[i]);
 	if (face.uvs_indx[i])
-		new_vert.uv = *(t_float2 *)ft_vec_get(&buffers->uvs, face.uvs_indx[i]);
+		new_vert.uv = *(t_float2 *)ft_vec_get(
+			&buffers->uvs, face.uvs_indx[i]);
 	if (face.norm_indx[i])
-		new_vert.normal = *(t_float4 *)ft_vec_get(&buffers->normals, face.norm_indx[i]);
+		new_vert.normal = *(t_float4 *)ft_vec_get(
+			&buffers->normals, face.norm_indx[i]);
 	ft_vec_pushback(&buffers->result->vertecies, &new_vert);
-	buffers->current_object->count++;
-	if (new_vert.position.x < buffers->min_bounds.x)
-		buffers->min_bounds.x = new_vert.position.x;
-	if (new_vert.position.y < buffers->min_bounds.y)
-		buffers->min_bounds.y = new_vert.position.y;
-	if (new_vert.position.z < buffers->min_bounds.z)
-		buffers->min_bounds.z = new_vert.position.z;
-	if (new_vert.position.x > buffers->max_bounds.x)
-		buffers->max_bounds.x = new_vert.position.x;
-	if (new_vert.position.y > buffers->max_bounds.y)
-		buffers->max_bounds.y = new_vert.position.y;
-	if (new_vert.position.z > buffers->max_bounds.z)
-		buffers->max_bounds.z = new_vert.position.z;
+	mask = TO_FLOAT_VEC4(new_vert.position < buffers->min_bounds);
+	buffers->min_bounds = SELECT(new_vert.position, buffers->min_bounds, mask);
+	mask = TO_FLOAT_VEC4(new_vert.position > buffers->max_bounds);
+	buffers->max_bounds = SELECT(new_vert.position, buffers->max_bounds, mask);
 }
 
 t_float4 calculate_normal(t_float4 *positions)
@@ -75,42 +69,65 @@ t_float4 calculate_normal(t_float4 *positions)
 	return normalize(normal);
 }
 
-void fixup_normals(t_vector *vertecies)
+__attribute__((noinline))
+void fixup_uvs(t_vector *vertecies, t_face face)
+{
+	const t_float4 zero = { 0,0,0,0 };
+	t_vertex *triangle;
+	t_float2	uvs[3];
+
+	if (face.uvs_indx[0] || face.uvs_indx[1] || face.uvs_indx[2])
+		return;
+	triangle = (t_vertex *)ft_vec_get(vertecies, vertecies->back - 3);
+	for (int i = 0; i < 3; ++i)
+	{
+		uvs[0] = triangle[i].position.yz;
+		uvs[1] = triangle[i].position.xz;
+		uvs[2] = triangle[i].position.xy;
+		t_float4 normal = SQUARE(triangle[i].normal);
+		triangle[i].uv = uvs[0] * normal.x + uvs[1] * normal.y + uvs[2] * normal.z;
+	}
+}
+
+__attribute__((noinline))
+void fixup_normals(t_vector *vertecies, t_face face)
 {
 	const t_float4 zero = { 0,0,0,0 };
 	t_vertex *triangle;
 	t_float4 positions[3];
 	t_float4 normal;
 
-	triangle = NULL;
+	if (face.norm_indx[0] || face.norm_indx[1] || face.norm_indx[2])
+		return;
 	triangle = (t_vertex *)ft_vec_get(vertecies, vertecies->back - 3);
 	positions[0] = triangle[0].position;
 	positions[1] = triangle[1].position;
 	positions[2] = triangle[2].position;
 	normal = calculate_normal(positions);
-	if (!ft_memcmp(&triangle[0].normal, &zero, sizeof(t_float4)))
-		triangle[0].normal = normal;
-	if (!ft_memcmp(&triangle[1].normal, &zero, sizeof(t_float4)))
-		triangle[1].normal = normal;
-	if (!ft_memcmp(&triangle[2].normal, &zero, sizeof(t_float4)))
-		triangle[2].normal = normal;
-		
+	triangle[0].normal = normal;
+	triangle[1].normal = normal;
+	triangle[2].normal = normal;
 }
 
-static void process_face(t_face face, t_obj *buffers, int count)
+__attribute__((noinline))
+void process_face(t_face face, t_obj *buffers, int count)
 {
 	int			i;
 
 	i = -1;
 	while (++i < 3)
 		push_vert(face, buffers, i);
-	fixup_normals(&buffers->result->vertecies);
+	buffers->current_object->count += 3;
+	fixup_normals(&buffers->result->vertecies, face);
+	fixup_uvs(&buffers->result->vertecies, face);
 	if (count == 4)
 	{
 		i = -1;
 		while (++i < 4)
 			push_vert(face, buffers, i == 1 ? ++i : i);
-		fixup_normals(&buffers->result->vertecies);
+		buffers->current_object->count += 3;
+		fixup_normals(&buffers->result->vertecies, face);
+		fixup_uvs(&buffers->result->vertecies, face);
 	}
 }
 
