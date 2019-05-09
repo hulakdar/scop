@@ -78,11 +78,10 @@ GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vect
 GLuint compile_default_shader(const char *vert, const char *frag)
 {
 	t_vector	defines;
-	char		*line;
 	GLuint		result;
+	const char	*line = "#version 410\n";
 
 	ft_vec_init(&defines, sizeof(char *), 4);
-	line = "#version 410\n";
 	ft_vec_pushback(&defines, &line);
 	result = compile_shaders(vert, frag, defines);
 	ft_vec_del(&defines);

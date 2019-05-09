@@ -44,9 +44,21 @@ uniform sampler2D u_TextureS;
 uniform sampler2D u_Shadow;
 uniform sampler2D u_Cubemap;
 
+vec4 get_ambient()
+{
+#if AMBIENT == NORMAL
+	return vec4(vs_out.Normal,1);
+#elif AMBIENT == TEXTURE
+	return texture(u_TextureA, vs_out.TexCoord) * Ambient_strength;
+#elif AMBIENT == UNIFORM
+	return u_Ambient * Ambient_strength;
+#endif
+}
+
 vec4 get_diffuse(float shadow)
 {
 	float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir));
+    Diffuse_power *= shadow;
 
 #if DIFFUSE == NORMAL
 	return vec4(vs_out.Normal,1);
@@ -56,17 +68,6 @@ vec4 get_diffuse(float shadow)
 	return u_Diffuse * Diffuse_power;
 #elif DIFFUSE == UV
 	return vec4(vs_out.TexCoord, 1,1);
-#endif
-}
-
-vec4 get_ambient()
-{
-#if AMBIENT == NORMAL
-	return vec4(vs_out.Normal,1);
-#elif AMBIENT == TEXTURE
-	return texture(u_TextureA, vs_out.TexCoord) * Ambient_strength;
-#elif AMBIENT == UNIFORM
-	return u_Ambient * Ambient_strength;
 #endif
 }
 
@@ -92,11 +93,11 @@ float shadow()
     float ClosestDepth = texture(u_Shadow, ProjectedCoords.xy).r;
     float CurrentDepth = ProjectedCoords.z;
     float bias = max(0.01 * (1.0 - dot(vs_out.Normal, g.light_dir)), 0.001);
-    return CurrentDepth - bias <= ClosestDepth;
+    return float(CurrentDepth - bias > ClosestDepth);
 }
 
 void main()
 { 
-    const float shadow_factor = shadow();
+    float shadow_factor = shadow();
     o_color = get_diffuse(shadow_factor) + get_specular(shadow_factor) + get_ambient();
 }
