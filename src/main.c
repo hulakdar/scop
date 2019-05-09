@@ -21,8 +21,6 @@ static void setup_gl_attrubutes()
 
 static SDL_Window *scop_initialize()
 {
-	const int win_width = 1024;
-	const int win_height = 1024;
 	SDL_Window *window;
 	GLenum Result;
 
@@ -32,7 +30,7 @@ static SDL_Window *scop_initialize()
 		exit(scop_error("SDL_image initialization ERROR"));
 	setup_gl_attrubutes();
 	window = SDL_CreateWindow("scop", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, win_width, win_height, SDL_WINDOW_OPENGL);
+		SDL_WINDOWPOS_CENTERED, SCREEN_W, SCREEN_H, SDL_WINDOW_OPENGL);
 	SDL_GL_CreateContext(window);
 	if ((Result = glewInit()) != GLEW_OK)
 		exit(scop_error((const char *)glewGetErrorString(Result)));

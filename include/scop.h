@@ -20,6 +20,9 @@
 # include "obj.h"
 # include "events.h"
 
+# define SCREEN_W 1024
+# define SCREEN_H 1024
+
 typedef	struct	s_global_uniforms
 {
 	t_m44		mvp;

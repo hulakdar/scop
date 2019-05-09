@@ -56,7 +56,7 @@ t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 	}
 	else if (e.state & SDL_BUTTON_RMASK)
 	{
-		frame->light_angles.y -= e.xrel / 180.f;
+		frame->light_angles.y += e.xrel / 180.f;
 		frame->light_angles.x += e.yrel / 180.f;
 	}
 }
@@ -123,11 +123,11 @@ void		draw(t_frame_info *frame, t_model *model)
 	frame->is_depth_pass = 0;
 	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
-	draw_quad(frame, frame->depth_preview);
+	//draw_quad(frame, frame->depth_preview);
 	bind_buffers(model->buffers);
 	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-	//draw_quad(frame, model->skybox);
+	draw_quad(frame, model->skybox);
 }
 
 void prepare_frame_info(t_frame_info* frame)
@@ -160,8 +160,8 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 		m_identity());// frustum((t_float2) { 0.3, 0.3 }/*perspective_top_right(50, 1, .6f)*/, .6f, 3.5f));
 	frame->g_uniforms.light_transform =
 		m_model(frame->light_angles, position, scale);
-	frame->g_uniforms.light_dir;// =
-		mult_vec_matrix((t_float4) { 0, 0, -1 },
+	frame->g_uniforms.light_dir = 
+		mult_vec_matrix((t_float4) { 0, 0, 10 },
 		mult_matrix(frame->g_uniforms.light_transform,
 			m_model(frame->angles, position, scale)));
 	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),

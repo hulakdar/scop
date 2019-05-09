@@ -4,7 +4,7 @@
 #define UV 4
 
 #ifndef DIFFUSE
-#define DIFFUSE NORMAL
+#define DIFFUSE UNIFORM
 #endif
 
 #ifndef AMBIENT
@@ -42,8 +42,9 @@ uniform sampler2D u_TextureD;
 uniform sampler2D u_TextureA;
 uniform sampler2D u_TextureS;
 uniform sampler2D u_Shadow;
+uniform sampler2D u_Cubemap;
 
-vec4 get_diffuse()
+vec4 get_diffuse(float shadow)
 {
 	float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir));
 
@@ -69,7 +70,7 @@ vec4 get_ambient()
 #endif
 }
 
-vec4 get_specular()
+vec4 get_specular(float shadow)
 {
     vec3 viewDir = normalize(-vs_out.FragPos.xyz);
     vec3 reflectDir = reflect(-g.light_dir, vs_out.Normal); 
@@ -83,7 +84,7 @@ vec4 get_specular()
 #endif
 }
 
-vec4 shadow(vec4 color)
+float shadow()
 {
     vec3 ProjectedCoords = vs_out.FragPosLight.xyz / vs_out.FragPosLight.w;
     ProjectedCoords *= 0.5;
@@ -91,10 +92,11 @@ vec4 shadow(vec4 color)
     float ClosestDepth = texture(u_Shadow, ProjectedCoords.xy).r;
     float CurrentDepth = ProjectedCoords.z;
     float bias = max(0.01 * (1.0 - dot(vs_out.Normal, g.light_dir)), 0.001);
-    return color * vec4(vec3(CurrentDepth - bias > ClosestDepth), color.w);
+    return CurrentDepth - bias <= ClosestDepth;
 }
 
 void main()
 { 
-    o_color = shadow(get_diffuse() + get_specular()) + get_ambient();
+    const float shadow_factor = shadow();
+    o_color = get_diffuse(shadow_factor) + get_specular(shadow_factor) + get_ambient();
 }
