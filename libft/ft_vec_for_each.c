@@ -13,7 +13,7 @@
 #include "libft.h"
 
 void ft_vec_for_each(t_vector *vector,
-	void (*function)(void *data, void *payload), void *payload)
+	t_for_each_predicate function, void *payload)
 {
 	size_t i;
 

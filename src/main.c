@@ -55,6 +55,8 @@ static void prepare_buffers(t_model *model)
 	model->skybox.shader = get_skybox_shader();
 	model->skybox.texture_type = GL_TEXTURE_CUBE_MAP;
 	model->skybox.texture = create_texture_cube("res/skybox/");
+	model->skybox_blurred.texture_type = GL_TEXTURE_CUBE_MAP;
+	model->skybox_blurred.texture = create_texture_cube("res/skybox_blurred/");
 }
 
 int main(int argc, const char *argv[])

@@ -63,7 +63,6 @@ void			draw_quad(t_frame_info *frame, t_quad_data quad_data)
 	GLCALL(glUseProgram(quad_data.shader));
 	GLCALL(glActiveTexture(GL_TEXTURE0));
 	GLCALL(glBindTexture(quad_data.texture_type, quad_data.texture));
-	GLCALL(glDepthFunc(GL_LEQUAL));
 	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 6));
 	GLCALL(glDepthFunc(GL_LESS));
 }

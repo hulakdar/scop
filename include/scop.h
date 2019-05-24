@@ -9,14 +9,16 @@
 # define CONTEXT_FLAGS SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG
 
 # define GLEW_STATIC
-# include <GL/glew.h>
-#if _WIN32 || _WIN64
-# include <SDL.h>
-# include <SDL_image.h>
-#else
-# include <SDL2/SDL.h>
-# include <SDL2/SDL_image.h>
-#endif
+#  include <GL/glew.h>
+# if _WIN32 || _WIN64 || __WIN32__
+#  define DEBUG_BREAK if (IsDebuggerPresent()) __debugbreak()
+#  include <SDL.h>
+#  include <SDL_image.h>
+# else
+#  define DEBUG_BREAK 
+#  include <SDL2/SDL.h>
+#  include <SDL2/SDL_image.h>
+# endif
 # include "obj.h"
 # include "events.h"
 

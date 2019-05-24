@@ -1,6 +1,6 @@
 #include "shaders.h"
 #include "scop.h"
-#include <malloc.h>
+//#include <malloc.h>
 
 void prepend_define(const char **define, t_shader_source_array *arrays)
 {
@@ -22,7 +22,7 @@ t_shader_source_array get_shader_source(const char *filepath, t_vector defines)
 
 	ft_vec_init(&source.lines, sizeof(char *), 32);
 	ft_vec_init(&source.lengths, sizeof(GLuint), 32);
-	ft_vec_for_each(&defines, prepend_define, &source);
+	ft_vec_for_each(&defines, (t_for_each_predicate)prepend_define, &source);
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
@@ -42,7 +42,7 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 
 	GLCALL(glShaderSource(shader, source.lines.back,
 		(const GLchar * const *)source.lines.data,
-		(const GLuint *)source.lengths.data));
+		(const GLint *)source.lengths.data));
 	GLCALL(glCompileShader(shader));
 	GLCALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)
@@ -57,7 +57,7 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 	return shader;
 }
 
-GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vector defines)
+GLint compile_shaders(char *vertex_path, char *fragment_path, t_vector defines)
 {
 	const GLint	program = glCreateProgram();
 	GLint		shaders[2];
@@ -75,7 +75,7 @@ GLint compile_shaders(const char *vertex_path, const char *fragment_path, t_vect
 	return program;
 }
 
-GLuint compile_default_shader(const char *vert, const char *frag)
+GLuint compile_default_shader(char *vert, char *frag)
 {
 	t_vector	defines;
 	GLuint		result;

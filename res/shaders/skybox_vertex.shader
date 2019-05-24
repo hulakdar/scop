@@ -12,5 +12,5 @@ layout(std140) uniform global
 void main()
 {
 	TexCoords = vec3(aPos, 1) * mat3(g.mvp);
-	gl_Position = vec4(aPos, 1.f, 1.f);
+	gl_Position = vec4(aPos, 0.99f, 1.f);
 }

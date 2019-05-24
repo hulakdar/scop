@@ -48,6 +48,9 @@ typedef struct		s_vector
 	size_t			front;
 }					t_vector;
 
+typedef void(*t_for_each_predicate)(void *, void *);
+typedef void(*t_map_predicate)(void *, const void *, void *);
+
 int					get_next_line(const int fd, char **line);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -122,9 +125,9 @@ void				*ft_vec_pushback(t_vector *vector, void *content);
 void				*ft_vec_popback(t_vector *vector);
 void				*ft_vec_popfront(t_vector *vector);
 void				ft_vec_for_each(t_vector *vector,
-						void (*function)(void *data, void *payload), void *payload);
+						t_for_each_predicate function, void *payload);
 t_vector			ft_vec_map(t_vector *vector,
-						void (*function)(void *dst, void *const src, void*payload), void *payload);
+						t_map_predicate function, void *payload);
 int					ft_atoi_base(const char *str, int base);
 void				ft_tabdel(char ***hint);
 size_t				ft_tabcount(char **tab);

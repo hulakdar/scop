@@ -70,6 +70,7 @@ typedef struct	s_model
 	t_vector		vertecies;
 	t_vector		submeshes;
 	t_quad_data		skybox;
+	t_quad_data		skybox_blurred;
 	t_buffers		buffers;
 	t_float4		offset_scale;
 	pthread_mutex_t	lock;

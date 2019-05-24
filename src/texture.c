@@ -58,6 +58,7 @@ GLuint		create_texture_cube(const char *folder)
 	}
 	setup_texture_sampler(GL_TEXTURE_CUBE_MAP);
 	GLCALL(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE));
+	GLCALL(glGenerateMipmap(GL_TEXTURE_CUBE_MAP));
 	return texture_id;
 }
 

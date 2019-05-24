@@ -13,7 +13,7 @@
 #include "libft.h"
 
 t_vector	ft_vec_map(t_vector *vector,
-			void (*function)(void *dst, void *const src, void*payload), void *payload)
+	t_map_predicate function, void *payload)
 {
 	size_t		i;
 	size_t		offset;
@@ -26,4 +26,5 @@ t_vector	ft_vec_map(t_vector *vector,
 		offset = i++ * vector->size_of_type;
 		function(&result.data[offset], &vector->data[offset], payload);
 	}
+	return result;
 }

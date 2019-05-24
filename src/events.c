@@ -11,12 +11,7 @@ unsigned 	WindowShouldClose(SDL_Event e)
 unsigned	scop_error(const char *error)
 {
 	ft_putendl_fd(error, 2);
-#if _MSC_VER
-	if (IsDebuggerPresent())
-		__debugbreak();
-#else
-	asm("int $3");
-#endif 
+	DEBUG_BREAK;
 	return -1;
 }
 
@@ -33,11 +28,7 @@ char		gl_check_error(const char *function, const char *file, int line)
 	GLenum error;
 	while ((error = glGetError()))
 	{
-#if _WIN32 || _WIN64
-		__debugbreak();
-#else
-		continue;
-#endif
+		DEBUG_BREAK;
 	}
 	return 1;
 }
@@ -56,7 +47,7 @@ t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 	}
 	else if (e.state & SDL_BUTTON_RMASK)
 	{
-		frame->light_angles.y += e.xrel / 180.f;
+		frame->light_angles.y -= e.xrel / 180.f;
 		frame->light_angles.x += e.yrel / 180.f;
 	}
 }
@@ -93,9 +84,7 @@ static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
 {
 	GLuint program;
 
-	if (frame->is_depth_pass)
-		program = frame->depth.shader;
-	else if (submesh->shader_program)
+	if (submesh->shader_program)
 		program = submesh->shader_program;
 	else
 		program = get_default_shader();
@@ -111,20 +100,11 @@ void		bind_buffers(t_buffers model_buffers)
 
 void		draw(t_frame_info *frame, t_model *model)
 {
-	bind_buffers(model->buffers);
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, frame->depth.buffer));
-	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
-	frame->is_depth_pass = 1;
-
-	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
-
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
-	frame->is_depth_pass = 0;
 	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
-	//draw_quad(frame, frame->depth_preview);
 	bind_buffers(model->buffers);
+	GLCALL(glActiveTexture(GL_TEXTURE0));
+	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox.texture));
 	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 	draw_quad(frame, model->skybox);
@@ -133,11 +113,6 @@ void		draw(t_frame_info *frame, t_model *model)
 void prepare_frame_info(t_frame_info* frame)
 {
 	ft_bzero(frame, sizeof(t_frame_info));
-	frame->depth = create_depth();
-	frame->depth_preview.shader = compile_default_shader(
-		"res/shaders/quad_vertex.shader", "res/shaders/quad_depth.shader");
-	frame->depth_preview.texture = frame->depth.texture;
-	frame->depth_preview.texture_type = GL_TEXTURE_2D;
 	frame->polygon_mode = GL_FILL;
 	frame->scale = 1;
 	GLCALL(glGenBuffers(1, &frame->uniform_buffer));
@@ -156,8 +131,8 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 	scale = -position.w;
 	position.w = 1;
 	frame->g_uniforms.mvp = mult_matrix(mult_matrix(
-		m_model(frame->angles, position, scale), m_identity()),
-		m_identity());// frustum((t_float2) { 0.3, 0.3 }/*perspective_top_right(50, 1, .6f)*/, .6f, 3.5f));
+		m_model(frame->angles, position, scale), m_world()),
+		frustum(perspective_top_right(50, 1, .6f), .5f, 7.5f));
 	frame->g_uniforms.light_transform =
 		m_model(frame->light_angles, position, scale);
 	frame->g_uniforms.light_dir = 
