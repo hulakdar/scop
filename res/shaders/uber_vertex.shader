@@ -23,7 +23,7 @@ void main()
     vs_out.FragPos = g.mvp * iPosition;
     vs_out.FragPosLight = g.light_view * iPosition;
 	vs_out.Normal = normalize(mat3(g.mvp) * iNormal);
-	vs_out.NormalModelSpace = iNormal;
+	vs_out.NormalModelSpace = normalize(iNormal);
 	vs_out.TexCoord = iTexCoord;
 	gl_Position = vs_out.FragPos;
 }

@@ -17,7 +17,7 @@ typedef struct { float x; float y; } t_float2;
 typedef struct { float x; float y; float z; float w; } t_float4;
 typedef struct { t_float4 val[2]; } t_float8;
 typedef struct { t_float4 val[4]; } t_float16;
-typedef struct { int val[4] } t_int4;
+typedef struct { int val[4]; } t_int4;
 #define TO_FLOAT_VEC4(x)	__builtin_convertvector((x), t_float4)
 #define SELECT(a, b, mask)	a;
 #else

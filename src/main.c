@@ -1,9 +1,9 @@
+#define SDL_MAIN_HANDLED
 #include "scop.h"
 #include "obj.h"
 #include "shaders.h"
 #include <stdio.h>
 #include <signal.h>
-#undef main
 
 static void setup_gl_attrubutes()
 {
@@ -68,10 +68,10 @@ int main(int argc, const char *argv[])
 	if (argc < 2 || argc > 3)
 		exit(scop_error("Wrong number of arguments\n"
 			"Should be:\n"
-			"scop filename.obj [--blocking(-b)]\n"));
+			"scop filename.obj [-b](blocking)\n"));
 	model.filepath = argv[1];
 	window = scop_initialize();
-	ft_vec_init(&model.vertecies, sizeof(t_vertex), 30000);
+	ft_vec_init(&model.vertecies, sizeof(t_vertex), 100);
 	ft_vec_init(&model.submeshes, sizeof(t_submesh), 1);
 	pthread_mutex_init(&model.lock, NULL);
 	pthread_create(&thread, NULL, parse_obj, &model);

@@ -11,11 +11,11 @@
 # define GLEW_STATIC
 #  include <GL/glew.h>
 # if _WIN32 || _WIN64 || __WIN32__
-#  define DEBUG_BREAK if (IsDebuggerPresent()) __debugbreak()
+#  define DEBUG_BREAK() if (IsDebuggerPresent()) __debugbreak()
 #  include <SDL.h>
 #  include <SDL_image.h>
 # else
-#  define DEBUG_BREAK 
+#  define DEBUG_BREAK()
 #  include <SDL2/SDL.h>
 #  include <SDL2/SDL_image.h>
 # endif

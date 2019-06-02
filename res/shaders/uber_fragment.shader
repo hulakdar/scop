@@ -40,8 +40,8 @@ uniform vec4 u_Diffuse = vec4(1.9, 1.9, 1.9, 1);
 uniform vec4 u_Ambient = vec4(0.4, 0.4, 0.5, 1);
 uniform vec4 u_Specular = vec4(1);
 const float Ambient_strength = .1f;
-const float Specular_strength = .5f;
-const float Diffuse_strength = 1;
+const float Specular_strength = 0.f;
+const float Diffuse_strength = 1.f;
 
 uniform sampler2D u_TextureD;
 uniform sampler2D u_TextureA;
@@ -65,11 +65,11 @@ vec4 get_ambient()
 
 vec4 get_diffuse(float shadow)
 {
-	float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir)) * Diffuse_strength;
+	float Diffuse_power = max(0, dot(vs_out.Normal, -g.light_dir)) * Diffuse_strength;
     Diffuse_power *= shadow;
 
 #if DIFFUSE == NORMAL
-	return vec4(vs_out.Normal,1);
+	return vec4(vs_out.NormalModelSpace,1);
 #elif DIFFUSE == TEXTURE
 	return texture(u_TextureD, vs_out.TexCoord) * Diffuse_power;
 #elif DIFFUSE == UNIFORM
@@ -81,10 +81,10 @@ vec4 get_diffuse(float shadow)
 
 vec4 get_specular(float shadow)
 {
-    vec3 viewDir = normalize(vs_out.FragPos.xyz);
+    vec4 viewDir = vec4(normalize(-vs_out.FragPos));
     vec3 reflectDir = reflect(-g.light_dir, vs_out.Normal); 
-    vec3 eyeReflectDir = reflect(viewDir * mat3(inverse(g.mvp)), vs_out.NormalModelSpace); 
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16);
+    vec4 eyeReflectDir = reflect(viewDir * inverse(g.mvp), vec4(vs_out.NormalModelSpace, 1)); 
+    //float spec = pow(max(dot(viewDir.xyz, reflectDir), 0.0), 16);
 #if SPECULAR == NORMAL
 	return vec4(vs_out.Normal,1) * spec;
 #elif SPECULAR == TEXTURE
@@ -92,7 +92,7 @@ vec4 get_specular(float shadow)
 #elif SPECULAR == UNIFORM
 	return u_Specular * Specular_strength * spec;
 #elif SPECULAR == CUBEMAP
-	return texture(u_Cubemap, eyeReflectDir) * Specular_strength;
+	return texture(u_Cubemap, eyeReflectDir.xyz) * Specular_strength;
 #endif
 }
 
@@ -123,8 +123,8 @@ void main()
 #else
     const float shadow_factor = 1.f;
 #endif
-    //vec4 color = get_diffuse(shadow_factor) + get_specular(shadow_factor) + get_ambient();
+    vec4 color = get_diffuse(shadow_factor) + get_specular(shadow_factor) + get_ambient();
     //color = vec4(pow(color.rgb, vec3(2.2f)), color.w);
-    vec4 color = fresnel(get_diffuse(shadow_factor), get_specular(shadow_factor)) + get_ambient();
+    //vec4 color = fresnel(get_diffuse(shadow_factor), get_specular(shadow_factor)) + get_ambient();
     o_color = color;
 }

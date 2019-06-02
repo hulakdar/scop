@@ -11,7 +11,7 @@ unsigned 	WindowShouldClose(SDL_Event e)
 unsigned	scop_error(const char *error)
 {
 	ft_putendl_fd(error, 2);
-	DEBUG_BREAK;
+	DEBUG_BREAK();
 	return -1;
 }
 
@@ -28,7 +28,7 @@ char		gl_check_error(const char *function, const char *file, int line)
 	GLenum error;
 	while ((error = glGetError()))
 	{
-		DEBUG_BREAK;
+		DEBUG_BREAK();
 	}
 	return 1;
 }
@@ -134,11 +134,11 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 		m_model(frame->angles, position, scale), m_world()),
 		frustum(perspective_top_right(50, 1, .6f), .5f, 7.5f));
 	frame->g_uniforms.light_transform =
-		m_model(frame->light_angles, position, scale);
+		m_model(frame->light_angles, (t_float4)(0), 1);
 	frame->g_uniforms.light_dir = 
-		mult_vec_matrix((t_float4) { 0, 0, 10 },
+		mult_vec_matrix((t_float4) { 0, 0, -1 },
 		mult_matrix(frame->g_uniforms.light_transform,
-			m_model(frame->angles, position, scale)));
+			frame->g_uniforms.mvp));
 	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),
 		&frame->g_uniforms, GL_DYNAMIC_DRAW));
 }

@@ -1,4 +1,5 @@
 #include "scop.h"
+#include "shaders.h"
 
 
 static void	setup_texture_sampler(GLenum texture_type)

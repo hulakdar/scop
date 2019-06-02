@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <fcntl.h>
-# define BUFF_SIZE 1023
+# define BUFF_SIZE 65536
 
 # if defined(WIN32) || defined(_WIN32) 
 # include <corecrt_io.h>
