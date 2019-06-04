@@ -7,9 +7,9 @@
 
 typedef struct	s_face
 {
-	int				pos_indx[4];
-	int				norm_indx[4];
-	int				uvs_indx[4];
+	int			pos_indx[16];
+	int			norm_indx[16];
+	int			uvs_indx[16];
 }				t_face;
 
 typedef enum	e_uniform_type

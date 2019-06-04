@@ -43,6 +43,7 @@ typedef struct	s_frame_info
 	t_depth				depth;
 	t_quad_data			depth_preview;
 	GLuint				uniform_buffer;
+	GLuint				default_texture;
 	GLenum				polygon_mode;
 	float				delta_time;
 	float				scale;

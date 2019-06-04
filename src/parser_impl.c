@@ -112,22 +112,21 @@ void fixup_normals(t_vector *vertecies, t_face face)
 __attribute__((noinline))
 void process_face(t_face face, t_obj *buffers, int count)
 {
-	int			i;
-
-	i = -1;
-	while (++i < 3)
-		push_vert(face, buffers, i);
+	push_vert(face, buffers, 0);
+	push_vert(face, buffers, 1);
+	push_vert(face, buffers, 2);
 	buffers->current_object->count += 3;
 	fixup_normals(&buffers->result->vertecies, face);
 	fixup_uvs(&buffers->result->vertecies, face);
-	if (count == 4)
+	while (count > 3)
 	{
-		i = -1;
-		while (++i < 4)
-			push_vert(face, buffers, i == 1 ? ++i : i);
+		push_vert(face, buffers, count - 4);
+		push_vert(face, buffers, count - 2);
+		push_vert(face, buffers, count - 1);
 		buffers->current_object->count += 3;
 		fixup_normals(&buffers->result->vertecies, face);
 		fixup_uvs(&buffers->result->vertecies, face);
+		count--;
 	}
 }
 
@@ -137,7 +136,7 @@ int parse_face(t_face *face, const char *line)
 	char		**tab = ft_strsplit(line, ' ');
 	const int	count = ft_tabcount(tab);
 
-	if (count > 4 || count < 3)
+	if (count > 16 || count < 3)
 		exit(scop_error("Wrong number of verts in face"));
 	ft_bzero(face, sizeof(t_face));
 	i = -1;
