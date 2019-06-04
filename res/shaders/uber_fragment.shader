@@ -4,7 +4,7 @@
 #define UV 4
 #define CUBEMAP 5
 
-//#define SHADOW 
+#define SHADOW 
 
 #ifndef DIFFUSE
 #define DIFFUSE UNIFORM

@@ -84,8 +84,11 @@ static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
 {
 	GLuint program;
 
-	if (submesh->shader_program)
+	if (frame->is_depth_pass)
+		program = frame->depth.shader;
+	else if (submesh->shader_program)
 		program = submesh->shader_program;
+
 	else
 		program = get_default_shader();
 	GLCALL(glUseProgram(program));
@@ -100,19 +103,33 @@ void		bind_buffers(t_buffers model_buffers)
 
 void		draw(t_frame_info *frame, t_model *model)
 {
+	bind_buffers(model->buffers);
+	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, frame->depth.buffer));
+	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
+	frame->is_depth_pass = 1;
+
+	//ft_vec_for_each(&model->submeshes, draw_submesh, frame);
+
+	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
+	frame->is_depth_pass = 0;
 	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
+	draw_quad(frame, frame->depth_preview);
 	bind_buffers(model->buffers);
-	GLCALL(glActiveTexture(GL_TEXTURE0));
-	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox.texture));
 	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-	draw_quad(frame, model->skybox);
+	//draw_quad(frame, model->skybox);
 }
 
 void prepare_frame_info(t_frame_info* frame)
 {
 	ft_bzero(frame, sizeof(t_frame_info));
+	frame->depth = create_depth();
+	frame->depth_preview.shader = compile_default_shader(
+		"res/shaders/quad_vertex.shader", "res/shaders/quad_depth.shader");
+	frame->depth_preview.texture = frame->depth.texture;
+	frame->depth_preview.texture_type = GL_TEXTURE_2D;
 	frame->polygon_mode = GL_FILL;
 	frame->scale = 1;
 	GLCALL(glGenBuffers(1, &frame->uniform_buffer));
@@ -132,9 +149,11 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 	position.w = 1;
 	frame->g_uniforms.mvp = mult_matrix(mult_matrix(
 		m_model(frame->angles, position, scale), m_world()),
-		frustum(perspective_top_right(50, 1, .6f), .5f, 7.5f));
-	frame->g_uniforms.light_transform =
-		m_model(frame->light_angles, (t_float4)(0), 1);
+		orthographic((t_float2) (1), .1f, 10));
+		//perspective(frustum(50, 1, .5f), .5f, 8));
+	frame->g_uniforms.light_transform = mult_matrix(
+		m_model(frame->light_angles, (t_float4)(0), 1),
+		orthographic((t_float2) (1), .1f, 1));
 	frame->g_uniforms.light_dir = 
 		mult_vec_matrix((t_float4) { 0, 0, -1 },
 		mult_matrix(frame->g_uniforms.light_transform,

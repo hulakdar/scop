@@ -1,7 +1,7 @@
 #include "math.h"
 #include "libft.h"
 
-t_float2 perspective_top_right(float angle_of_view, float imageAspectRatio, float near)
+t_float2 frustum(float angle_of_view, float imageAspectRatio, float near)
 {
 	float		right;
 	t_float2	tr;
@@ -64,7 +64,7 @@ t_m44	m_model(t_float2 angles, t_float4 position, float scale)
 }
 
 __attribute__((noinline))
-t_m44	frustum(t_float2 tr, float n, float f)
+t_m44	perspective(t_float2 tr, float n, float f)
 {
 	const float t = tr[0];
 	const float r = tr[1];
@@ -80,6 +80,27 @@ t_m44	frustum(t_float2 tr, float n, float f)
 	M.m[2][2] = -(f + n) / (f - n);
 	M.m[3][2] = -1;
 	M.m[2][3] = -2 * f * n / (f - n);
+	return M;
+}
+
+__attribute__((noinline))
+t_m44	orthographic(t_float2 tr, float n, float f)
+{
+	const float t = tr[0];
+	const float r = tr[1];
+	const float	b = -r;
+	const float	l = -t;
+	t_m44		M;
+
+	ft_bzero(&M, sizeof(t_m44));
+	M.m[0][0] = 2 / (r - l);
+	M.m[1][1] = 2 / (t - b);
+	M.m[2][2] = -2 / (f - n);
+
+	M.m[3][0] = -(r + l) / (r - l);
+	M.m[3][1] = -(t + b) / (t - b);
+	M.m[3][2] = -(f + n) / (f - n);
+	M.m[3][3] = 1;
 	return M;
 }
 

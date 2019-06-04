@@ -47,8 +47,9 @@ typedef struct	s_m44
 	};
 }				t_m44;
 
-t_float2	perspective_top_right(float angle_of_view, float imageAspectRatio, float n);
-t_m44		frustum(t_float2 tr, float n, float f);
+t_float2	frustum(float angle_of_view, float imageAspectRatio, float n);
+t_m44		perspective(t_float2 tr, float n, float f);
+t_m44		orthographic(t_float2 tr, float n, float f);
 t_float4	mult_vec_matrix(t_float4 in, t_m44 m);
 t_m44		mult_matrix(t_m44 lhs, t_m44 rhs);
 t_float4	cross_product(t_float4 lhs, t_float4 rhs);
