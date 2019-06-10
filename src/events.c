@@ -148,6 +148,7 @@ void prepare_frame_info(t_frame_info* frame)
 		&frame->g_uniforms, GL_DYNAMIC_DRAW));
 	GLCALL(glBindBufferBase(GL_UNIFORM_BUFFER, 0, frame->uniform_buffer));
 	frame->default_texture = create_texture_2d("res/default.jpg");
+	GLCALL(glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE));
 }
 
 void calculate_shader_uniforms(t_frame_info* frame, t_model * model)

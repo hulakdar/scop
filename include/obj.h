@@ -78,6 +78,23 @@ typedef struct	s_model
 	unsigned		is_dirty : 1;
 }				t_model;
 
+typedef enum	e_color_source
+{
+	DEFAULT,
+	UNIFORM,
+	TEXTURE,
+	OFF,
+	END
+}				t_color_source;
+
+typedef struct	s_material
+{
+	char*			name;
+	t_color_source	ambient;
+	t_color_source	diffuse;
+	t_color_source	specular;
+}				t_material;
+
 typedef struct	s_obj
 {
 	t_vector	positions;

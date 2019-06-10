@@ -53,7 +53,7 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 		exit(scop_error(message));
 	}
 	ft_vec_del(&source.lengths);
-	//ft_vec_destruct(&source.lines);
+	ft_vec_destruct(&source.lines);
 	return shader;
 }
 
