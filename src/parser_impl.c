@@ -49,9 +49,9 @@ void push_vert(t_face face, t_obj *buffers, int i)
 		new_vert.normal = *(t_float4 *)ft_vec_get(
 			&buffers->normals, face.norm_indx[i]);
 	ft_vec_pushback(&buffers->result->vertecies, &new_vert);
-	mask = TO_FLOAT_VEC4(new_vert.position < buffers->min_bounds);
+	mask = TO_FLOAT4(new_vert.position < buffers->min_bounds);
 	buffers->min_bounds = SELECT(new_vert.position, buffers->min_bounds, mask);
-	mask = TO_FLOAT_VEC4(new_vert.position > buffers->max_bounds);
+	mask = TO_FLOAT4(new_vert.position > buffers->max_bounds);
 	buffers->max_bounds = SELECT(new_vert.position, buffers->max_bounds, mask);
 }
 

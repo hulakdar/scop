@@ -63,8 +63,11 @@ vec4 get_ambient()
 
 vec4 get_diffuse(float shadow)
 {
-	float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir)) * Diffuse_strength;
-    Diffuse_power *= shadow;
+    /*
+        float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir)) * Diffuse_strength;
+        Diffuse_power *= shadow;
+    */
+	vec4 Diffuse_power = texture(u_CubemapBlurred, vs_out.NormalModelSpace);
 
 #if DIFFUSE == NORMAL
 	return vec4(vs_out.NormalModelSpace,1);
@@ -82,7 +85,7 @@ vec4 get_specular(float shadow)
     vec3 viewDir = normalize(vs_out.FragPos.xyz);
     vec3 reflectDir = reflect(-g.light_dir, vs_out.Normal); 
     vec3 eyeReflectDir = reflect(inverse(mat3(g.mvp)) * viewDir, vs_out.NormalModelSpace); 
-    //float spec = pow(max(dot(viewDir.xyz, reflectDir), 0.0), 16);
+    float spec = pow(max(dot(viewDir.xyz, reflectDir), 0.0), 16);
 #if SPECULAR == NORMAL
 	return vec4(vs_out.Normal,1) * spec;
 #elif SPECULAR == TEXTURE
@@ -90,7 +93,7 @@ vec4 get_specular(float shadow)
 #elif SPECULAR == UNIFORM
 	return u_Specular * Specular_strength * spec;
 #elif SPECULAR == CUBEMAP
-	return texture(u_Cubemap, eyeReflectDir.xyz) * Specular_strength;
+	return texture(u_Cubemap, eyeReflectDir.xyz) * Specular_strength * spec;
 #endif
 }
 

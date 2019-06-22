@@ -160,7 +160,7 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 	scale = -position.w;
 	position.w = 1;
 	frame->g_uniforms.mvp = mult_matrix(mult_matrix(
-		m_model(frame->angles, position, scale * 1.7), m_world()),
+		m_model(frame->angles, position, scale * 1.4), m_world()),
 		//orthographic((t_float2) (1), .1f, 10));
 		perspective(frustum(70, 1, .5f), .5f, 8));
 	frame->g_uniforms.light_transform = mult_matrix(

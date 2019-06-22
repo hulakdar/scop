@@ -16,8 +16,8 @@ typedef enum	e_uniform_type
 {
 	UT_VEC4,
 	UT_VEC2,
-	UT_UINT,
-	UT_SINT,
+	UT_SAMPLER2D,
+	UT_SAMPLER_CUBE,
 	UT_FLOAT
 }				t_uniform_type;
 
@@ -78,21 +78,13 @@ typedef struct	s_model
 	unsigned		is_dirty : 1;
 }				t_model;
 
-typedef enum	e_color_source
-{
-	DEFAULT,
-	UNIFORM,
-	TEXTURE,
-	OFF,
-	END
-}				t_color_source;
 
 typedef struct	s_material
 {
-	char*			name;
-	t_color_source	ambient;
-	t_color_source	diffuse;
-	t_color_source	specular;
+	char*		name;
+	t_uniform	ambient;
+	t_uniform	diffuse;
+	t_uniform	specular;
 }				t_material;
 
 typedef struct	s_obj

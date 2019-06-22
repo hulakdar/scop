@@ -18,7 +18,7 @@ typedef struct { float x; float y; float z; float w; } t_float4;
 typedef struct { t_float4 val[2]; } t_float8;
 typedef struct { t_float4 val[4]; } t_float16;
 typedef struct { int val[4]; } t_int4;
-#define TO_FLOAT_VEC4(x)	__builtin_convertvector((x), t_float4)
+#define TO_FLOAT4(x)	__builtin_convertvector((x), t_float4)
 #define SELECT(a, b, mask)	a;
 #else
 typedef float t_float16 __attribute__((ext_vector_type(16)));
@@ -26,7 +26,7 @@ typedef float t_float8 __attribute__((ext_vector_type(8)));
 typedef float t_float4 __attribute__((ext_vector_type(4)));
 typedef float t_float2 __attribute__((ext_vector_type(2)));
 typedef int t_int4 __attribute__((ext_vector_type(4)));
-#define TO_FLOAT_VEC4(x)	__builtin_convertvector((x), t_float4)
+#define TO_FLOAT4(x)	__builtin_convertvector((x), t_float4)
 #define SELECT(a, b, mask)	((b) * (-mask) + (a) * ( 1 - (-mask)))
 #endif
 
@@ -42,7 +42,6 @@ typedef struct	s_m44
 	union 
 	{
 	t_float4	m[4];
-	t_float8	half[2];
 	t_float16	val;
 	};
 }				t_m44;

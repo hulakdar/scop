@@ -38,8 +38,8 @@ typedef struct	s_frame_info
 	t_float4			position;
 	t_float2			angles;
 	t_float2			light_angles;
-	Uint64				last_time;
-	Uint64				current_time;
+	uint64_t			last_time;
+	uint64_t			current_time;
 	t_depth				depth;
 	t_quad_data			depth_preview;
 	GLuint				uniform_buffer;
