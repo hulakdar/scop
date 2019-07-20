@@ -117,11 +117,11 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_vector			ft_vec_new(size_t size, size_t init);
 void				*ft_vec_get(t_vector *vector, size_t index);
 void				*ft_vec_set(t_vector *vector, size_t index,
-															void *content);
+															const void *content);
 void				ft_vec_del(t_vector *vector);
 void				ft_vec_init(t_vector *vector, size_t size, size_t init);
 void				ft_vec_destruct(t_vector *vector);
-void				*ft_vec_pushback(t_vector *vector, void *content);
+void				*ft_vec_pushback(t_vector *vector, const void *content);
 void				*ft_vec_popback(t_vector *vector);
 void				*ft_vec_popfront(t_vector *vector);
 void				ft_vec_for_each(t_vector *vector,

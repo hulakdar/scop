@@ -7,10 +7,10 @@ OBJS_DIR    = ./obj
 HEADERS_DIR = ./include
 LIBFT_DIR   = ./libft
 
-HEADERS     = events.h obj.h scop.h shaders.h
+HEADERS     = events.h obj.h scop.h shaders.h gl_math.h
 HEADERS    := $(addprefix $(HEADERS_DIR)/, $(HEADERS))
 
-SRCS        = main.c events.c objparser.c parser_impl.c shaders.c
+SRCS        = main.c events.c objparser.c parser_impl.c shaders.c skybox.c texture.c gl_math.c  m44.c
 
 OBJS        = $(SRCS:.c=.o)
 

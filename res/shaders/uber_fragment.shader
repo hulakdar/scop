@@ -23,6 +23,7 @@ layout(std140) uniform global
     mat4    mvp;
     mat4    light_view;
     vec3    light_dir;
+    float   scale;
 }           g;
 
 in VS_OUT
@@ -39,8 +40,8 @@ out vec4 o_color;
 uniform vec4 u_Diffuse = vec4(1.9, 1.9, 1.9, 1);
 uniform vec4 u_Ambient = vec4(0.4, 0.4, 0.5, 1);
 uniform vec4 u_Specular = vec4(1);
-const float Ambient_strength = .0f;
-const float Specular_strength = 1.f;
+const float Ambient_strength = 1.f;
+const float Specular_strength = 0.f;
 const float Diffuse_strength = 0.f;
 
 uniform sampler2D u_TextureD;
@@ -51,7 +52,14 @@ uniform samplerCube  u_CubemapBlurred;
 
 vec4 get_ambient()
 {
+#if DIFFUSE == TEXTURE
 	vec4 D = texture(u_TextureD, vs_out.TexCoord);
+#elif DIFFUSE == UNIFORM
+	vec4 D = u_Diffuse;
+#else
+    vec4 D = vec4(1);
+#endif
+
 #if AMBIENT == NORMAL
 	return vec4(vs_out.Normal,1);
 #elif AMBIENT == UNIFORM
@@ -67,7 +75,7 @@ vec4 get_diffuse(float shadow)
         float Diffuse_power = max(0, dot(vs_out.Normal, g.light_dir)) * Diffuse_strength;
         Diffuse_power *= shadow;
     */
-	vec4 Diffuse_power = texture(u_CubemapBlurred, vs_out.NormalModelSpace);
+	vec4 Diffuse_power = texture(u_CubemapBlurred, vs_out.NormalModelSpace) * Diffuse_strength;
 
 #if DIFFUSE == NORMAL
 	return vec4(vs_out.NormalModelSpace,1);
@@ -85,15 +93,15 @@ vec4 get_specular(float shadow)
     vec3 viewDir = normalize(vs_out.FragPos.xyz);
     vec3 reflectDir = reflect(-g.light_dir, vs_out.Normal); 
     vec3 eyeReflectDir = reflect(inverse(mat3(g.mvp)) * viewDir, vs_out.NormalModelSpace); 
-    float spec = pow(max(dot(viewDir.xyz, reflectDir), 0.0), 16);
+    float spec = pow(max(dot(viewDir.xyz, reflectDir), 0.0), 16) * Specular_strength ;
 #if SPECULAR == NORMAL
 	return vec4(vs_out.Normal,1) * spec;
 #elif SPECULAR == TEXTURE
-	return texture(u_TextureS, vs_out.TexCoord) * Specular_strength * spec;
+	return texture(u_TextureS, vs_out.TexCoord)* spec;
 #elif SPECULAR == UNIFORM
 	return u_Specular * Specular_strength * spec;
 #elif SPECULAR == CUBEMAP
-	return texture(u_Cubemap, eyeReflectDir.xyz) * Specular_strength * spec;
+	return texture(u_Cubemap, eyeReflectDir) * Specular_strength;
 #endif
 }
 
@@ -125,7 +133,7 @@ void main()
     const float shadow_factor = 1.f;
 #endif
     vec4 color = get_diffuse(shadow_factor) + get_specular(shadow_factor) + get_ambient();
-    //color = vec4(pow(color.rgb, vec3(2.2f)), color.w);
+    //color = vec4(pow(color.rgb, vec3(2.2f)), 1);
     //vec4 color = fresnel(get_diffuse(shadow_factor), get_specular(shadow_factor)) + get_ambient();
     o_color = color;
 }

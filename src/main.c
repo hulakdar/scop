@@ -45,7 +45,7 @@ static void prepare_buffers(t_model *model)
 	bind_buffers(model->buffers);
 	GLCALL(glEnableVertexAttribArray(0));
 	GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
-		(GLvoid *)offsetof(t_vertex, position)));
+		(GLvoid *)0));
 	GLCALL(glEnableVertexAttribArray(1));
 	GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, normal)));
@@ -74,7 +74,7 @@ int main(int argc, const char *argv[])
 	ft_vec_init(&model.vertecies, sizeof(t_vertex), 100);
 	ft_vec_init(&model.submeshes, sizeof(t_submesh), 1);
 	pthread_mutex_init(&model.lock, NULL);
-	pthread_create(&thread, NULL, parse_obj, &model);
+	pthread_create(&thread, NULL, (void *(*)(void *))parse_obj, &model);
 	if (argc == 3 && !ft_strcmp(argv[2], "-b"))
 		pthread_join(thread, NULL);
 	prepare_buffers(&model);

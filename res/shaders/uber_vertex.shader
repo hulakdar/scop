@@ -7,6 +7,7 @@ layout(std140) uniform global
     mat4    mvp;
     mat4    light_view;
     vec3    light_dir;
+    float   scale;
 }           g;
 
 out VS_OUT
@@ -24,6 +25,6 @@ void main()
     vs_out.FragPosLight = g.light_view * iPosition;
 	vs_out.Normal = normalize(mat3(g.mvp) * iNormal);
 	vs_out.NormalModelSpace = normalize(iNormal);
-	vs_out.TexCoord = iTexCoord;
+	vs_out.TexCoord = iTexCoord * g.scale;
 	gl_Position = vs_out.FragPos;
 }

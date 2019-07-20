@@ -1,4 +1,5 @@
 #include "scop.h"
+#include "shaders.h"
 
 unsigned 	WindowShouldClose(SDL_Event e)
 {
@@ -33,17 +34,17 @@ char		gl_check_error(const char *function, const char *file, int line)
 	return 1;
 }
 
-t_bool		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
+void		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
 {
-	if (sym == '1')
+	if (sym == '1' && key_down)
 		frame->polygon_mode = GL_FILL;
-	else if (sym == '2')
+	else if (sym == '2' && key_down)
 		frame->polygon_mode = GL_LINE;
-	else if (sym == '3')
+	else if (sym == '3' && key_down)
 		frame->polygon_mode = GL_POINT;
 }
 
-t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
+void		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 {
 	if (e.state & SDL_BUTTON_LMASK)
 	{
@@ -57,7 +58,7 @@ t_bool		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 	}
 }
 
-t_bool	pre_draw(t_frame_info *frame)
+t_bool		pre_draw(t_frame_info *frame)
 {
 	SDL_Event	e;
 
@@ -96,6 +97,9 @@ static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
 	else
 		program = get_default_shader();
 	GLCALL(glUseProgram(program));
+	glUniform1i(glGetUniformLocation(get_default_shader(), "u_TextureD"), 0);
+	glUniform1i(glGetUniformLocation(get_default_shader(), "u_CubemapBlurred"), 1);
+	glUniform1i(glGetUniformLocation(get_default_shader(), "u_Cubemap"), 2);
 	GLCALL(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
 }
 
@@ -107,32 +111,33 @@ void		bind_buffers(t_buffers model_buffers)
 
 void		draw(t_frame_info *frame, t_model *model)
 {
-	bind_buffers(model->buffers);
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, frame->depth.buffer));
-	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
-	frame->is_depth_pass = 1;
+	//bind_buffers(model->buffers);
+	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, frame->depth.buffer));
+	//GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
+	//frame->is_depth_pass = 1;
 
-	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
+	//ft_vec_for_each(&model->submeshes, (t_for_each_predicate)draw_submesh, frame);
 
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
-	frame->is_depth_pass = 0;
-	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
-	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
-	draw_quad(frame, frame->depth_preview);
-	bind_buffers(model->buffers);
+	//frame->is_depth_pass = 0;
+	GLCALL(glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT));
+	//GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
+	//draw_quad(frame->depth_preview);
+	//bind_buffers();
+	GLCALL(glBindVertexArray(model->buffers.vertex_array));
 	GLCALL(glActiveTexture(GL_TEXTURE0));
 	GLCALL(glBindTexture(GL_TEXTURE_2D, frame->default_texture));
 	GLCALL(glActiveTexture(GL_TEXTURE1));
 	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox_blurred.texture));
-	glUseProgram(get_default_shader());
-	glUniform1i(glGetUniformLocation(get_default_shader(), "u_CubemapBlurred"), 1);
-	ft_vec_for_each(&model->submeshes, draw_submesh, frame);
-	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-	draw_quad(frame, model->skybox);
+	GLCALL(glActiveTexture(GL_TEXTURE2));
+	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox.texture));
+	ft_vec_for_each(&model->submeshes, (t_for_each_predicate)draw_submesh, frame);
+	//GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+	draw_quad(model->skybox);
 }
 
-void prepare_frame_info(t_frame_info* frame)
+void		prepare_frame_info(t_frame_info* frame)
 {
 	ft_bzero(frame, sizeof(t_frame_info));
 	frame->depth = create_depth();
@@ -147,11 +152,10 @@ void prepare_frame_info(t_frame_info* frame)
 	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),
 		&frame->g_uniforms, GL_DYNAMIC_DRAW));
 	GLCALL(glBindBufferBase(GL_UNIFORM_BUFFER, 0, frame->uniform_buffer));
-	frame->default_texture = create_texture_2d("res/default.jpg");
-	GLCALL(glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE));
+	frame->default_texture = create_texture_2d("res/default.png");
 }
 
-void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
+void		calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 {
 	t_float4 position;
 	float scale;
@@ -170,11 +174,12 @@ void calculate_shader_uniforms(t_frame_info* frame, t_model * model)
 		mult_vec_matrix((t_float4) { 0, 0, -1, 0 },
 		mult_matrix(frame->g_uniforms.light_transform,
 			frame->g_uniforms.mvp));
+	frame->g_uniforms.scale = scale;
 	GLCALL(glBufferSubData(GL_UNIFORM_BUFFER, 0,
 		sizeof(t_global_uniforms), &frame->g_uniforms));
 }
 
-int			event_loop(SDL_Window *window, t_model *model)
+void		event_loop(SDL_Window *window, t_model *model)
 {
 	t_frame_info	frame;
 

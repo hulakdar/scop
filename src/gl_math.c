@@ -1,4 +1,4 @@
-#include "math.h"
+#include "gl_math.h"
 #include "libft.h"
 
 t_float2 frustum(float angle_of_view, float imageAspectRatio, float near)

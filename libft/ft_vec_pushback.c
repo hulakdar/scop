@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	*ft_vec_pushback(t_vector *vector, void *content)
+void	*ft_vec_pushback(t_vector *vector, const void *content)
 {
 	void	*result;
 

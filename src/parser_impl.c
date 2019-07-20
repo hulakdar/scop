@@ -1,5 +1,6 @@
 #include "scop.h"
 #include <stdio.h>
+#include <math.h>
 
 void parse_vec3(const char *line, t_vector *buffer)
 {
@@ -29,8 +30,6 @@ void parse_vec2(const char *line, t_vector *buffer)
 	result.x = ft_atof(line + 1);
 	if ((line = ft_strchr(line + 1, ' ')))
 		result.y = ft_atof(line + 1);
-	else
-		__debugbreak();
 	ft_vec_pushback(buffer, &result);
 }
 
@@ -72,7 +71,6 @@ t_float4 calculate_normal(t_float4 *positions)
 __attribute__((noinline))
 void fixup_uvs(t_vector *vertecies, t_face face)
 {
-	const t_float4 zero = { 0,0,0,0 };
 	t_vertex *triangle;
 	t_float2	uvs[3];
 
@@ -92,7 +90,6 @@ void fixup_uvs(t_vector *vertecies, t_face face)
 __attribute__((noinline))
 void fixup_normals(t_vector *vertecies, t_face face)
 {
-	const t_float4 zero = { 0,0,0,0 };
 	t_vertex *triangle;
 	t_float4 positions[3];
 	t_float4 normal;

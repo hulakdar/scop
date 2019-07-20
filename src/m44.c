@@ -1,4 +1,4 @@
-#include "math.h"
+#include "gl_math.h"
 #include <stdint.h>
 
 t_m44	m_identity()

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	*ft_vec_set(t_vector *vect, size_t index, void *content)
+void	*ft_vec_set(t_vector *vect, size_t index, const void *content)
 {
 	void		*newarr;
 	size_t		new_size;

@@ -1,6 +1,7 @@
 
 #include "obj.h"
 #include <stdio.h>
+#include "scop.h"
 
 static void			prepare_obj(t_obj *obj)
 {
@@ -26,7 +27,7 @@ static inline void parse_single_line(const char *line, t_obj *obj)
 	else if (!ft_memcmp(line, "f ", 2))
 		parse_faces(line + 2, obj);
 	else if (!ft_memcmp(line, "mtlib ", 6))
-		parse_mtl(line + 6, obj);
+		;//parse_mtl(line + 6, obj);
 	else if (!ft_memcmp(line, "o ", 2))
 		create_new_submesh(obj);
 	else
@@ -56,4 +57,5 @@ void *parse_obj(t_model *model)
 	ft_vec_del(&obj.positions);
 	ft_vec_del(&obj.normals);
 	ft_vec_del(&obj.uvs);
+	return NULL;
 }

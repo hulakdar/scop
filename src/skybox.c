@@ -1,6 +1,7 @@
 
 #include "GL/glew.h"
 #include "scop.h"
+#include "shaders.h"
 
 static GLuint	create_skybox_shader()
 {
@@ -9,7 +10,7 @@ static GLuint	create_skybox_shader()
 	GLuint		result;
 
 	ft_vec_init(&defines, sizeof(char *), 32);
-	line = "#version 440\n";
+	line = "#version 410\n";
 	ft_vec_pushback(&defines, &line);
 	result = compile_shaders(
 		"res/shaders/skybox_vertex.shader",
@@ -53,7 +54,7 @@ GLuint			get_skybox_shader()
 }
 
 
-void			draw_quad(t_frame_info *frame, t_quad_data quad_data)
+void			draw_quad(t_quad_data quad_data)
 {
 	static t_buffers	quad;
 

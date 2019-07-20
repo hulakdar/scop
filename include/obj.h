@@ -1,7 +1,7 @@
 #ifndef OBJ_H
 # define OBJ_H
 # include "libft.h"
-# include "math.h"
+# include "gl_math.h"
 # include <GL/glew.h>
 # include "pthread.h"
 
@@ -74,7 +74,7 @@ typedef struct	s_model
 	t_buffers		buffers;
 	t_float4		offset_scale;
 	pthread_mutex_t	lock;
-	char			*filepath;
+	const char		*filepath;
 	unsigned		is_dirty : 1;
 }				t_model;
 
@@ -105,5 +105,6 @@ void	parse_vec3(const char *line, t_vector *buffer);
 void	parse_vec2(const char *line, t_vector *buffer);
 void	parse_faces(const char *line, t_obj *buffers);
 void	parse_mtl(const char *line, t_obj *buffers);
+void	create_new_submesh(t_obj * buffers);
 void	*parse_obj(t_model *model);
 #endif
