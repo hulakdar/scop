@@ -14,5 +14,5 @@
 
 void	ft_lstprint(t_list *ptr)
 {
-	WRITE(1, ptr->content, (unsigned)ptr->content_size - 1);
+	write(1, ptr->content, (unsigned)ptr->content_size - 1);
 }

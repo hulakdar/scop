@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	ft_vec_destruct(t_vector *ptr)
+void	ft_vec_destruct(t_vector *ptr, void (*destructor)(void*))
 {
 	size_t		i;
 	void		*content;
@@ -21,7 +21,7 @@ void	ft_vec_destruct(t_vector *ptr)
 	while (i < ptr->back)
 	{
 		if ((content = *(void **)(ptr->data + i * ptr->size_of_type)))
-			free(content);
+			destructor(content);
 		i++;
 	}
 	ft_vec_del(ptr);

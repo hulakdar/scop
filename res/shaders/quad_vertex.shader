@@ -4,8 +4,7 @@ layout(location = 0) in vec2 aPos;
 layout(std140) uniform global
 {
     mat4    mvp;
-    mat4    light_view;
-    vec3    LightDir;
+    float   scale;
 }           g;
 
 out VS_OUT

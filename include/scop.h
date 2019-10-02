@@ -30,8 +30,6 @@
 typedef	struct	s_global_uniforms
 {
 	t_m44		mvp;
-	t_m44		light_transform;
-	t_float4	light_dir;
 	float		scale;
 }				t_global_uniforms;
 
@@ -43,25 +41,27 @@ typedef struct	s_frame_info
 	t_float2			light_angles;
 	uint64_t			last_time;
 	uint64_t			current_time;
-	t_depth				depth;
-	t_quad_data			depth_preview;
 	GLuint				uniform_buffer;
 	GLuint				default_texture;
 	GLenum				polygon_mode;
 	float				delta_time;
 	float				scale;
 	uint_fast8_t		is_dirty : 1;
-	uint_fast8_t		is_depth_pass : 1;
 }				t_frame_info;
 
 typedef	uint_fast8_t t_bool;
 
+enum e_bool_values
+{
+	false = 0,
+	true = 1
+};
+
 unsigned 		scop_error(const char *error);
-t_depth			create_depth();
 GLuint			create_texture_cube(const char *folder);
 GLuint			create_texture_2d(const char *filename);
+GLuint			get_default_texture();
 void			draw_quad(t_quad_data quad_data);
-
-
+t_bool			update(t_frame_info* frame);
 
 #endif

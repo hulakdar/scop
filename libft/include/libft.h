@@ -16,16 +16,12 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <fcntl.h>
-# define BUFF_SIZE 1024 * 4
+# define BUFF_SIZE 1024 * 4 - 1
 
 # if defined(WIN32) || defined(_WIN32) 
-# include <corecrt_io.h>
-#  define WRITE _write
-#  define READ _read
+#  include <corecrt_io.h>
 # else
-# include <unistd.h>
-#  define WRITE write
-#  define READ read
+#  include <unistd.h>
 # endif
 
 typedef struct		s_array
@@ -120,7 +116,7 @@ void				*ft_vec_set(t_vector *vector, size_t index,
 															const void *content);
 void				ft_vec_del(t_vector *vector);
 void				ft_vec_init(t_vector *vector, size_t size, size_t init);
-void				ft_vec_destruct(t_vector *vector);
+void				ft_vec_destruct(t_vector *vector, void (*destructor)(void *));
 void				*ft_vec_pushback(t_vector *vector, const void *content);
 void				*ft_vec_popback(t_vector *vector);
 void				*ft_vec_popfront(t_vector *vector);

@@ -224,15 +224,21 @@
     <ClCompile Include="libft\ft_atoull.c" />
     <ClCompile Include="libft\ft_wordlen.c" />
     <ClCompile Include="libft\ft_intpow.c" />
+    <ClCompile Include="src\drawing.c" />
+    <ClCompile Include="src\error.c" />
     <ClCompile Include="src\events.c" />
+    <ClCompile Include="src\frame_loop.c" />
     <ClCompile Include="src\gl_math.c" />
     <ClCompile Include="src\m44.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\material.c" />
     <ClCompile Include="src\mtlparser.c" />
     <ClCompile Include="src\objparser.c" />
     <ClCompile Include="src\parser_impl.c" />
+    <ClCompile Include="src\parse_utils.c" />
     <ClCompile Include="src\shaders.c" />
     <ClCompile Include="src\skybox.c" />
+    <ClCompile Include="src\submesh.c" />
     <ClCompile Include="src\texture.c" />
   </ItemGroup>
   <ItemGroup>

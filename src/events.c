@@ -1,7 +1,8 @@
+
 #include "scop.h"
 #include "shaders.h"
 
-unsigned 	WindowShouldClose(SDL_Event e)
+static unsigned 	WindowShouldClose(SDL_Event e)
 {
 	return (e.type == SDL_QUIT
 		|| (e.type == SDL_WINDOWEVENT
@@ -9,32 +10,7 @@ unsigned 	WindowShouldClose(SDL_Event e)
 		|| (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE));
 }
 
-unsigned	scop_error(const char *error)
-{
-	ft_putendl_fd(error, 2);
-	DEBUG_BREAK();
-	return -1;
-}
-
-void		gl_clear_error()
-{
-	while (glGetError());
-}
-
-char		gl_check_error(const char *function, const char *file, int line)
-{
-	(void)function;
-	(void)file;
-	(void)line;
-	GLenum error;
-	while ((error = glGetError()))
-	{
-		DEBUG_BREAK();
-	}
-	return 1;
-}
-
-void		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
+static void		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
 {
 	if (sym == '1' && key_down)
 		frame->polygon_mode = GL_FILL;
@@ -44,7 +20,7 @@ void		handle_keyboard(SDL_Keycode sym, t_frame_info *frame, unsigned key_down)
 		frame->polygon_mode = GL_POINT;
 }
 
-void		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
+static void		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 {
 	if (e.state & SDL_BUTTON_LMASK)
 	{
@@ -58,7 +34,7 @@ void		handle_mouse_buttons(SDL_MouseMotionEvent e, t_frame_info *frame)
 	}
 }
 
-t_bool		pre_draw(t_frame_info *frame)
+t_bool		update(t_frame_info *frame)
 {
 	SDL_Event	e;
 
@@ -77,127 +53,3 @@ t_bool		pre_draw(t_frame_info *frame)
 	return 1;
 }
 
-GLuint		get_default_shader()
-{
-	static GLuint default_shader;
-
-	if (default_shader == 0)
-		default_shader = compile_default_shader("res/shaders/uber_vertex.shader", "res/shaders/uber_fragment.shader");
-	return default_shader;
-}
-
-static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
-{
-	GLuint program;
-
-	if (frame->is_depth_pass)
-		program = frame->depth.shader;
-	else if (submesh->shader_program)
-		program = submesh->shader_program;
-	else
-		program = get_default_shader();
-	GLCALL(glUseProgram(program));
-	glUniform1i(glGetUniformLocation(get_default_shader(), "u_TextureD"), 0);
-	glUniform1i(glGetUniformLocation(get_default_shader(), "u_CubemapBlurred"), 1);
-	glUniform1i(glGetUniformLocation(get_default_shader(), "u_Cubemap"), 2);
-	GLCALL(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
-}
-
-void		bind_buffers(t_buffers model_buffers)
-{
-	GLCALL(glBindVertexArray(model_buffers.vertex_array));
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, model_buffers.vertex_buffer));
-}
-
-void		draw(t_frame_info *frame, t_model *model)
-{
-	//bind_buffers(model->buffers);
-	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, frame->depth.buffer));
-	//GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
-	//frame->is_depth_pass = 1;
-
-	//ft_vec_for_each(&model->submeshes, (t_for_each_predicate)draw_submesh, frame);
-
-	//GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
-	//frame->is_depth_pass = 0;
-	GLCALL(glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT));
-	//GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
-	//draw_quad(frame->depth_preview);
-	//bind_buffers();
-	GLCALL(glBindVertexArray(model->buffers.vertex_array));
-	GLCALL(glActiveTexture(GL_TEXTURE0));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, frame->default_texture));
-	GLCALL(glActiveTexture(GL_TEXTURE1));
-	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox_blurred.texture));
-	GLCALL(glActiveTexture(GL_TEXTURE2));
-	GLCALL(glBindTexture(GL_TEXTURE_CUBE_MAP, model->skybox.texture));
-	ft_vec_for_each(&model->submeshes, (t_for_each_predicate)draw_submesh, frame);
-	//GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-	draw_quad(model->skybox);
-}
-
-void		prepare_frame_info(t_frame_info* frame)
-{
-	ft_bzero(frame, sizeof(t_frame_info));
-	frame->depth = create_depth();
-	frame->depth_preview.shader = compile_default_shader(
-		"res/shaders/quad_vertex.shader", "res/shaders/quad_depth.shader");
-	frame->depth_preview.texture = frame->depth.texture;
-	frame->depth_preview.texture_type = GL_TEXTURE_2D;
-	frame->polygon_mode = GL_FILL;
-	frame->scale = 1;
-	GLCALL(glGenBuffers(1, &frame->uniform_buffer));
-	GLCALL(glBindBuffer(GL_UNIFORM_BUFFER, frame->uniform_buffer));
-	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),
-		&frame->g_uniforms, GL_DYNAMIC_DRAW));
-	GLCALL(glBindBufferBase(GL_UNIFORM_BUFFER, 0, frame->uniform_buffer));
-	frame->default_texture = create_texture_2d("res/default.png");
-}
-
-void		calculate_shader_uniforms(t_frame_info* frame, t_model * model)
-{
-	t_float4 position;
-	float scale;
-
-	position = -model->offset_scale;
-	scale = -position.w;
-	position.w = 1;
-	frame->g_uniforms.mvp = mult_matrix(mult_matrix(
-		m_model(frame->angles, position, scale * 1.4), m_world()),
-		//orthographic((t_float2) (1), .1f, 10));
-		perspective(frustum(70, 1, .5f), .5f, 8));
-	frame->g_uniforms.light_transform = mult_matrix(
-		m_model(frame->light_angles, (t_float4)(0), 1),
-		orthographic((t_float2) (1), -1, 1));
-	frame->g_uniforms.light_dir = 
-		mult_vec_matrix((t_float4) { 0, 0, -1, 0 },
-		mult_matrix(frame->g_uniforms.light_transform,
-			frame->g_uniforms.mvp));
-	frame->g_uniforms.scale = scale;
-	GLCALL(glBufferSubData(GL_UNIFORM_BUFFER, 0,
-		sizeof(t_global_uniforms), &frame->g_uniforms));
-}
-
-void		event_loop(SDL_Window *window, t_model *model)
-{
-	t_frame_info	frame;
-
-	prepare_frame_info(&frame);
-	while (pre_draw(&frame))
-	{
-		calculate_shader_uniforms(&frame, model);
-		pthread_mutex_lock(&model->lock);
-		if (model->is_dirty)
-		{
-			bind_buffers(model->buffers);
-			GLCALL(glBufferData(GL_ARRAY_BUFFER,
-				model->vertecies.back * model->vertecies.size_of_type,
-				model->vertecies.data, GL_STATIC_DRAW));
-			model->is_dirty = 0;
-		}
-		draw(&frame, model);
-		pthread_mutex_unlock(&model->lock);
-		SDL_GL_SwapWindow(window);
-	}
-}

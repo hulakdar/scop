@@ -5,6 +5,8 @@
 # include <GL/glew.h>
 # include "pthread.h"
 
+typedef pthread_mutex_t t_lock;
+
 typedef struct	s_face
 {
 	int			pos_indx[16];
@@ -12,22 +14,28 @@ typedef struct	s_face
 	int			uvs_indx[16];
 }				t_face;
 
+typedef enum	e_attribute
+{
+	A_DIFFUSE,
+	A_AMBIENT,
+	A_SPECULAR,
+	A_SPECULAR_POW,
+	A_TRANSLUCENCY
+}				t_attribute;
+
 typedef enum	e_uniform_type
 {
+	UT_NONE,
 	UT_VEC4,
-	UT_VEC2,
 	UT_SAMPLER2D,
-	UT_SAMPLER_CUBE,
 	UT_FLOAT
 }				t_uniform_type;
 
 typedef union	u_uniform_data
 {
 	t_float4	vec4;
-	t_float2	vec2;
 	float		vec1;
 	GLuint		uint;
-	GLint		sint;
 }				t_uniform_data;
 
 typedef struct  s_uniform
@@ -35,14 +43,6 @@ typedef struct  s_uniform
 	t_uniform_type	type;
 	t_uniform_data	data;
 }				t_uniform;
-
-typedef struct	s_submesh
-{
-	size_t		start;
-	size_t		count;
-	t_vector	uniforms;
-	GLuint		shader_program;
-}				t_submesh;
 
 typedef struct  s_buffers
 {
@@ -57,27 +57,18 @@ typedef struct	s_quad_data
 	GLenum		texture_type;
 }				t_quad_data;
 
-typedef struct	s_depth
-{
-	GLuint		buffer;
-	GLuint		shader;
-	GLuint		texture;
-}				t_depth;
-
-
 typedef struct	s_model
 {
-	t_vector		vertecies;
-	t_vector		submeshes;
-	t_quad_data		skybox;
-	t_quad_data		skybox_blurred;
-	t_buffers		buffers;
-	t_float4		offset_scale;
-	pthread_mutex_t	lock;
-	const char		*filepath;
-	unsigned		is_dirty : 1;
+	t_vector	vertecies;
+	t_vector	submeshes;
+	t_quad_data	skybox;
+	t_quad_data	skybox_blurred;
+	t_buffers	buffers;
+	t_float4	offset_scale;
+	t_lock		lock;
+	char		*filepath;
+	unsigned	is_dirty : 1;
 }				t_model;
-
 
 typedef struct	s_material
 {
@@ -85,26 +76,37 @@ typedef struct	s_material
 	t_uniform	ambient;
 	t_uniform	diffuse;
 	t_uniform	specular;
+	t_uniform	specular_power;
+	t_uniform	translucency;
 }				t_material;
+
+typedef struct	s_submesh
+{
+	size_t		start;
+	size_t		count;
+	GLuint		shader_program;
+}				t_submesh;
 
 typedef struct	s_obj
 {
 	t_vector	positions;
 	t_vector	uvs;
 	t_vector	normals;
+	t_vector	materials;
 	t_float4	min_bounds;
 	t_float4	max_bounds;
 	t_model		*result;
 	t_submesh	*current_object;
+	t_material	*current_material;
 	size_t		current_index;
 	unsigned	no_uv : 1;
 	unsigned	no_normals : 1;
 }				t_obj;
 
-void	parse_vec3(const char *line, t_vector *buffer);
-void	parse_vec2(const char *line, t_vector *buffer);
-void	parse_faces(const char *line, t_obj *buffers);
-void	parse_mtl(const char *line, t_obj *buffers);
-void	create_new_submesh(t_obj * buffers);
-void	*parse_obj(t_model *model);
+t_float4	parse_vec3(const char *line);
+t_float2	parse_vec2(const char *line);
+void		parse_faces(const char *line, t_obj *buffers);
+void		parse_mtl(const char *line, t_obj *buffers);
+void		create_new_submesh(t_obj * buffers);
+void		*parse_obj(t_model *model);
 #endif

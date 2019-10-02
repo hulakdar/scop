@@ -10,23 +10,14 @@ static void	setup_texture_sampler(GLenum texture_type)
 	GLCALL(glTexParameteri(texture_type, GL_TEXTURE_WRAP_T, GL_REPEAT));
 }
 
-t_depth	create_depth()
+GLuint	get_default_texture()
 {
-	t_depth	result;
+	static GLuint default_texture;
 
-	GLCALL(glGenTextures(1, &result.texture));
-	GLCALL(glBindTexture(GL_TEXTURE_2D, result.texture));
-	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		SCREEN_W, SCREEN_H, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
-	setup_texture_sampler(GL_TEXTURE_2D);
-	GLCALL(glGenFramebuffers(1, &result.buffer));
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, result.buffer));
-	GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, result.texture, 0));
-	GLCALL(glDrawBuffer(GL_NONE));
-	GLCALL(glReadBuffer(GL_NONE));
-	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-	result.shader = compile_default_shader("res/shaders/depth_vertex.shader", "res/shaders/depth_fragment.shader");
-	return result;
+	if (default_texture)
+		return default_texture;
+	default_texture = create_texture_2d("res/default.png");
+	return default_texture;
 }
 
 GLuint		create_texture_cube(const char *folder)
@@ -49,8 +40,8 @@ GLuint		create_texture_cube(const char *folder)
 		free(filename);
 		if (!local_buffer)
 			exit(scop_error(IMG_GetError()));
-		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
-			local_buffer->w, local_buffer->h, 0, GL_BGRA, GL_UNSIGNED_BYTE,
+		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
+			local_buffer->w, local_buffer->h, 0, GL_RGB, GL_UNSIGNED_BYTE,
 			local_buffer->pixels));
 		SDL_FreeSurface(local_buffer);
 	}

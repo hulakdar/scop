@@ -1,6 +1,5 @@
 #include "shaders.h"
 #include "scop.h"
-//#include <malloc.h>
 
 void prepend_define(const char **define, t_shader_source_array *arrays)
 {
@@ -53,7 +52,7 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 		exit(scop_error(message));
 	}
 	ft_vec_del(&source.lengths);
-	ft_vec_destruct(&source.lines);
+	ft_vec_destruct(&source.lines, free);
 	return shader;
 }
 

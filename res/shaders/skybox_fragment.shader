@@ -6,8 +6,7 @@ in vec3 TexCoords;
 layout(std140) uniform global
 {
     mat4    mvp;
-    mat4    light_view;
-    vec3    LightDir;
+    float   scale;
 }           g;
 
 uniform samplerCube skybox;

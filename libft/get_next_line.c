@@ -53,7 +53,7 @@ static int	hard_work(t_array *tmp, int fd, char **line)
 	arr = *tmp;
 	while (1)
 	{
-		if (!arr.size && (arr.size = READ(fd, arr.array, BUFF_SIZE)) < 1)
+		if (!arr.size && (arr.size = read(fd, arr.array, BUFF_SIZE)) < 1)
 		{
 			if (*line)
 				break ;
@@ -76,7 +76,7 @@ int			get_next_line(const int fd, char **line)
 	if (fd < 0 || !line || fd > 44)
 		return (-1);
 	*line = NULL;
-	if (READ(fd, NULL, 0) < 0)
+	if (read(fd, NULL, 0) < 0)
 		return (-1);
 	return (hard_work(&(buff[fd]), fd, line));
 }

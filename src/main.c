@@ -35,6 +35,7 @@ static SDL_Window *scop_initialize()
 	if ((Result = glewInit()) != GLEW_OK)
 		exit(scop_error((const char *)glewGetErrorString(Result)));
 	GLCALL(glEnable(GL_DEPTH_TEST));
+	get_default_texture();
 	return window;
 }
 
