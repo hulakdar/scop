@@ -26,8 +26,7 @@ void set_uniforms(GLuint result, t_uniform mat, t_attribute attrib)
 
 	if (mat.type == UT_VEC4)
 		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
-			glUniform4f(location, mat.data.vec4.x, mat.data.vec4.y,
-								mat.data.vec4.z, mat.data.vec4.w);
+			glUniform4fv(location,1, &mat.data.vec4);
 	if (mat.type == UT_FLOAT)
 		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
 			glUniform1f(location, mat.data.vec1);
@@ -45,17 +44,9 @@ GLuint generate_shader(t_material *mat)
 	ft_vec_init(&defines, sizeof(char *), 4);
 	ft_vec_pushback(&defines, &line);
 	add_defines(&defines, mat->diffuse, A_DIFFUSE);
-	add_defines(&defines, mat->ambient, A_AMBIENT);
-	add_defines(&defines, mat->specular, A_SPECULAR);
-	add_defines(&defines, mat->specular_power, A_SPECULAR_POW);
-	add_defines(&defines, mat->translucency, A_TRANSLUCENCY);
 	result = compile_shaders( "res/shaders/uber_vertex.shader",
 		"res/shaders/uber_fragment.shader", defines);
 	set_uniforms(result, mat->diffuse, A_DIFFUSE);
-	set_uniforms(result, mat->ambient, A_AMBIENT);
-	set_uniforms(result, mat->specular, A_SPECULAR);
-	set_uniforms(result, mat->specular_power, A_SPECULAR_POW);
-	set_uniforms(result, mat->translucency, A_TRANSLUCENCY);
 	ft_vec_destruct(&defines, free);
 	return result;
 }

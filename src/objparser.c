@@ -53,8 +53,15 @@ static void handle_vec(const char *line, t_vector *buffer, t_bool is_vec3)
 	ft_vec_pushback(buffer, result);
 }
 
+static void set_mtl(const char *line, t_obj *obj)
+{
+
+}
+
 static inline void parse_single_line(const char *line, t_obj *obj)
 {
+	while (!ft_isprint(*line))
+		line++;
 	if (!ft_memcmp(line, "v ", 2))
 		handle_vec(line + 2, &obj->positions, true);
 	else if (!ft_memcmp(line, "vn ", 3))
@@ -64,7 +71,9 @@ static inline void parse_single_line(const char *line, t_obj *obj)
 	else if (!ft_memcmp(line, "f ", 2))
 		parse_faces(line + 2, obj);
 	else if (!ft_memcmp(line, "mtllib ", 7))
-		;// parse_mtl(line + 7, obj);
+		parse_mtl(line + 7, obj);
+	else if (!ft_memcmp(line, "usemtl ", 7))
+		set_mtl(line + 7, obj);
 	else if (!ft_memcmp(line, "o ", 2))
 		create_new_submesh(obj);
 	else

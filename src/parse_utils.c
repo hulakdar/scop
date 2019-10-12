@@ -1,13 +1,13 @@
 #include "obj.h"
 
-t_float4 calculate_normal(t_float4 *positions)
+t_float4 calculate_normal(t_float4 p1, t_float4 p2, t_float4 p3 )
 {
 	t_float4 normal;
 	t_float4 u;
 	t_float4 v;
 
-	u = positions[1] - positions[0];
-	v = positions[2] - positions[0];
+	u = p2 - p1;
+	v = p3 - p1;
 	normal = cross_product(u, v);
 	return normalize(normal);
 }

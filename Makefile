@@ -1,6 +1,6 @@
 NAME        = scop
 CC          = gcc
-CFLAGS      = -Wall -Wextra -Werror- -g
+CFLAGS      = -Wall -Wextra -Werror- -g -mtune=native -O3 -march=native
 
 SRCS_DIR    = ./src
 OBJS_DIR    = ./obj

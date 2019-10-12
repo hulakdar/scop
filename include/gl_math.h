@@ -48,10 +48,12 @@ t_m44		perspective(t_float2 tr, float n, float f);
 t_m44		orthographic(t_float2 tr, float n, float f);
 t_float4	mult_vec_matrix(t_float4 in, t_m44 m);
 t_m44		mult_matrix(t_m44 lhs, t_m44 rhs);
+t_float4	calculate_normal(t_float4 p1, t_float4 p2, t_float4 p3 );
 t_float4	cross_product(t_float4 lhs, t_float4 rhs);
 t_float4	normalize(t_float4 v);
 t_m44		m_identity();
 t_m44		m_look_at(t_float4 from, t_float4 to);
 t_m44		m_model(t_float2 angles, t_float4 position, float scale);
 t_m44		m_world();
+
 

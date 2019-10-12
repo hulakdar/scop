@@ -43,7 +43,7 @@ void fixup_normals(t_vector *vertecies, t_face face)
 	positions[0] = triangle[0].position;
 	positions[1] = triangle[1].position;
 	positions[2] = triangle[2].position;
-	normal = calculate_normal(positions);
+	normal = calculate_normal(positions[0], positions[1], positions[2]);
 	triangle[0].normal = normal;
 	triangle[1].normal = normal;
 	triangle[2].normal = normal;

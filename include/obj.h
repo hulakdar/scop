@@ -31,9 +31,10 @@ typedef enum	e_uniform_type
 	UT_FLOAT
 }				t_uniform_type;
 
+__attribute__((aligned(128)))
 typedef union	u_uniform_data
 {
-	t_float4	vec4;
+	float		vec4[4];
 	float		vec1;
 	GLuint		uint;
 }				t_uniform_data;
@@ -70,14 +71,12 @@ typedef struct	s_model
 	unsigned	is_dirty : 1;
 }				t_model;
 
+__attribute__((aligned(128)))
 typedef struct	s_material
 {
-	char*		name;
-	t_uniform	ambient;
 	t_uniform	diffuse;
-	t_uniform	specular;
-	t_uniform	specular_power;
-	t_uniform	translucency;
+	char*		name;
+	char buffer[512 - sizeof(t_uniform) - sizeof(char*)];
 }				t_material;
 
 typedef struct	s_submesh
