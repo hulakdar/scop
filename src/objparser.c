@@ -68,7 +68,10 @@ static inline void parse_single_line(const char *line, t_obj *obj)
 	else if (!ft_memcmp(line, "o ", 2))
 		create_new_submesh(obj);
 	else
-		printf("Unknown in .mtl: \n%s\n", line);
+	{
+		ft_putendl("Unknown in .obj: ");
+		ft_putendl(line);
+	}
 }
 
 void *parse_obj(t_model *model)

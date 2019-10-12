@@ -8,9 +8,7 @@ t_float4 calculate_normal(t_float4 *positions)
 
 	u = positions[1] - positions[0];
 	v = positions[2] - positions[0];
-	normal.x = u.y * v.z - u.z * v.y;
-	normal.y = u.z * v.x - u.x * v.z;
-	normal.z = u.x * v.y - u.y * v.x;
+	normal = cross_product(u, v);
 	return normalize(normal);
 }
 

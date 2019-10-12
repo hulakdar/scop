@@ -116,10 +116,12 @@ t_float4 cross_product(t_float4 lhs, t_float4 rhs)
 
 t_float4 normalize(t_float4 v)
 {
-	float		length;
+	float		length_squared;
+	float		recip;
 	t_float4	squared;
 
 	squared = v * v;
-	length = squared.x + squared.y + squared.z;
-	return v / sqrtf(length);
+	length_squared = squared.x + squared.y + squared.z;
+	recip = 1.0 / sqrtf(length_squared);
+	return v * recip;
 }

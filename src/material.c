@@ -1,5 +1,6 @@
 
 #include "scop.h"
+#include "shaders.h"
 
 void add_defines(t_vector* defines, t_uniform mat, t_attribute attrib)
 {
@@ -23,22 +24,16 @@ void set_uniforms(GLuint result, t_uniform mat, t_attribute attrib)
 		"u_TextureDiffuse", "u_TextureAmbient", "u_TextureSpecular", "u_TextureSpecularPow", "u_TextureTranslucency", };
 	GLint location;
 
-
 	if (mat.type == UT_VEC4)
 		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
-		{
-			glUniform3fv(location, 1, &mat.data.vec4);
-		}
+			glUniform4f(location, mat.data.vec4.x, mat.data.vec4.y,
+								mat.data.vec4.z, mat.data.vec4.w);
 	if (mat.type == UT_FLOAT)
 		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
-		{
 			glUniform1f(location, mat.data.vec1);
-		}
 	if (mat.type == UT_SAMPLER2D)
 		if ((location = glGetUniformLocation(result, uniforms[attrib + 5])) >= 0)
-		{
 			glUniform1ui(location, mat.data.uint);
-		}
 }
 
 GLuint generate_shader(t_material *mat)
@@ -54,10 +49,8 @@ GLuint generate_shader(t_material *mat)
 	add_defines(&defines, mat->specular, A_SPECULAR);
 	add_defines(&defines, mat->specular_power, A_SPECULAR_POW);
 	add_defines(&defines, mat->translucency, A_TRANSLUCENCY);
-	result = compile_shaders(
-		"res/shaders/uber_vertex.shader",
-		"res/shaders/uber_fragment.shader",
-		defines);
+	result = compile_shaders( "res/shaders/uber_vertex.shader",
+		"res/shaders/uber_fragment.shader", defines);
 	set_uniforms(result, mat->diffuse, A_DIFFUSE);
 	set_uniforms(result, mat->ambient, A_AMBIENT);
 	set_uniforms(result, mat->specular, A_SPECULAR);

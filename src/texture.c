@@ -41,7 +41,7 @@ GLuint		create_texture_cube(const char *folder)
 		if (!local_buffer)
 			exit(scop_error(IMG_GetError()));
 		GLCALL(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
-			local_buffer->w, local_buffer->h, 0, GL_RGB, GL_UNSIGNED_BYTE,
+			local_buffer->w, local_buffer->h, 0, GL_BGRA, GL_UNSIGNED_BYTE,
 			local_buffer->pixels));
 		SDL_FreeSurface(local_buffer);
 	}

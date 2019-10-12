@@ -1,5 +1,6 @@
 
 #include "scop.h"
+#include "shaders.h"
 
 GLuint		get_default_shader()
 {
@@ -19,6 +20,7 @@ void apply_material(t_material material)
 
 static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
 {
+(void)frame;
 	GLuint program;
 
 	if (submesh->shader_program)

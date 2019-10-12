@@ -1,6 +1,6 @@
 NAME        = scop
 CC          = gcc
-CFLAGS      = -Wall -Wextra -Werror -g
+CFLAGS      = -Wall -Wextra -Werror- -g
 
 SRCS_DIR    = ./src
 OBJS_DIR    = ./obj
@@ -10,7 +10,7 @@ LIBFT_DIR   = ./libft
 HEADERS     = events.h obj.h scop.h shaders.h gl_math.h
 HEADERS    := $(addprefix $(HEADERS_DIR)/, $(HEADERS))
 
-SRCS        = main.c events.c objparser.c parser_impl.c shaders.c skybox.c texture.c gl_math.c  m44.c
+SRCS        = main.c events.c objparser.c parser_impl.c shaders.c skybox.c texture.c gl_math.c  m44.c drawing.c error.c frame_loop.c material.c mtlparser.c parse_utils.c submesh.c
 
 OBJS        = $(SRCS:.c=.o)
 

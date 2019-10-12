@@ -17,7 +17,7 @@
 #  include <SDL_image.h>
 # else
 #  define GLCALL(x) x
-#  define DEBUG_BREAK()
+#  define DEBUG_BREAK() __builtin_trap()
 #  include <SDL2/SDL.h>
 #  include <SDL2/SDL_image.h>
 # endif
@@ -30,6 +30,8 @@
 typedef	struct	s_global_uniforms
 {
 	t_m44		mvp;
+    t_m44    	light_view;
+    t_float4    light_dir;
 	float		scale;
 }				t_global_uniforms;
 
@@ -61,6 +63,7 @@ unsigned 		scop_error(const char *error);
 GLuint			create_texture_cube(const char *folder);
 GLuint			create_texture_2d(const char *filename);
 GLuint			get_default_texture();
+void			draw(t_frame_info *frame, t_model *model);
 void			draw_quad(t_quad_data quad_data);
 t_bool			update(t_frame_info* frame);
 

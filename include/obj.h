@@ -66,7 +66,7 @@ typedef struct	s_model
 	t_buffers	buffers;
 	t_float4	offset_scale;
 	t_lock		lock;
-	char		*filepath;
+	const char	*filepath;
 	unsigned	is_dirty : 1;
 }				t_model;
 
@@ -106,6 +106,8 @@ typedef struct	s_obj
 t_float4	parse_vec3(const char *line);
 t_float2	parse_vec2(const char *line);
 void		parse_faces(const char *line, t_obj *buffers);
+void		fixup_normals(t_vector *verts, t_face face);
+void		fixup_uvs(t_vector *verts, t_face face);
 void		parse_mtl(const char *line, t_obj *buffers);
 void		create_new_submesh(t_obj * buffers);
 void		*parse_obj(t_model *model);
