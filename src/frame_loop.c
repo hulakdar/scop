@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   frame_loop.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:40:17 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:40:58 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "scop.h"
 
-void		prepare_frame_info(t_frame_info* frame)
+void		prepare_frame_info(t_frame_info *frame)
 {
 	ft_bzero(frame, sizeof(t_frame_info));
 	frame->polygon_mode = GL_FILL;
@@ -14,10 +25,10 @@ void		prepare_frame_info(t_frame_info* frame)
 	frame->default_texture = create_texture_2d("res/default.png");
 }
 
-void		calculate_shader_uniforms(t_frame_info* frame, t_model * model)
+void		calculate_shader_uniforms(t_frame_info *frame, t_model *model)
 {
-	t_float4 position;
-	float scale;
+	t_float4	position;
+	float		scale;
 
 	position = -model->offset_scale;
 	scale = -position.w;
@@ -47,6 +58,7 @@ void		event_loop(SDL_Window *window, t_model *model)
 				model->vertecies.data, GL_STATIC_DRAW));
 			model->is_dirty = 0;
 		}
+		SDL_GL_MakeCurrent(model->window, model->context);
 		draw(&frame, model);
 		pthread_mutex_unlock(&model->lock);
 		SDL_GL_SwapWindow(window);

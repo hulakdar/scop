@@ -1,41 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   material.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:36:24 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:40:01 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "scop.h"
 #include "shaders.h"
 
-void add_defines(t_vector* defines, t_uniform mat, t_attribute attrib)
+void	add_defines(t_vector *defines, t_material *mat)
 {
-	const char* preface = "#define ";
-	const char* define[] = { "DIFFUSE", "AMBIENT",
-		"SPECULAR", "SPECULAR_POW", "TRANSLUCENCY" };
-	const char* value[] = { "=0", "=1", "=2", "=1" };
-	char* result;
+	char *result;
 
-	if (mat.type == UT_NONE)
-		return;
-	result = ft_strdup(preface);
-	ft_strcat(result, define[attrib]);
-	ft_strcat(result, value[mat.type]);
+	if (mat->has_texture)
+		result = "#define DIFFUSE 2\n";
+	else
+		result = "#define DIFFUSE 1\n";
 	ft_vec_pushback(defines, &result);
 }
 
-void set_uniforms(GLuint result, t_uniform mat, t_attribute attrib)
+void	set_uniforms(GLuint result, t_material *mat)
 {
-	const char* uniforms[] = { "u_Diffuse", "u_Ambient", "u_Specular", "u_SpecularPow", "u_Translucency",
-		"u_TextureDiffuse", "u_TextureAmbient", "u_TextureSpecular", "u_TextureSpecularPow", "u_TextureTranslucency", };
 	GLint location;
 
-	if (mat.type == UT_VEC4)
-		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
-			glUniform4fv(location,1, &mat.data.vec4);
-	if (mat.type == UT_FLOAT)
-		if ((location = glGetUniformLocation(result, uniforms[attrib])) >= 0)
-			glUniform1f(location, mat.data.vec1);
-	if (mat.type == UT_SAMPLER2D)
-		if ((location = glGetUniformLocation(result, uniforms[attrib + 5])) >= 0)
-			glUniform1ui(location, mat.data.uint);
+	if (mat->has_texture)
+	{
+		if ((location = glGetUniformLocation(result, "uTextureDiffuse")) >= 0)
+			glUniform1ui(location, mat->diffuse_tex);
+	}
+	else
+	{
+		if ((location = glGetUniformLocation(result, "uDiffuse")) >= 0)
+			glUniform4fv(location, 1, mat->diffuse_color);
+	}
 }
 
-GLuint generate_shader(t_material *mat)
+GLuint	generate_shader(t_material *mat)
 {
 	t_vector	defines;
 	GLuint		result;
@@ -43,10 +48,10 @@ GLuint generate_shader(t_material *mat)
 
 	ft_vec_init(&defines, sizeof(char *), 4);
 	ft_vec_pushback(&defines, &line);
-	add_defines(&defines, mat->diffuse, A_DIFFUSE);
-	result = compile_shaders( "res/shaders/uber_vertex.shader",
+	add_defines(&defines, mat);
+	result = compile_shaders("res/shaders/uber_vertex.shader",
 		"res/shaders/uber_fragment.shader", defines);
-	set_uniforms(result, mat->diffuse, A_DIFFUSE);
-	ft_vec_destruct(&defines, free);
-	return result;
+	set_uniforms(result, mat);
+	ft_vec_del(&defines);
+	return (result);
 }

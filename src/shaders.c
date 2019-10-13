@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shaders.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:14:52 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:26:24 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shaders.h"
 #include "scop.h"
 
-void prepend_define(const char **define, t_shader_source_array *arrays)
+void			prepend_define(const char **define, t_shader_code *arrays)
 {
 	GLuint	length;
 	char	*allocated;
@@ -12,12 +24,12 @@ void prepend_define(const char **define, t_shader_source_array *arrays)
 	ft_vec_pushback(&arrays->lengths, &length);
 }
 
-t_shader_source_array get_shader_source(const char *filepath, t_vector defines)
+t_shader_code	get_shader_source(const char *filepath, t_vector defines)
 {
-	const int				fd = open(filepath, O_RDONLY);
-	char					*line;
-	t_shader_source_array	source;
-	GLuint					length;
+	const int		fd = open(filepath, O_RDONLY);
+	char			*line;
+	t_shader_code	source;
+	GLuint			length;
 
 	ft_vec_init(&source.lines, sizeof(char *), 32);
 	ft_vec_init(&source.lengths, sizeof(GLuint), 32);
@@ -29,18 +41,21 @@ t_shader_source_array get_shader_source(const char *filepath, t_vector defines)
 		length = ft_strlen(line);
 		ft_vec_pushback(&source.lengths, &length);
 	}
-	return source;
+	return (source);
 }
 
-GLint compile_single_shader(unsigned int type, const char *path, t_vector defines)
+GLint			compile_single_shader(unsigned int type,
+										const char *path,
+										t_vector defines)
 {
-	const int				shader = glCreateShader(type);
-	int						result;
-	char					*message;
-	t_shader_source_array	source = get_shader_source(path, defines);
+	const int		shader = glCreateShader(type);
+	int				result;
+	char			*message;
+	t_shader_code	source;
 
+	source = get_shader_source(path, defines);
 	GLCALL(glShaderSource(shader, source.lines.back,
-		(const GLchar * const *)source.lines.data,
+		(const GLchar *const *)source.lines.data,
 		(const GLint *)source.lengths.data));
 	GLCALL(glCompileShader(shader));
 	GLCALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
@@ -53,17 +68,20 @@ GLint compile_single_shader(unsigned int type, const char *path, t_vector define
 	}
 	ft_vec_del(&source.lengths);
 	ft_vec_destruct(&source.lines, free);
-	return shader;
+	return (shader);
 }
 
-GLint compile_shaders(char *vertex_path, char *fragment_path, t_vector defines)
+GLint			compile_shaders(char *vertex_path,
+								char *fragment_path,
+								t_vector defines)
 {
 	const GLint	program = glCreateProgram();
 	GLint		shaders[2];
 	GLuint		block_index;
 
 	shaders[0] = compile_single_shader(GL_VERTEX_SHADER, vertex_path, defines);
-	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER, fragment_path, defines);
+	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER,
+											fragment_path, defines);
 	GLCALL(glAttachShader(program, shaders[0]));
 	GLCALL(glAttachShader(program, shaders[1]));
 	GLCALL(glLinkProgram(program));
@@ -71,10 +89,10 @@ GLint compile_shaders(char *vertex_path, char *fragment_path, t_vector defines)
 	GLCALL(block_index = glGetUniformBlockIndex(program, "global"));
 	if (block_index != GL_INVALID_INDEX)
 		GLCALL(glUniformBlockBinding(program, block_index, 0));
-	return program;
+	return (program);
 }
 
-GLuint compile_default_shader(char *vert, char *frag)
+GLuint			compile_default_shader(char *vert, char *frag)
 {
 	t_vector	defines;
 	GLuint		result;
@@ -84,5 +102,5 @@ GLuint compile_default_shader(char *vert, char *frag)
 	ft_vec_pushback(&defines, &line);
 	result = compile_shaders(vert, frag, defines);
 	ft_vec_del(&defines);
-	return result;
+	return (result);
 }

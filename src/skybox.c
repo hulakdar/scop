@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   skybox.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:13:48 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:21:06 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "GL/glew.h"
 #include "scop.h"
 #include "shaders.h"
 
-static GLuint	create_skybox_shader()
+static GLuint	create_skybox_shader(void)
 {
 	t_vector	defines;
 	char		*line;
@@ -17,10 +28,10 @@ static GLuint	create_skybox_shader()
 		"res/shaders/skybox_fragment.shader",
 		defines);
 	ft_vec_del(&defines);
-	return result;
+	return (result);
 }
 
-t_buffers	create_quad()
+t_buffers		create_quad(void)
 {
 	const float	quad[] = {
 		-1.f, 1.f,
@@ -41,18 +52,17 @@ t_buffers	create_quad()
 	GLCALL(glEnableVertexAttribArray(0));
 	GLCALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
 									2 * sizeof(float), (GLvoid *)0));
-	return skybox;
+	return (skybox);
 }
 
-GLuint			get_skybox_shader()
+GLuint			get_skybox_shader(void)
 {
 	static GLuint skybox_shader;
 
 	if (!skybox_shader)
 		skybox_shader = create_skybox_shader();
-	return skybox_shader;
+	return (skybox_shader);
 }
-
 
 void			draw_quad(t_quad_data quad_data)
 {
@@ -65,6 +75,4 @@ void			draw_quad(t_quad_data quad_data)
 	GLCALL(glActiveTexture(GL_TEXTURE0));
 	GLCALL(glBindTexture(quad_data.texture_type, quad_data.texture));
 	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 6));
-	//GLCALL(glDepthFunc(GL_LESS));
 }
-	

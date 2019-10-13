@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_impl.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:28:29 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:35:57 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "scop.h"
 #include <stdio.h>
 #include <math.h>
 
-__attribute__((noinline))
-void push_vert(t_face face, t_obj *buffers, int i)
+void	push_vert(t_face face, t_obj *buffers, int i)
 {
 	t_vertex new_vert;
 	t_float4 mask;
@@ -29,8 +39,7 @@ void push_vert(t_face face, t_obj *buffers, int i)
 		new_vert.position * (-mask) + buffers->max_bounds * (1 + mask);
 }
 
-__attribute__((noinline))
-void process_face(t_face face, t_obj *buffers, int count)
+void	process_face(t_face face, t_obj *buffers, int count)
 {
 	push_vert(face, buffers, 0);
 	push_vert(face, buffers, 1);
@@ -50,47 +59,57 @@ void process_face(t_face face, t_obj *buffers, int count)
 	}
 }
 
-int parse_face(t_face *face, const char *line)
+void	parse_single_vert(char *text, t_face *face, int i, int slashes)
 {
-	int			i;
-	char		**tab = ft_strsplit(line, ' ');
-	const int	count = ft_tabcount(tab);
+	char	**tmp;
+	int		tmp_size;
 
+	tmp = ft_strsplit(text, '/');
+	tmp_size = ft_tabcount(tmp);
+	face->pos_indx[i] = ft_atoi(tmp[0]);
+	if (slashes == 1 || tmp_size == 3)
+		face->uvs_indx[i] = ft_atoi(tmp[1]);
+	if (slashes == 2 || tmp_size == 2)
+		face->norm_indx[i] = ft_atoi(tmp[tmp_size == 2 ? 1 : 2]);
+	ft_tabdel(&tmp);
+}
+
+int		parse_face(t_face *face, const char *line)
+{
+	int		i;
+	char	**tab;
+	int		count;
+	int		slashes;
+
+	tab = ft_strsplit(line, ' ');
+	count = ft_tabcount(tab);
 	if (count > 16 || count < 3)
 		exit(scop_error("Wrong number of verts in face"));
 	ft_bzero(face, sizeof(t_face));
 	i = -1;
 	while (++i < count)
 	{
-		const int	slashes = ft_chrcnt(tab[i], '/');
+		slashes = ft_chrcnt(tab[i], '/');
 		if (slashes)
-		{
-			char **tmp = ft_strsplit(tab[i], '/');
-			const int tmp_size = ft_tabcount(tmp);
-			face->pos_indx[i] = ft_atoi(tmp[0]);
-			if (slashes == 1 || tmp_size == 3)
-				face->uvs_indx[i] = ft_atoi(tmp[1]);
-			if (slashes == 2 || tmp_size == 2)
-				face->norm_indx[i] = ft_atoi(tmp[tmp_size == 2 ? 1 : 2]);
-			ft_tabdel(&tmp);
-		}
+			parse_single_vert(tab[i], face, i, slashes);
 		else
 			face->pos_indx[i] = ft_atoi(tab[i]);
 	}
 	ft_tabdel(&tab);
-	return count;
+	return (count);
 }
 
-void parse_faces(const char *line, t_obj *buffers)
+void	parse_faces(const char *line, t_obj *buffers)
 {
 	t_face		face;
 	const int	count = parse_face(&face, line);
+	t_float4	half_extent;
 
 	if (!buffers->current_object)
 		create_new_submesh(buffers);
 	pthread_mutex_lock(&buffers->result->lock);
 	process_face(face, buffers, count);
-	t_float4 half_extent = (buffers->max_bounds - buffers->min_bounds) / 2;
+	half_extent = (buffers->max_bounds - buffers->min_bounds) / 2;
 	buffers->result->offset_scale = buffers->min_bounds + half_extent;
 	half_extent *= half_extent;
 	half_extent.w = 1 / sqrtf(half_extent.x + half_extent.y + half_extent.z);

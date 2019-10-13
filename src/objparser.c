@@ -1,26 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   objparser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:06:23 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/14 00:34:51 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "obj.h"
-#include <stdio.h>
 #include "scop.h"
+#include "shaders.h"
+#include <stdio.h>
 
-t_material get_default_material()
+static void	prepare_obj(t_obj *obj)
 {
-	t_material result;
-
-	ft_bzero(&result, sizeof(result));
-	result.name = "default";
-	result.diffuse.type = UT_SAMPLER2D;
-	result.diffuse.data.uint = get_default_texture();
-	return result;
-}
-
-static void			prepare_obj(t_obj *obj)
-{
-	const t_float4 tmp = {0,0,0,0};
-	t_material material;
+	const t_float4	tmp = {0, 0, 0, 0};
+	// t_material		material;
 
 	ft_bzero(obj, sizeof(t_obj));
-	material = get_default_material();
+	// material = get_default_material();
 	ft_vec_init(&obj->positions, sizeof(t_float4), 256);
 	ft_vec_init(&obj->normals, sizeof(t_float4), 256);
 	ft_vec_init(&obj->uvs, sizeof(t_float2), 256);
@@ -28,13 +29,13 @@ static void			prepare_obj(t_obj *obj)
 	ft_vec_pushback(&obj->positions, &tmp);
 	ft_vec_pushback(&obj->normals, &tmp);
 	ft_vec_pushback(&obj->uvs, &tmp);
-	obj->current_material =
-		(t_material *)ft_vec_pushback(&obj->materials, &material);
+	// obj->current_material =
+	// 	(t_material *)ft_vec_pushback(&obj->materials, &material);
 }
 
-static void handle_vec(const char *line, t_vector *buffer, t_bool is_vec3)
+static void	handle_vec(const char *line, t_vector *buffer, t_bool is_vec3)
 {
-	void*		result;
+	void		*result;
 	t_float4	vec4;
 	t_float2	vec2;
 
@@ -53,12 +54,27 @@ static void handle_vec(const char *line, t_vector *buffer, t_bool is_vec3)
 	ft_vec_pushback(buffer, result);
 }
 
-static void set_mtl(const char *line, t_obj *obj)
+static void	set_mtl(const char *line, t_obj *obj)
 {
+	t_material	*candidate;
+	size_t		i;
 
+	i = 0;
+	while (i < obj->materials.back)
+	{
+		candidate = (t_material*)ft_vec_get(&obj->materials, i);
+		if (ft_strcmp(line, candidate->name) == 0)
+		{
+			pthread_mutex_lock(&obj->result->lock);
+			SDL_GL_MakeCurrent(obj->result->window, obj->result->context);
+			obj->current_object->shader_program = generate_shader(obj->current_material);
+			pthread_mutex_unlock(&obj->result->lock);
+		}
+		i++;
+	}
 }
 
-static inline void parse_single_line(const char *line, t_obj *obj)
+static void	parse_single_line(const char *line, t_obj *obj)
 {
 	while (!ft_isprint(*line))
 		line++;
@@ -83,12 +99,12 @@ static inline void parse_single_line(const char *line, t_obj *obj)
 	}
 }
 
-void *parse_obj(t_model *model)
+void		*parse_obj(t_model *model)
 {
+	const int	fd = open(model->filepath, O_RDONLY);
 	t_obj		obj;
 	char		*line;
-	const int	fd = open(model->filepath, O_RDONLY);
-	
+
 	prepare_obj(&obj);
 	obj.result = model;
 	if (fd > 2)
@@ -105,5 +121,5 @@ void *parse_obj(t_model *model)
 	ft_vec_del(&obj.normals);
 	ft_vec_del(&obj.uvs);
 	ft_vec_del(&obj.materials);
-	return NULL;
+	return (NULL);
 }

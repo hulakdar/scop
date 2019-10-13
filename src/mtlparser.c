@@ -1,15 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mtlparser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:24:23 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/14 00:45:57 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "obj.h"
+#include "scop.h"
 
-static void new_material(const char* line, t_obj* obj)
-{
-	t_material material;
-
-	ft_bzero(&material, sizeof(t_material));
-	material.name = ft_strdup(line);
-	obj->current_material = (t_material*)ft_vec_pushback(&obj->materials, &material);
-}
-
-static void parse_color(const char* line, t_obj* obj)
+static void		parse_color(const char *line, t_obj *obj)
 {
 	t_float4	value;
 	float		*dst;
@@ -19,8 +23,7 @@ static void parse_color(const char* line, t_obj* obj)
 	value = parse_vec3(line);
 	if (obj->current_material)
 	{
-		obj->current_material->diffuse.type = UT_VEC4;
-		dst = obj->current_material->diffuse.data.vec4;
+		dst = obj->current_material->diffuse_color;
 		dst[0] = value.x;
 		dst[1] = value.y;
 		dst[2] = value.z;
@@ -28,21 +31,29 @@ static void parse_color(const char* line, t_obj* obj)
 	}
 }
 
-static void parse_texture(const char* line, t_obj* obj)
+static void		parse_texture(const char *line, t_obj *obj)
 {
-	// in main thread please
-	if (obj->current_material)
+	char **tab;
+	char *tex_filepath;
+	char *obj_path;
+	char *seeker;
+
+	tab = ft_strsplit(line, ' ');
+	if (tab && ft_tabcount(tab))
 	{
-		obj->current_material->diffuse.type = UT_VEC4;
-		dst = obj->current_material->diffuse.data.vec4;
-		dst[0] = value.x;
-		dst[1] = value.y;
-		dst[2] = value.z;
-		dst[3] = value.w;
+		obj_path = ft_strdup(obj->result->filepath);
+		if ((seeker = ft_strrchr(obj_path, '/')))
+			*(seeker + 1) = 0;
+		tex_filepath = ft_strjoin(obj_path, tab[0]);
+		pthread_mutex_lock(&obj->result->lock);
+		SDL_GL_MakeCurrent(obj->result->window, obj->result->context);
+		obj->current_material->diffuse_tex = create_texture_2d(tex_filepath);
+		pthread_mutex_unlock(&obj->result->lock);
+		free(obj_path);
 	}
 }
 
-static void	parse_single_line(const char* line, t_obj* obj)
+static void		parse_single_line(const char *line, t_obj *obj)
 {
 	while (!ft_isprint(*line))
 		line++;
@@ -59,10 +70,10 @@ static void	parse_single_line(const char* line, t_obj* obj)
 	}
 }
 
-static char* find_mtllib(const char *line, const char *filepath)
+static char		*find_mtllib(const char *line, const char *filepath)
 {
-	char* result;
-	char* seeker;
+	char	*result;
+	char	*seeker;
 
 	while (*line == ' ')
 		line++;
@@ -70,15 +81,17 @@ static char* find_mtllib(const char *line, const char *filepath)
 	if ((seeker = ft_strrchr(result, '/')))
 		*(seeker + 1) = 0;
 	ft_strcat(result, line);
-	return result;
+	return (result);
 }
 
-void parse_mtl(const char *filename, t_obj *model)
+void			parse_mtl(const char *filename, t_obj *model)
 {
-	char	*filepath = find_mtllib(filename, model->result->filepath);
+	char	*filepath;
 	char	*line;
-	const int	fd = open(filepath, O_RDONLY);
-	
+	int		fd;
+
+	filepath = find_mtllib(filename, model->result->filepath);
+	fd = open(filepath, O_RDONLY);
 	if (fd > 0)
 	{
 		while (get_next_line(fd, &line) > 0)
@@ -91,4 +104,3 @@ void parse_mtl(const char *filename, t_obj *model)
 	}
 	free(filepath);
 }
-

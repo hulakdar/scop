@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 22:43:57 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/14 00:26:23 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef OBJ_H
 # define OBJ_H
 # include "libft.h"
 # include "gl_math.h"
 # include <GL/glew.h>
+# include <SDL2/SDL.h>
 # include "pthread.h"
 
-typedef pthread_mutex_t t_lock;
+typedef pthread_mutex_t	t_lock;
 
 typedef struct	s_face
 {
@@ -23,29 +36,7 @@ typedef enum	e_attribute
 	A_TRANSLUCENCY
 }				t_attribute;
 
-typedef enum	e_uniform_type
-{
-	UT_NONE,
-	UT_VEC4,
-	UT_SAMPLER2D,
-	UT_FLOAT
-}				t_uniform_type;
-
-__attribute__((aligned(128)))
-typedef union	u_uniform_data
-{
-	float		vec4[4];
-	float		vec1;
-	GLuint		uint;
-}				t_uniform_data;
-
-typedef struct  s_uniform
-{
-	t_uniform_type	type;
-	t_uniform_data	data;
-}				t_uniform;
-
-typedef struct  s_buffers
+typedef struct	s_buffers
 {
 	GLuint		vertex_array;
 	GLuint		vertex_buffer;
@@ -60,23 +51,25 @@ typedef struct	s_quad_data
 
 typedef struct	s_model
 {
-	t_vector	vertecies;
-	t_vector	submeshes;
-	t_quad_data	skybox;
-	t_quad_data	skybox_blurred;
-	t_buffers	buffers;
-	t_float4	offset_scale;
-	t_lock		lock;
-	const char	*filepath;
-	unsigned	is_dirty : 1;
+	SDL_Window		*window;
+	SDL_GLContext	context;
+	t_vector		vertecies;
+	t_vector		submeshes;
+	t_quad_data		skybox;
+	t_quad_data		skybox_blurred;
+	t_buffers		buffers;
+	t_float4		offset_scale;
+	t_lock			lock;
+	const char		*filepath;
+	unsigned		is_dirty : 1;
 }				t_model;
 
-__attribute__((aligned(128)))
 typedef struct	s_material
 {
-	t_uniform	diffuse;
-	char*		name;
-	char buffer[512 - sizeof(t_uniform) - sizeof(char*)];
+	char		*name;
+	float		diffuse_color[4];
+	GLuint		diffuse_tex;
+	uint8_t		has_texture;
 }				t_material;
 
 typedef struct	s_submesh
@@ -102,12 +95,13 @@ typedef struct	s_obj
 	unsigned	no_normals : 1;
 }				t_obj;
 
-t_float4	parse_vec3(const char *line);
-t_float2	parse_vec2(const char *line);
-void		parse_faces(const char *line, t_obj *buffers);
-void		fixup_normals(t_vector *verts, t_face face);
-void		fixup_uvs(t_vector *verts, t_face face);
-void		parse_mtl(const char *line, t_obj *buffers);
-void		create_new_submesh(t_obj * buffers);
-void		*parse_obj(t_model *model);
+t_float4		parse_vec3(const char *line);
+t_float2		parse_vec2(const char *line);
+void			parse_faces(const char *line, t_obj *buffers);
+void			fixup_normals(t_vector *verts, t_face face);
+void			fixup_uvs(t_vector *verts, t_face face);
+void			parse_mtl(const char *line, t_obj *buffers);
+void			create_new_submesh(t_obj *buffers);
+void			*parse_obj(t_model *model);
+void			new_material(const char *line, t_obj *obj);
 #endif

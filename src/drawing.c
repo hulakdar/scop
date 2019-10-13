@@ -1,8 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   drawing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:49:31 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/14 00:45:58 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "scop.h"
 #include "shaders.h"
 
-GLuint		get_default_shader()
+void		new_material(const char *line, t_obj *obj)
+{
+	t_material material;
+
+	ft_bzero(&material, sizeof(t_material));
+	material.name = ft_strdup(line);
+	obj->current_material =
+		(t_material*)ft_vec_pushback(&obj->materials, &material);
+}
+
+GLuint		get_default_shader(void)
 {
 	static GLuint default_shader;
 
@@ -10,19 +31,14 @@ GLuint		get_default_shader()
 		default_shader = compile_default_shader(
 			"res/shaders/uber_vertex.shader",
 			"res/shaders/uber_fragment.shader");
-	return default_shader;
+	return (default_shader);
 }
 
-void apply_material(t_material material)
+static void	draw_submesh(t_submesh *submesh, t_frame_info *frame)
 {
-	
-}
-
-static void draw_submesh(t_submesh *submesh, t_frame_info *frame)
-{
-(void)frame;
 	GLuint program;
 
+	(void)frame;
 	if (submesh->shader_program)
 		program = submesh->shader_program;
 	else
@@ -41,7 +57,8 @@ void		draw(t_frame_info *frame, t_model *model)
 {
 	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	bind_buffers(model->buffers);
-	ft_vec_for_each(&model->submeshes, (t_for_each_predicate)draw_submesh, frame);
+	ft_vec_for_each(&model->submeshes,
+			(t_for_each_predicate)draw_submesh, frame);
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 	draw_quad(model->skybox);
 }

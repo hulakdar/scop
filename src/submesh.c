@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   submesh.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/13 23:21:14 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/13 23:24:06 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "obj.h"
 
-void create_new_submesh(t_obj * buffers)
+void	create_new_submesh(t_obj *buffers)
 {
 	t_submesh submesh;
 
@@ -11,34 +22,39 @@ void create_new_submesh(t_obj * buffers)
 		(t_submesh *)ft_vec_pushback(&buffers->result->submeshes, &submesh);
 }
 
-__attribute__((noinline))
-void fixup_uvs(t_vector *vertecies, t_face face)
+void	fixup_uvs(t_vector *vertecies, t_face face)
 {
-	t_vertex *triangle;
+	t_float4	normal;
+	t_vertex	*triangle;
 	t_float2	uvs[3];
+	int			i;
 
 	if (face.uvs_indx[0] || face.uvs_indx[1] || face.uvs_indx[2])
-		return;
+		return ;
 	triangle = (t_vertex *)ft_vec_get(vertecies, vertecies->back - 3);
-	for (int i = 0; i < 3; ++i)
+	i = 0;
+	while (i < 3)
 	{
 		uvs[0] = triangle[i].position.yz;
 		uvs[1] = triangle[i].position.xz;
 		uvs[2] = triangle[i].position.xy;
-		t_float4 normal = SQUARE(triangle[i].normal);
-		triangle[i].uv = uvs[0] * normal.x + uvs[1] * normal.y + uvs[2] * normal.z;
+		normal = triangle[i].normal * triangle[i].normal;
+		triangle[i].uv =
+			uvs[0] * normal.x +
+			uvs[1] * normal.y +
+			uvs[2] * normal.z;
+		i++;
 	}
 }
 
-__attribute__((noinline))
-void fixup_normals(t_vector *vertecies, t_face face)
+void	fixup_normals(t_vector *vertecies, t_face face)
 {
-	t_vertex *triangle;
-	t_float4 positions[3];
-	t_float4 normal;
+	t_vertex	*triangle;
+	t_float4	positions[3];
+	t_float4	normal;
 
 	if (face.norm_indx[0] || face.norm_indx[1] || face.norm_indx[2])
-		return;
+		return ;
 	triangle = (t_vertex *)ft_vec_get(vertecies, vertecies->back - 3);
 	positions[0] = triangle[0].position;
 	positions[1] = triangle[1].position;
@@ -48,4 +64,3 @@ void fixup_normals(t_vector *vertecies, t_face face)
 	triangle[1].normal = normal;
 	triangle[2].normal = normal;
 }
-
