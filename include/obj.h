@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJ_H
-# define OBJ_H
+#ifndef _OBJ_H_
+# define _OBJ_H_
+# include <GL/glew.h>
 # include "libft.h"
 # include "gl_math.h"
-# include <GL/glew.h>
-# include <SDL2/SDL.h>
+# include "common.h"
 # include "pthread.h"
 
 typedef pthread_mutex_t	t_lock;
@@ -55,6 +55,7 @@ typedef struct	s_model
 	SDL_GLContext	context;
 	t_vector		vertecies;
 	t_vector		submeshes;
+	t_vector		materials;
 	t_quad_data		skybox;
 	t_quad_data		skybox_blurred;
 	t_buffers		buffers;
@@ -66,8 +67,9 @@ typedef struct	s_model
 
 typedef struct	s_material
 {
-	char		*name;
 	float		diffuse_color[4];
+	char		*name;
+	char		*diffuse_tex_name;
 	GLuint		diffuse_tex;
 	uint8_t		has_texture;
 }				t_material;
@@ -76,6 +78,7 @@ typedef struct	s_submesh
 {
 	size_t		start;
 	size_t		count;
+	t_material	*material;
 	GLuint		shader_program;
 }				t_submesh;
 
@@ -84,7 +87,6 @@ typedef struct	s_obj
 	t_vector	positions;
 	t_vector	uvs;
 	t_vector	normals;
-	t_vector	materials;
 	t_float4	min_bounds;
 	t_float4	max_bounds;
 	t_model		*result;

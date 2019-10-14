@@ -30,25 +30,6 @@ static void		setup_gl_attrubutes(void)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, CONTEXT_PROFILE);
 }
 
-static void		scop_initialize(t_model *model)
-{
-	GLenum		result;
-
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		exit(scop_error("SDL not initialized"));
-	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-		exit(scop_error("SDL_image initialization ERROR"));
-	setup_gl_attrubutes();
-	model->window = SDL_CreateWindow("scop", SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED, SCREEN_W, SCREEN_H, SDL_WINDOW_OPENGL);
-	model->context = SDL_GL_CreateContext(model->window);
-	if ((result = glewInit()) != GLEW_OK)
-		exit(scop_error((const char *)glewGetErrorString(result)));
-	GLCALL(glEnable(GL_DEPTH_TEST));
-	GLCALL(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
-	get_default_texture();
-}
-
 static void		prepare_buffers(t_model *model)
 {
 	GLCALL(glGenVertexArrays(1, &model->buffers.vertex_array));
@@ -66,8 +47,24 @@ static void		prepare_buffers(t_model *model)
 	model->skybox.shader = get_skybox_shader();
 	model->skybox.texture_type = GL_TEXTURE_CUBE_MAP;
 	model->skybox.texture = create_texture_cube("res/skybox/");
-	model->skybox_blurred.texture_type = GL_TEXTURE_CUBE_MAP;
-	model->skybox_blurred.texture = create_texture_cube("res/skybox_blurred/");
+	stbi_set_flip_vertically_on_load(true);
+}
+
+static void		scop_initialize(t_model *model)
+{
+	GLenum		result;
+
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+		exit(scop_error("SDL not initialized"));
+	setup_gl_attrubutes();
+	model->window = SDL_CreateWindow("scop", SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED, SCREEN_W, SCREEN_H, SDL_WINDOW_OPENGL);
+	model->context = SDL_GL_CreateContext(model->window);
+	if ((result = glewInit()) != GLEW_OK)
+		exit(scop_error((const char *)glewGetErrorString(result)));
+	GLCALL(glEnable(GL_DEPTH_TEST));
+	GLCALL(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
+	prepare_buffers(model);
 }
 
 int				main(int argc, const char *argv[])
@@ -81,14 +78,17 @@ int				main(int argc, const char *argv[])
 			"scop filename.obj [-b](blocking)\n"));
 	model.filepath = argv[1];
 	scop_initialize(&model);
-	ft_vec_init(&model.vertecies, sizeof(t_vertex), 100);
+	ft_vec_init(&model.materials, sizeof(t_material), 2);
+	ft_vec_init(&model.vertecies, sizeof(t_vertex), 1000);
 	ft_vec_init(&model.submeshes, sizeof(t_submesh), 1);
 	pthread_mutex_init(&model.lock, NULL);
 	pthread_create(&thread, NULL, (void *(*)(void *))parse_obj, &model);
 	if (argc == 3 && !ft_strcmp(argv[2], "-b"))
 		pthread_join(thread, NULL);
-	prepare_buffers(&model);
 	event_loop(model.window, &model);
 	pthread_kill(thread, SIGTERM);
 	pthread_join(thread, NULL);
+	ft_vec_del(&model.submeshes);
+	ft_vec_del(&model.vertecies);
+	ft_vec_del(&model.materials);
 }

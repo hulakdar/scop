@@ -105,8 +105,6 @@ void	parse_faces(const char *line, t_obj *buffers)
 	const int	count = parse_face(&face, line);
 	t_float4	half_extent;
 
-	if (!buffers->current_object)
-		create_new_submesh(buffers);
 	pthread_mutex_lock(&buffers->result->lock);
 	process_face(face, buffers, count);
 	half_extent = (buffers->max_bounds - buffers->min_bounds) / 2;

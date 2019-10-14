@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "obj.h"
 #include "scop.h"
+#include "obj.h"
 
 static void		parse_color(const char *line, t_obj *obj)
 {
@@ -45,10 +45,7 @@ static void		parse_texture(const char *line, t_obj *obj)
 		if ((seeker = ft_strrchr(obj_path, '/')))
 			*(seeker + 1) = 0;
 		tex_filepath = ft_strjoin(obj_path, tab[0]);
-		pthread_mutex_lock(&obj->result->lock);
-		SDL_GL_MakeCurrent(obj->result->window, obj->result->context);
-		obj->current_material->diffuse_tex = create_texture_2d(tex_filepath);
-		pthread_mutex_unlock(&obj->result->lock);
+		obj->current_material->diffuse_tex_name = tex_filepath;
 		free(obj_path);
 	}
 }

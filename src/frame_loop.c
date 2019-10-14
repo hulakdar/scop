@@ -22,7 +22,6 @@ void		prepare_frame_info(t_frame_info *frame)
 	GLCALL(glBufferData(GL_UNIFORM_BUFFER, sizeof(t_global_uniforms),
 		&frame->g_uniforms, GL_DYNAMIC_DRAW));
 	GLCALL(glBindBufferBase(GL_UNIFORM_BUFFER, 0, frame->uniform_buffer));
-	frame->default_texture = create_texture_2d("res/default.png");
 }
 
 void		calculate_shader_uniforms(t_frame_info *frame, t_model *model)
@@ -49,7 +48,9 @@ void		event_loop(SDL_Window *window, t_model *model)
 	while (update(&frame))
 	{
 		calculate_shader_uniforms(&frame, model);
+		SDL_GL_MakeCurrent(model->window, NULL);
 		pthread_mutex_lock(&model->lock);
+		SDL_GL_MakeCurrent(model->window, model->context);
 		if (model->is_dirty)
 		{
 			bind_buffers(model->buffers);
@@ -58,7 +59,6 @@ void		event_loop(SDL_Window *window, t_model *model)
 				model->vertecies.data, GL_STATIC_DRAW));
 			model->is_dirty = 0;
 		}
-		SDL_GL_MakeCurrent(model->window, model->context);
 		draw(&frame, model);
 		pthread_mutex_unlock(&model->lock);
 		SDL_GL_SwapWindow(window);

@@ -20,7 +20,7 @@ void		new_material(const char *line, t_obj *obj)
 	ft_bzero(&material, sizeof(t_material));
 	material.name = ft_strdup(line);
 	obj->current_material =
-		(t_material*)ft_vec_pushback(&obj->materials, &material);
+		(t_material*)ft_vec_pushback(&obj->result->materials, &material);
 }
 
 GLuint		get_default_shader(void)
@@ -40,10 +40,28 @@ static void	draw_submesh(t_submesh *submesh, t_frame_info *frame)
 
 	(void)frame;
 	if (submesh->shader_program)
+	{
 		program = submesh->shader_program;
+	}
+	else if (submesh->material)
+	{
+		if (submesh->material->diffuse_tex_name)
+		{
+			submesh->material->diffuse_tex = create_texture_2d(submesh->material->diffuse_tex_name);
+			submesh->material->diffuse_tex_name = NULL;
+			submesh->material->has_texture = 1;
+		}
+		submesh->shader_program = generate_shader(submesh->material);
+		program = submesh->shader_program;
+	}
 	else
 		program = get_default_shader();
 	GLCALL(glUseProgram(program));
+	if (submesh->material && submesh->material->has_texture)
+	{
+		GLCALL(glActiveTexture(GL_TEXTURE2));
+		GLCALL(glBindTexture(GL_TEXTURE_2D, submesh->material->diffuse_tex));
+	}
 	GLCALL(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
 }
 

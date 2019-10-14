@@ -26,7 +26,7 @@ static GLuint	create_skybox_shader(void)
 	result = compile_shaders(
 		"res/shaders/skybox_vertex.shader",
 		"res/shaders/skybox_fragment.shader",
-		defines);
+		&defines);
 	ft_vec_del(&defines);
 	return (result);
 }

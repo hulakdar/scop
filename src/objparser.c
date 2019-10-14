@@ -25,7 +25,6 @@ static void	prepare_obj(t_obj *obj)
 	ft_vec_init(&obj->positions, sizeof(t_float4), 256);
 	ft_vec_init(&obj->normals, sizeof(t_float4), 256);
 	ft_vec_init(&obj->uvs, sizeof(t_float2), 256);
-	ft_vec_init(&obj->materials, sizeof(t_float2), 2);
 	ft_vec_pushback(&obj->positions, &tmp);
 	ft_vec_pushback(&obj->normals, &tmp);
 	ft_vec_pushback(&obj->uvs, &tmp);
@@ -60,15 +59,13 @@ static void	set_mtl(const char *line, t_obj *obj)
 	size_t		i;
 
 	i = 0;
-	while (i < obj->materials.back)
+	while (i < obj->result->materials.back)
 	{
-		candidate = (t_material*)ft_vec_get(&obj->materials, i);
+		candidate = (t_material*)
+			ft_vec_get(&obj->result->materials, i);
 		if (ft_strcmp(line, candidate->name) == 0)
 		{
-			pthread_mutex_lock(&obj->result->lock);
-			SDL_GL_MakeCurrent(obj->result->window, obj->result->context);
-			obj->current_object->shader_program = generate_shader(obj->current_material);
-			pthread_mutex_unlock(&obj->result->lock);
+			obj->current_object->material = candidate;
 		}
 		i++;
 	}
@@ -107,6 +104,7 @@ void		*parse_obj(t_model *model)
 
 	prepare_obj(&obj);
 	obj.result = model;
+	create_new_submesh(&obj);
 	if (fd > 2)
 	{
 		while (get_next_line(fd, &line) > 0)
@@ -120,6 +118,5 @@ void		*parse_obj(t_model *model)
 	ft_vec_del(&obj.positions);
 	ft_vec_del(&obj.normals);
 	ft_vec_del(&obj.uvs);
-	ft_vec_del(&obj.materials);
 	return (NULL);
 }

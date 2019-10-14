@@ -24,7 +24,7 @@ void			prepend_define(const char **define, t_shader_code *arrays)
 	ft_vec_pushback(&arrays->lengths, &length);
 }
 
-t_shader_code	get_shader_source(const char *filepath, t_vector defines)
+t_shader_code	get_shader_source(const char *filepath, t_vector *defines)
 {
 	const int		fd = open(filepath, O_RDONLY);
 	char			*line;
@@ -33,7 +33,7 @@ t_shader_code	get_shader_source(const char *filepath, t_vector defines)
 
 	ft_vec_init(&source.lines, sizeof(char *), 32);
 	ft_vec_init(&source.lengths, sizeof(GLuint), 32);
-	ft_vec_for_each(&defines, (t_for_each_predicate)prepend_define, &source);
+	ft_vec_for_each(defines, (t_for_each_predicate)prepend_define, &source);
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
@@ -46,7 +46,7 @@ t_shader_code	get_shader_source(const char *filepath, t_vector defines)
 
 GLint			compile_single_shader(unsigned int type,
 										const char *path,
-										t_vector defines)
+										t_vector *defines)
 {
 	const int		shader = glCreateShader(type);
 	int				result;
@@ -73,9 +73,9 @@ GLint			compile_single_shader(unsigned int type,
 
 GLint			compile_shaders(char *vertex_path,
 								char *fragment_path,
-								t_vector defines)
+								t_vector *defines)
 {
-	const GLint	program = glCreateProgram();
+	GLCALL(const GLint	program = glCreateProgram());
 	GLint		shaders[2];
 	GLuint		block_index;
 
@@ -100,7 +100,7 @@ GLuint			compile_default_shader(char *vert, char *frag)
 
 	ft_vec_init(&defines, sizeof(char *), 4);
 	ft_vec_pushback(&defines, &line);
-	result = compile_shaders(vert, frag, defines);
+	result = compile_shaders(vert, frag, &defines);
 	ft_vec_del(&defines);
 	return (result);
 }

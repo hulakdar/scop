@@ -25,7 +25,7 @@ typedef struct	s_shader_code
 
 GLint			compile_shaders(char *vertex_path,
 								char *fragment_path,
-								t_vector defines);
+								t_vector *defines);
 GLuint			compile_default_shader(char *vert, char *frag);
 GLuint			get_skybox_shader(void);
 t_material		get_default_material(void);

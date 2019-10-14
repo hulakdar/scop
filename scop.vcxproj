@@ -117,21 +117,21 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalDependencies>pthreadVC2.lib;SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pthreadVC2.lib;SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\pthread\lib\x64\;C:\dev\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;$(SolutionDir)..\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;$(SolutionDir)..\pthread\include;$(SolutionDir)\frameworks;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_TIMESPEC_DEFINED</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>pthreadVC2.lib;SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pthreadVC2.lib;SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\pthread\lib\x64\;C:\dev\glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;$(SolutionDir)..\pthread\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\glew\include;$(SolutionDir)..\SDL2_image\include;$(SolutionDir)..\glm;$(SolutionDir)SDLProj\res\extern;$(SolutionDir)SDLProj\src;include;libft\include;$(SolutionDir)..\pthread\include;$(SolutionDir)\frameworks;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_TIMESPEC_DEFINED</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
@@ -230,6 +230,7 @@
     <ClCompile Include="src\frame_loop.c" />
     <ClCompile Include="src\gl_math.c" />
     <ClCompile Include="src\m44.c" />
+    <ClCompile Include="src\m44_projection.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\material.c" />
     <ClCompile Include="src\mtlparser.c" />
@@ -242,11 +243,15 @@
     <ClCompile Include="src\texture.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="frameworks\stb_image.h" />
+    <ClInclude Include="include\common.h" />
     <ClInclude Include="include\events.h" />
+    <ClInclude Include="include\gl_math.h" />
     <ClInclude Include="include\math.h" />
     <ClInclude Include="include\obj.h" />
     <ClInclude Include="include\scop.h" />
     <ClInclude Include="include\shaders.h" />
+    <ClInclude Include="include\stbi_implementation.h" />
     <ClInclude Include="libft\include\libft.h" />
   </ItemGroup>
   <ItemGroup>

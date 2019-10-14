@@ -13,6 +13,7 @@
 #ifndef GL_MATH_H
 # define GL_MATH_H
 
+# define _USE_MATH_DEFINES
 # include <math.h>
 
 typedef float	t_float16 __attribute__((ext_vector_type(16)));
