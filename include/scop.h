@@ -24,7 +24,6 @@ typedef	struct	s_global_uniforms
 {
 	t_m44		mvp;
 	t_m44		light_view;
-	t_float4	light_dir;
 	float		scale;
 }				t_global_uniforms;
 

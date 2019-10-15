@@ -16,7 +16,6 @@ layout(std140) uniform global
 {
     mat4    mvp;
     mat4    light_view;
-    vec3    light_dir;
     float   scale;
 }           g;
 
@@ -59,7 +58,7 @@ vec3 get_ambient(vec3 Albedo)
 
 vec3 get_diffuse(vec3 Albedo)
 {
-    float Diffuse_power = max(dot(vs_out.NormalModelSpace, normalize(vec3(-1.0))), 0.0) * Diffuse_strength;
+    float Diffuse_power = max(dot(vs_out.NormalModelSpace, vec3(-0.4, 0.0, -1.0)), 0.0) * Diffuse_strength;
 	return Diffuse_power * Albedo;
 }
 

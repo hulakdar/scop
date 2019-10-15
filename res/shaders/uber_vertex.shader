@@ -6,7 +6,6 @@ layout(std140) uniform global
 {
     mat4    mvp;
     mat4    light_view;
-    vec3    light_dir;
     float   scale;
 }           g;
 

@@ -20,12 +20,13 @@ void	push_vert(t_face face, t_obj *buffers, int i)
 	t_float4 mask;
 
 	ft_bzero(&new_vert, sizeof(new_vert));
-	new_vert.position = *(t_float4 *)ft_vec_get(
+	if(face.pos_indx[i] < buffers->positions.back)
+		new_vert.position = *(t_float4 *)ft_vec_get(
 		&buffers->positions, face.pos_indx[i]);
-	if (face.uvs_indx[i])
+	if (face.uvs_indx[i] && face.uvs_indx[i] < buffers->uvs.back)
 		new_vert.uv = *(t_float2 *)ft_vec_get(
 			&buffers->uvs, face.uvs_indx[i]);
-	if (face.norm_indx[i])
+	if (face.norm_indx[i] && face.norm_indx[i] < buffers->normals.back)
 		new_vert.normal = *(t_float4 *)ft_vec_get(
 			&buffers->normals, face.norm_indx[i]);
 	ft_vec_pushback(&buffers->result->vertecies, &new_vert);
@@ -41,18 +42,22 @@ void	push_vert(t_face face, t_obj *buffers, int i)
 
 void	process_face(t_face face, t_obj *buffers, int count)
 {
+	pthread_mutex_lock(&buffers->result->lock);
 	push_vert(face, buffers, 0);
 	push_vert(face, buffers, 1);
 	push_vert(face, buffers, 2);
 	buffers->current_object->count += 3;
+	pthread_mutex_unlock(&buffers->result->lock);
 	fixup_normals(&buffers->result->vertecies, face);
 	fixup_uvs(&buffers->result->vertecies, face);
 	while (count > 3)
 	{
+		pthread_mutex_lock(&buffers->result->lock);
 		push_vert(face, buffers, count - 4);
 		push_vert(face, buffers, count - 2);
 		push_vert(face, buffers, count - 1);
 		buffers->current_object->count += 3;
+		pthread_mutex_unlock(&buffers->result->lock);
 		fixup_normals(&buffers->result->vertecies, face);
 		fixup_uvs(&buffers->result->vertecies, face);
 		count--;
@@ -105,7 +110,6 @@ void	parse_faces(const char *line, t_obj *buffers)
 	const int	count = parse_face(&face, line);
 	t_float4	half_extent;
 
-	pthread_mutex_lock(&buffers->result->lock);
 	process_face(face, buffers, count);
 	half_extent = (buffers->max_bounds - buffers->min_bounds) / 2;
 	buffers->result->offset_scale = buffers->min_bounds + half_extent;
@@ -113,5 +117,4 @@ void	parse_faces(const char *line, t_obj *buffers)
 	half_extent.w = 1 / sqrtf(half_extent.x + half_extent.y + half_extent.z);
 	buffers->result->offset_scale.w = half_extent.w;
 	buffers->result->is_dirty = 1;
-	pthread_mutex_unlock(&buffers->result->lock);
 }

@@ -18,18 +18,14 @@
 static void	prepare_obj(t_obj *obj)
 {
 	const t_float4	tmp = {0, 0, 0, 0};
-	// t_material		material;
 
 	ft_bzero(obj, sizeof(t_obj));
-	// material = get_default_material();
 	ft_vec_init(&obj->positions, sizeof(t_float4), 256);
 	ft_vec_init(&obj->normals, sizeof(t_float4), 256);
 	ft_vec_init(&obj->uvs, sizeof(t_float2), 256);
 	ft_vec_pushback(&obj->positions, &tmp);
 	ft_vec_pushback(&obj->normals, &tmp);
 	ft_vec_pushback(&obj->uvs, &tmp);
-	// obj->current_material =
-	// 	(t_material *)ft_vec_pushback(&obj->materials, &material);
 }
 
 static void	handle_vec(const char *line, t_vector *buffer, t_bool is_vec3)
