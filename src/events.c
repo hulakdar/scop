@@ -39,11 +39,6 @@ static void		handle_mouse(SDL_MouseMotionEvent e, t_frame_info *frame)
 		frame->angles.y += e.xrel / 180.f;
 		frame->angles.x += e.yrel / 180.f;
 	}
-	else if (e.state & SDL_BUTTON_RMASK)
-	{
-		frame->light_angles.y -= e.xrel / 180.f;
-		frame->light_angles.x += e.yrel / 180.f;
-	}
 }
 
 t_bool			update(t_frame_info *frame)
