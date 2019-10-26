@@ -1,6 +1,6 @@
 NAME        = scop
 CC          = gcc
-CFLAGS      = -Wall -Wextra -Werror- -g -mtune=native -O3 -march=native
+CFLAGS      = -Wall -Wextra -Werror -g -mtune=native -O3 -march=native
 
 SRCS_DIR    = ./src
 OBJS_DIR    = ./obj
@@ -18,6 +18,7 @@ OBJS        = $(SRCS:.c=.o)
 
 INCLUDES    = -I include/
 INCLUDES   += -I libft/include
+INCLUDES   += -I frameworks/
 INCLUDES   += -I ~/.brew/include
 
 LIBFT       = $(LIBFT_DIR)/libft.a
@@ -25,8 +26,8 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 LIBRARIES   = -lm -lpthread
 LIBRARIES  += -F frameworks/
 LIBRARIES  += -L libft/ -lft
-LIBRARIES  += -L ~/.brew/Cellar/glew/2.1.0/lib -lGLEW
-LIBRARIES  += -framework SDL2 -framework SDL2_image -framework SDL2_ttf -framework OpenGL
+LIBRARIES  += -L ~/.brew/lib -lGLEW
+LIBRARIES  += -framework SDL2 -framework OpenGL
 
 TO_LINKING  = $(addprefix $(OBJS_DIR)/, $(OBJS)) $(LIBRARIES) -rpath frameworks/
 

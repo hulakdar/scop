@@ -1,5 +1,17 @@
-#ifndef _COMMON_H_
-# define _COMMON_H_
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/19 17:39:09 by skamoza           #+#    #+#             */
+/*   Updated: 2019/10/19 17:39:23 by skamoza          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef COMMON_H
+# define COMMON_H
 
 # include "libft.h"
 # include <pthread.h>
@@ -20,7 +32,7 @@
 # else
 #  define CUBEMAP_PIXEL_FORMAT GL_BGRA
 #  define GLCALL(x) x
-#  define DEBUG_BREAK() __builtin_trap()
+#  define DEBUG_BREAK()
 #  include <SDL2/SDL.h>
 #  include <SDL2/SDL_image.h>
 # endif

@@ -13,6 +13,7 @@
 #include "scop.h"
 #include "obj.h"
 #include "shaders.h"
+#include "stb_image.h"
 #include <stdio.h>
 #include <signal.h>
 

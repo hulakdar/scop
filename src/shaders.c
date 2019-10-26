@@ -75,7 +75,7 @@ GLint			compile_shaders(char *vertex_path,
 								char *fragment_path,
 								t_vector *defines)
 {
-	GLCALL(const GLint	program = glCreateProgram());
+	const GLint	program = glCreateProgram();
 	GLint		shaders[2];
 	GLuint		block_index;
 

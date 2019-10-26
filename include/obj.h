@@ -6,12 +6,12 @@
 /*   By: skamoza <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 22:43:57 by skamoza           #+#    #+#             */
-/*   Updated: 2019/10/14 00:26:23 by skamoza          ###   ########.fr       */
+/*   Updated: 2019/10/19 17:40:49 by skamoza          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _OBJ_H_
-# define _OBJ_H_
+#ifndef OBJ_H
+# define OBJ_H
 # include <GL/glew.h>
 # include "libft.h"
 # include "gl_math.h"
@@ -69,7 +69,7 @@ typedef struct	s_material
 {
 	float		diffuse_color[4];
 	char		*name;
-	char		*diffuse_tex_name;
+	char		*tex_name;
 	GLuint		diffuse_tex;
 	uint8_t		has_texture;
 }				t_material;

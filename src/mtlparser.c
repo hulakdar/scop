@@ -45,7 +45,7 @@ static void		parse_texture(const char *line, t_obj *obj)
 		if ((seeker = ft_strrchr(obj_path, '/')))
 			*(seeker + 1) = 0;
 		tex_filepath = ft_strjoin(obj_path, tab[0]);
-		obj->current_material->diffuse_tex_name = tex_filepath;
+		obj->current_material->tex_name = tex_filepath;
 		free(obj_path);
 	}
 }

@@ -20,13 +20,13 @@ void	push_vert(t_face face, t_obj *buffers, int i)
 	t_float4 mask;
 
 	ft_bzero(&new_vert, sizeof(new_vert));
-	if(face.pos_indx[i] < buffers->positions.back)
+	if (face.pos_indx[i] < (int)buffers->positions.back)
 		new_vert.position = *(t_float4 *)ft_vec_get(
 		&buffers->positions, face.pos_indx[i]);
-	if (face.uvs_indx[i] && face.uvs_indx[i] < buffers->uvs.back)
+	if (face.uvs_indx[i] && face.uvs_indx[i] < (int)buffers->uvs.back)
 		new_vert.uv = *(t_float2 *)ft_vec_get(
 			&buffers->uvs, face.uvs_indx[i]);
-	if (face.norm_indx[i] && face.norm_indx[i] < buffers->normals.back)
+	if (face.norm_indx[i] && face.norm_indx[i] < (int)buffers->normals.back)
 		new_vert.normal = *(t_float4 *)ft_vec_get(
 			&buffers->normals, face.norm_indx[i]);
 	ft_vec_pushback(&buffers->result->vertecies, &new_vert);

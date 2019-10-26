@@ -34,35 +34,32 @@ GLuint		get_default_shader(void)
 	return (default_shader);
 }
 
-static void	draw_submesh(t_submesh *submesh, t_frame_info *frame)
+static void	draw_submesh(t_submesh *s, t_frame_info *frame)
 {
 	GLuint program;
 
 	(void)frame;
-	if (submesh->shader_program)
+	if (s->shader_program)
 	{
-		program = submesh->shader_program;
+		program = s->shader_program;
 	}
-	else if (submesh->material)
+	else if (s->material && s->material->tex_name)
 	{
-		if (submesh->material->diffuse_tex_name)
-		{
-			submesh->material->diffuse_tex = create_texture_2d(submesh->material->diffuse_tex_name);
-			submesh->material->diffuse_tex_name = NULL;
-			submesh->material->has_texture = 1;
-		}
-		submesh->shader_program = generate_shader(submesh->material);
-		program = submesh->shader_program;
+		s->material->diffuse_tex = create_texture_2d(s->material->tex_name);
+		s->material->tex_name = NULL;
+		s->material->has_texture = 1;
+		s->shader_program = generate_shader(s->material);
+		program = s->shader_program;
 	}
 	else
 		program = get_default_shader();
 	GLCALL(glUseProgram(program));
-	if (submesh->material && submesh->material->has_texture)
+	if (s->material && s->material->has_texture)
 	{
 		GLCALL(glActiveTexture(GL_TEXTURE2));
-		GLCALL(glBindTexture(GL_TEXTURE_2D, submesh->material->diffuse_tex));
+		GLCALL(glBindTexture(GL_TEXTURE_2D, s->material->diffuse_tex));
 	}
-	GLCALL(glDrawArrays(GL_TRIANGLES, submesh->start, submesh->count));
+	GLCALL(glDrawArrays(GL_TRIANGLES, s->start, s->count));
 }
 
 void		bind_buffers(t_buffers model_buffers)
