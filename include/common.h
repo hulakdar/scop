@@ -34,7 +34,6 @@
 #  define GLCALL(x) x
 #  define DEBUG_BREAK()
 #  include <SDL2/SDL.h>
-#  include <SDL2/SDL_image.h>
 # endif
 
 #endif

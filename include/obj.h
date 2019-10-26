@@ -62,7 +62,8 @@ typedef struct	s_model
 	t_float4		offset_scale;
 	t_lock			lock;
 	const char		*filepath;
-	unsigned		is_dirty : 1;
+	unsigned		is_dirty;
+	unsigned		request_exit;
 }				t_model;
 
 typedef struct	s_material

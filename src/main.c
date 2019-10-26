@@ -77,6 +77,7 @@ int				main(int argc, const char *argv[])
 		exit(scop_error("Wrong number of arguments\n"
 			"Should be:\n"
 			"scop filename.obj [-b](blocking)\n"));
+	ft_bzero(&model, sizeof(model));
 	model.filepath = argv[1];
 	scop_initialize(&model);
 	ft_vec_init(&model.materials, sizeof(t_material), 2);
@@ -87,7 +88,7 @@ int				main(int argc, const char *argv[])
 	if (argc == 3 && !ft_strcmp(argv[2], "-b"))
 		pthread_join(thread, NULL);
 	event_loop(model.window, &model);
-	pthread_kill(thread, SIGTERM);
+	model.request_exit = 1;
 	pthread_join(thread, NULL);
 	ft_vec_del(&model.submeshes);
 	ft_vec_del(&model.vertecies);

@@ -59,7 +59,7 @@ GLuint		create_texture_2d(const char *filename)
 
 	data.ptr = stbi_load(filename, &data.x, &data.y, NULL, 3);
 	if (!data.ptr)
-		exit(scop_error(IMG_GetError()));
+		exit(scop_error("Failed to load texture"));
 	setup_texture_sampler(GL_TEXTURE_2D, &texture_id);
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.x, data.y,
 		0, GL_RGB, GL_UNSIGNED_BYTE, data.ptr));

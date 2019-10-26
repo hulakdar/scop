@@ -103,7 +103,7 @@ void		*parse_obj(t_model *model)
 	create_new_submesh(&obj);
 	if (fd > 2)
 	{
-		while (get_next_line(fd, &line) > 0)
+		while (get_next_line(fd, &line) > 0 && !model->request_exit)
 		{
 			if (*line != '#' && *line != '\n' && *line)
 				parse_single_line(line, &obj);
