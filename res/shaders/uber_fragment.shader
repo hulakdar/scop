@@ -35,7 +35,7 @@ const vec3 u_Ambient = vec3(1.0);
 #if DIFFUSE == TEXTURE
 uniform sampler2D u_TextureDiffuse;
 #else
-uniform vec4 u_Diffuse = vec4(0.9, 1.9, 1.0, 1);
+uniform vec4 u_Diffuse = vec4(0.64, 0.64, 0.64, 1);
 #endif
 
 uniform samplerCube  u_Cubemap;

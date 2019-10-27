@@ -20,13 +20,13 @@ void	push_vert(t_face face, t_obj *buffers, int i)
 	t_float4 mask;
 
 	ft_bzero(&new_vert, sizeof(new_vert));
-	if (face.pos_indx[i] < (int)buffers->positions.back)
+	if (face.pos_indx[i] < buffers->positions.back)
 		new_vert.position = *(t_float4 *)ft_vec_get(
 		&buffers->positions, face.pos_indx[i]);
-	if (face.uvs_indx[i] && face.uvs_indx[i] < (int)buffers->uvs.back)
+	if (face.uvs_indx[i] && face.uvs_indx[i] < buffers->uvs.back)
 		new_vert.uv = *(t_float2 *)ft_vec_get(
 			&buffers->uvs, face.uvs_indx[i]);
-	if (face.norm_indx[i] && face.norm_indx[i] < (int)buffers->normals.back)
+	if (face.norm_indx[i] && face.norm_indx[i] < buffers->normals.back)
 		new_vert.normal = *(t_float4 *)ft_vec_get(
 			&buffers->normals, face.norm_indx[i]);
 	ft_vec_pushback(&buffers->result->vertecies, &new_vert);
@@ -70,11 +70,16 @@ void	parse_single_vert(char *text, t_face *face, int i, int slashes)
 	int		tmp_size;
 
 	tmp = ft_strsplit(text, '/');
+	if (!tmp)
+		return;
 	tmp_size = ft_tabcount(tmp);
-	face->pos_indx[i] = ft_atoi(tmp[0]);
-	if (slashes == 1 || tmp_size == 3)
+	if (!tmp_size)
+		return;
+	if (tmp[0])
+		face->pos_indx[i] = ft_atoi(tmp[0]);
+	if ((slashes == 1 || tmp_size == 3) && tmp[1])
 		face->uvs_indx[i] = ft_atoi(tmp[1]);
-	if (slashes == 2 || tmp_size == 2)
+	if ((slashes == 2 || tmp_size == 2) && tmp[tmp_size == 2 ? 1 : 2])
 		face->norm_indx[i] = ft_atoi(tmp[tmp_size == 2 ? 1 : 2]);
 	ft_tabdel(&tmp);
 }
