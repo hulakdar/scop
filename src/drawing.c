@@ -72,6 +72,7 @@ void		draw(t_frame_info *frame, t_model *model)
 {
 	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
 	bind_buffers(model->buffers);
+	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
 	ft_vec_for_each(&model->submeshes,
 			(t_for_each_predicate)draw_submesh, frame);
 	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));

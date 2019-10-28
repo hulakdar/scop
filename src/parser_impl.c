@@ -71,10 +71,10 @@ void	parse_single_vert(char *text, t_face *face, int i, int slashes)
 
 	tmp = ft_strsplit(text, '/');
 	if (!tmp)
-		return;
+		return ;
 	tmp_size = ft_tabcount(tmp);
 	if (!tmp_size)
-		return;
+		return ;
 	if (tmp[0])
 		face->pos_indx[i] = ft_atoi(tmp[0]);
 	if ((slashes == 1 || tmp_size == 3) && tmp[1])

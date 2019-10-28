@@ -64,6 +64,8 @@ static void		scop_initialize(t_model *model)
 	if ((result = glewInit()) != GLEW_OK)
 		exit(scop_error((const char *)glewGetErrorString(result)));
 	GLCALL(glEnable(GL_DEPTH_TEST));
+	GLCALL(glEnable(GL_POINT_SIZE));
+	glPointSize(8.0f);
 	GLCALL(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
 	prepare_buffers(model);
 }
