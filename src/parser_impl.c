@@ -76,11 +76,12 @@ void	parse_single_vert(char *text, t_face *face, int i, int slashes)
 	if (!tmp_size)
 		return ;
 	if (tmp[0])
-		face->pos_indx[i] = ft_atoi(tmp[0]);
+		face->pos_indx[i] = ft_atoull(tmp[0]);
 	if ((slashes == 1 || tmp_size == 3) && tmp[1])
-		face->uvs_indx[i] = ft_atoi(tmp[1]);
-	if ((slashes == 2 || tmp_size == 2) && tmp[tmp_size == 2 ? 1 : 2])
-		face->norm_indx[i] = ft_atoi(tmp[tmp_size == 2 ? 1 : 2]);
+		face->uvs_indx[i] = ft_atoull(tmp[1]);
+	if (((slashes == 2) || tmp_size == 2) && tmp[tmp_size == 2 ? 1 : 2]
+		&& tmp_size > 1)
+		face->norm_indx[i] = ft_atoull(tmp[tmp_size == 2 ? 1 : 2]);
 	ft_tabdel(&tmp);
 }
 
@@ -103,7 +104,7 @@ int		parse_face(t_face *face, const char *line)
 		if (slashes)
 			parse_single_vert(tab[i], face, i, slashes);
 		else
-			face->pos_indx[i] = ft_atoi(tab[i]);
+			face->pos_indx[i] = ft_atoull(tab[i]);
 	}
 	ft_tabdel(&tab);
 	return (count);

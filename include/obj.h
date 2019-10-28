@@ -22,19 +22,10 @@ typedef pthread_mutex_t	t_lock;
 
 typedef struct	s_face
 {
-	unsigned int			pos_indx[16];
-	unsigned int			norm_indx[16];
-	unsigned int			uvs_indx[16];
+	size_t			pos_indx[16];
+	size_t			norm_indx[16];
+	size_t			uvs_indx[16];
 }				t_face;
-
-typedef enum	e_attribute
-{
-	A_DIFFUSE,
-	A_AMBIENT,
-	A_SPECULAR,
-	A_SPECULAR_POW,
-	A_TRANSLUCENCY
-}				t_attribute;
 
 typedef struct	s_buffers
 {
