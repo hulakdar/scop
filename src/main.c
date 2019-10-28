@@ -82,10 +82,10 @@ int				main(int argc, const char *argv[])
 	t_model		model;
 	pthread_t	thread;
 
-	if (argc < 2 || argc > 3)
+	if (argc != 2)
 		exit(scop_error("Wrong number of arguments\n"
 			"Should be:\n"
-			"scop filename.obj [-b](blocking)\n"));
+			"./scop filename.obj"));
 	ft_bzero(&model, sizeof(model));
 	model.filepath = argv[1];
 	scop_initialize(&model);
@@ -94,8 +94,6 @@ int				main(int argc, const char *argv[])
 	ft_vec_init(&model.submeshes, sizeof(t_submesh), 1);
 	pthread_mutex_init(&model.lock, NULL);
 	pthread_create(&thread, NULL, (void *(*)(void *))parse_obj, &model);
-	if (argc == 3 && !ft_strcmp(argv[2], "-b"))
-		pthread_join(thread, NULL);
 	event_loop(model.window, &model);
 	model.request_exit = 1;
 	pthread_join(thread, NULL);
