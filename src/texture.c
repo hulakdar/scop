@@ -42,7 +42,7 @@ GLuint		create_texture_cube(const char *folder)
 		data.ptr = stbi_load(filename, &data.x, &data.y, NULL, 3);
 		free(filename);
 		if (!data.ptr)
-			exit(scop_error(folder));
+			exit(scop_error("Unable to load skybox properly."));
 		(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
 		data.x, data.y, 0, GL_RGB, GL_UNSIGNED_BYTE, data.ptr));
 		free(data.ptr);

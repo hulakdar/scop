@@ -60,11 +60,6 @@ static void		parse_single_line(const char *line, t_obj *obj)
 		parse_color(line + 3, obj);
 	else if (!ft_memcmp(line, "map_Kd ", 7))
 		parse_texture(line + 7, obj);
-	else
-	{
-		ft_putendl("Unknown in .mtl: ");
-		ft_putendl(line);
-	}
 }
 
 static char		*find_mtllib(const char *line, const char *filepath)
