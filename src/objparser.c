@@ -111,6 +111,8 @@ void		*parse_obj(t_model *model)
 		}
 		close(fd);
 	}
+	if ((model->request_exit = model->vertecies.back < 1))
+		scop_error("No vertecies in this file");
 	ft_vec_del(&obj.positions);
 	ft_vec_del(&obj.normals);
 	ft_vec_del(&obj.uvs);

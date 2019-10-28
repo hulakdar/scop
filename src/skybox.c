@@ -43,14 +43,14 @@ t_buffers		create_quad(void)
 	};
 	t_buffers	skybox;
 
-	GLCALL(glGenVertexArrays(1, &skybox.vertex_array));
-	GLCALL(glGenBuffers(1, &skybox.vertex_buffer));
-	GLCALL(glBindVertexArray(skybox.vertex_array));
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, skybox.vertex_buffer));
-	GLCALL(glBufferData(GL_ARRAY_BUFFER,
+	(glGenVertexArrays(1, &skybox.vertex_array));
+	(glGenBuffers(1, &skybox.vertex_buffer));
+	(glBindVertexArray(skybox.vertex_array));
+	(glBindBuffer(GL_ARRAY_BUFFER, skybox.vertex_buffer));
+	(glBufferData(GL_ARRAY_BUFFER,
 		sizeof(quad), quad, GL_STATIC_DRAW));
-	GLCALL(glEnableVertexAttribArray(0));
-	GLCALL(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
+	(glEnableVertexAttribArray(0));
+	(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
 									2 * sizeof(float), (GLvoid *)0));
 	return (skybox);
 }
@@ -71,8 +71,8 @@ void			draw_quad(t_quad_data quad_data)
 	if (!quad.vertex_array && !quad.vertex_buffer)
 		quad = create_quad();
 	bind_buffers(quad);
-	GLCALL(glUseProgram(quad_data.shader));
-	GLCALL(glActiveTexture(GL_TEXTURE0));
-	GLCALL(glBindTexture(quad_data.texture_type, quad_data.texture));
-	GLCALL(glDrawArrays(GL_TRIANGLES, 0, 6));
+	(glUseProgram(quad_data.shader));
+	(glActiveTexture(GL_TEXTURE0));
+	(glBindTexture(quad_data.texture_type, quad_data.texture));
+	(glDrawArrays(GL_TRIANGLES, 0, 6));
 }

@@ -33,17 +33,17 @@ static void		setup_gl_attrubutes(void)
 
 static void		prepare_buffers(t_model *model)
 {
-	GLCALL(glGenVertexArrays(1, &model->buffers.vertex_array));
-	GLCALL(glGenBuffers(1, &model->buffers.vertex_buffer));
+	(glGenVertexArrays(1, &model->buffers.vertex_array));
+	(glGenBuffers(1, &model->buffers.vertex_buffer));
 	bind_buffers(model->buffers);
-	GLCALL(glEnableVertexAttribArray(0));
-	GLCALL(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+	(glEnableVertexAttribArray(0));
+	(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)0));
-	GLCALL(glEnableVertexAttribArray(1));
-	GLCALL(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+	(glEnableVertexAttribArray(1));
+	(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, normal)));
-	GLCALL(glEnableVertexAttribArray(2));
-	GLCALL(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+	(glEnableVertexAttribArray(2));
+	(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 		(GLvoid *)offsetof(t_vertex, uv)));
 	model->skybox.shader = get_skybox_shader();
 	model->skybox.texture_type = GL_TEXTURE_CUBE_MAP;
@@ -54,7 +54,14 @@ static void		prepare_buffers(t_model *model)
 static void		scop_initialize(t_model *model)
 {
 	GLenum		result;
+	const int	fd = open(model->filepath, O_RDONLY);
 
+	if (read(fd, NULL, 0) < 0)
+	{
+		close(fd);
+		exit(scop_error("Not a valid file"));
+	}
+	close(fd);
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		exit(scop_error("SDL not initialized"));
 	setup_gl_attrubutes();
@@ -63,10 +70,10 @@ static void		scop_initialize(t_model *model)
 	model->context = SDL_GL_CreateContext(model->window);
 	if ((result = glewInit()) != GLEW_OK)
 		exit(scop_error((const char *)glewGetErrorString(result)));
-	GLCALL(glEnable(GL_DEPTH_TEST));
-	GLCALL(glEnable(GL_POINT_SIZE));
+	(glEnable(GL_DEPTH_TEST));
+	(glEnable(GL_POINT_SIZE));
 	glPointSize(8.0f);
-	GLCALL(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
+	(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
 	prepare_buffers(model);
 }
 

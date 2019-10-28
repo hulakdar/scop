@@ -53,28 +53,28 @@ static void	draw_submesh(t_submesh *s, t_frame_info *frame)
 	}
 	else
 		program = get_default_shader();
-	GLCALL(glUseProgram(program));
+	(glUseProgram(program));
 	if (s->material && s->material->has_texture)
 	{
-		GLCALL(glActiveTexture(GL_TEXTURE2));
-		GLCALL(glBindTexture(GL_TEXTURE_2D, s->material->diffuse_tex));
+		(glActiveTexture(GL_TEXTURE2));
+		(glBindTexture(GL_TEXTURE_2D, s->material->diffuse_tex));
 	}
-	GLCALL(glDrawArrays(GL_TRIANGLES, s->start, s->count));
+	(glDrawArrays(GL_TRIANGLES, s->start, s->count));
 }
 
 void		bind_buffers(t_buffers model_buffers)
 {
-	GLCALL(glBindVertexArray(model_buffers.vertex_array));
-	GLCALL(glBindBuffer(GL_ARRAY_BUFFER, model_buffers.vertex_buffer));
+	(glBindVertexArray(model_buffers.vertex_array));
+	(glBindBuffer(GL_ARRAY_BUFFER, model_buffers.vertex_buffer));
 }
 
 void		draw(t_frame_info *frame, t_model *model)
 {
-	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
+	(glClear(GL_DEPTH_BUFFER_BIT));
 	bind_buffers(model->buffers);
-	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
+	(glPolygonMode(GL_FRONT_AND_BACK, frame->polygon_mode));
 	ft_vec_for_each(&model->submeshes,
 			(t_for_each_predicate)draw_submesh, frame);
-	GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+	(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 	draw_quad(model->skybox);
 }

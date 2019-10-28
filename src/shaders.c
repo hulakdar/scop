@@ -54,11 +54,11 @@ GLint			compile_single_shader(unsigned int type,
 	t_shader_code	source;
 
 	source = get_shader_source(path, defines);
-	GLCALL(glShaderSource(shader, source.lines.back,
+	(glShaderSource(shader, source.lines.back,
 		(const GLchar *const *)source.lines.data,
 		(const GLint *)source.lengths.data));
-	GLCALL(glCompileShader(shader));
-	GLCALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
+	(glCompileShader(shader));
+	(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
 	if (result == GL_FALSE)
 	{
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &result);
@@ -82,13 +82,13 @@ GLint			compile_shaders(char *vertex_path,
 	shaders[0] = compile_single_shader(GL_VERTEX_SHADER, vertex_path, defines);
 	shaders[1] = compile_single_shader(GL_FRAGMENT_SHADER,
 											fragment_path, defines);
-	GLCALL(glAttachShader(program, shaders[0]));
-	GLCALL(glAttachShader(program, shaders[1]));
-	GLCALL(glLinkProgram(program));
-	GLCALL(glValidateProgram(program));
-	GLCALL(block_index = glGetUniformBlockIndex(program, "global"));
+	(glAttachShader(program, shaders[0]));
+	(glAttachShader(program, shaders[1]));
+	(glLinkProgram(program));
+	(glValidateProgram(program));
+	(block_index = glGetUniformBlockIndex(program, "global"));
 	if (block_index != GL_INVALID_INDEX)
-		GLCALL(glUniformBlockBinding(program, block_index, 0));
+		(glUniformBlockBinding(program, block_index, 0));
 	return (program);
 }
 

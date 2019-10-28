@@ -15,26 +15,5 @@
 unsigned	scop_error(const char *error)
 {
 	ft_putendl_fd(error, 2);
-	DEBUG_BREAK();
-	return (-1);
-}
-
-void		gl_clear_error(void)
-{
-	while (glGetError())
-		continue;
-}
-
-char		gl_check_error(const char *function, const char *file, int line)
-{
-	GLenum error;
-
-	(void)function;
-	(void)file;
-	(void)line;
-	while ((error = glGetError()))
-	{
-		DEBUG_BREAK();
-	}
-	return (1);
+	return (0);
 }

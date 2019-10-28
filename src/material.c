@@ -31,12 +31,12 @@ void	set_uniforms(GLuint result, t_material *mat)
 	if (mat->has_texture)
 	{
 		if ((location = glGetUniformLocation(result, "u_TextureDiffuse")) >= 0)
-			GLCALL(glUniform1i(location, 2));
+			(glUniform1i(location, 2));
 	}
 	else
 	{
 		if ((location = glGetUniformLocation(result, "u_Diffuse")) >= 0)
-			GLCALL(glUniform4fv(location, 1, mat->diffuse_color));
+			(glUniform4fv(location, 1, mat->diffuse_color));
 	}
 }
 
@@ -51,7 +51,7 @@ GLuint	generate_shader(t_material *mat)
 	add_defines(&defines, mat);
 	result = compile_shaders("res/shaders/uber_vertex.shader",
 		"res/shaders/uber_fragment.shader", &defines);
-	GLCALL(glUseProgram(result));
+	(glUseProgram(result));
 	set_uniforms(result, mat);
 	ft_vec_del(&defines);
 	return (result);
