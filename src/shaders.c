@@ -34,6 +34,8 @@ t_shader_code	get_shader_source(const char *filepath, t_vector *defines)
 	ft_vec_init(&source.lines, sizeof(char *), 32);
 	ft_vec_init(&source.lengths, sizeof(GLuint), 32);
 	ft_vec_for_each(defines, (t_for_each_predicate)prepend_define, &source);
+	if (read(fd, NULL, 0) < 0)
+		exit(scop_error("Unable to read shader file."));
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = ft_strcat(line, "\n");
@@ -41,6 +43,7 @@ t_shader_code	get_shader_source(const char *filepath, t_vector *defines)
 		length = ft_strlen(line);
 		ft_vec_pushback(&source.lengths, &length);
 	}
+	close(fd);
 	return (source);
 }
 
